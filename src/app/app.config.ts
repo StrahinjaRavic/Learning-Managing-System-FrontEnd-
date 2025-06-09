@@ -1,9 +1,83 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
-
-import { routes } from './app.routes';
-import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
+import { ApplicationConfig } from '@angular/core';
+import { provideHttpClient, withFetch } from '@angular/common/http';
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes), provideClientHydration(withEventReplay())]
+  providers: [
+    provideRouter([
+      {
+        path: '',
+        loadComponent: () =>
+          import('./pages/public/public.component').then(
+            (m) => m.PublicComponent
+          ),
+        children: [
+          {
+            path: '',
+            loadComponent: () =>
+              import('./pages/public/home/home.component').then(
+                (m) => m.HomeComponent
+              ),
+          },
+          {
+            path: 'login',
+            loadComponent: () =>
+              import('./pages/public/login/login.component').then(
+                (m) => m.LoginComponent
+              ),
+          },
+          {
+            path: 'register',
+            loadComponent: () =>
+              import('./pages/public/register/register.component').then(
+                (m) => m.RegisterComponent
+              ),
+          },
+          {
+            path: 'fakultet',
+            loadComponent: () =>
+              import('./pages/public/fakultet-info/fakultet-info.component').then(
+                (m) => m.FakultetInfoComponent
+              ),
+          },
+          {
+            path: 'smerovi',
+            loadComponent: () =>
+              import('./pages/public/smerovi/smerovi.component').then(
+                (m) => m.SmeroviComponent
+              ),
+          },
+          {
+            path: 'smerovi/:id',
+            loadComponent: () =>
+              import('./pages/public/smerovi/smer-detalji/smer-detalji.component').then(
+                (m) => m.SmerDetaljiComponent
+              ),
+          },
+          {
+            path: 'studijski-programi',
+            loadComponent: () =>
+              import('./pages/public/studijski-programi/studijski-programi.component').then(
+                (m) => m.StudijskiProgramiComponent
+              ),
+          },
+          {
+            path: 'studijski-programi/:id',
+            loadComponent: () =>
+              import('./pages/public/studijski-programi/studijski-program-detalji/studijski-program-detalji.component').then(
+                (m) => m.StudijskiProgramDetaljiComponent
+              ),
+          },
+          {
+            path: 'student-predmeti',
+            loadComponent: () =>
+              import('./pages/public/student-predmeti/student-predmeti/student-predmeti.component').then(
+                (m) => m.StudentPredmetiComponent
+              ),
+          },
+        ],
+      },
+    ]),
+    provideHttpClient(withFetch()),
+  ],
 };

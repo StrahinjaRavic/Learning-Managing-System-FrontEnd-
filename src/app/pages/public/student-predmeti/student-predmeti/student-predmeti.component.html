@@ -1,0 +1,33 @@
+<mat-card>
+  <h2>Predmeti koje student sluša</h2>
+
+  <table mat-table [dataSource]="predmeti" class="mat-elevation-z2" *ngIf="predmeti.length > 0">
+    
+    <!-- Naziv -->
+    <ng-container matColumnDef="naziv">
+      <th mat-header-cell *matHeaderCellDef> Naziv </th>
+      <td mat-cell *matCellDef="let predmet"> {{ predmet.naziv }} </td>
+    </ng-container>
+
+    <!-- ESPB -->
+    <ng-container matColumnDef="espb">
+      <th mat-header-cell *matHeaderCellDef> ESPB </th>
+      <td mat-cell *matCellDef="let predmet"> {{ predmet.espb }} </td>
+    </ng-container>
+
+    <!-- Silabus -->
+    <ng-container matColumnDef="silabus">
+      <th mat-header-cell *matHeaderCellDef> Silabus </th>
+      <td mat-cell *matCellDef="let predmet">
+        <ul>
+          <li *ngFor="let s of predmet.silabus">{{ s.opis }}</li>
+        </ul>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <p *ngIf="predmeti.length === 0">Nema pronađenih predmeta.</p>
+</mat-card>

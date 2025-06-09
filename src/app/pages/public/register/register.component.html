@@ -1,0 +1,36 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+  <label>Korisničko ime</label>
+  <input type="text" formControlName="username" />
+  <div *ngIf="form.get('username')?.invalid && form.get('username')?.touched">
+    Korisničko ime mora imati najmanje 3 karaktera.
+  </div>
+
+  <label>Email</label>
+  <input type="email" formControlName="email" />
+  <div *ngIf="form.get('email')?.invalid && form.get('email')?.touched">
+    Email nije validan.
+  </div>
+
+  <label>Lozinka</label>
+  <input type="password" formControlName="password" />
+  <div *ngIf="form.get('password')?.invalid && form.get('password')?.touched">
+    Lozinka mora imati najmanje 6 karaktera.
+  </div>
+
+  <label>Potvrdi lozinku</label>
+  <input type="password" formControlName="confirmPassword" />
+  <div *ngIf="form.errors?.['passwordMismatch']">
+  Lozinke se ne poklapaju.
+</div>
+
+  <button type="submit" [disabled]="form.invalid">Registruj se</button>
+
+  <div *ngIf="registrationError" style="color: red; margin-top: 8px;">
+    {{ registrationError }}
+  </div>
+
+  <div *ngIf="registrationSuccess" style="color: green; margin-top: 8px;">
+    {{ registrationSuccess }}
+  </div>
+</form>

@@ -1,0 +1,19 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <label>Email</label>
+  <input type="email" formControlName="email" />
+  <div *ngIf="form.get('email')?.invalid && form.get('email')?.touched">
+    Email nije ispravan.
+  </div>
+
+  <label>Lozinka</label>
+  <input type="password" formControlName="password" />
+  <div *ngIf="form.get('password')?.invalid && form.get('password')?.touched">
+    Lozinka mora imati najmanje 6 karaktera.
+  </div>
+
+  <button type="submit" [disabled]="form.invalid">Prijavi se</button>
+
+  <div *ngIf="loginError" style="color: red; margin-top: 8px;">
+    {{ loginError }}
+  </div>
+</form>
