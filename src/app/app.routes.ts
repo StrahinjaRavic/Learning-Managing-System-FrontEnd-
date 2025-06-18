@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './pages/public/home/home.component';
 import { StudijskiProgramDetaljiComponent } from './pages/public/studijski-programi/studijski-program-detalji/studijski-program-detalji.component';
+import { roleGuard } from './services/role.guard';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -30,6 +31,19 @@ export const routes: Routes = [
   },
   {
   path: 'student-predmeti',
-  loadComponent: () => import('./pages/public/student-predmeti/student-predmeti/student-predmeti.component').then(m => m.StudentPredmetiComponent)
+  loadComponent: () => import('./pages/public/student-predmeti/student-predmeti/student-predmeti.component').then(m => m.StudentPredmetiComponent),
+  canActivate: [roleGuard],
+  data: {roles: ['ROLE_STUDENT']}
+  },
+  {
+  path: 'istorija-predmeta',
+  loadComponent: () => import('./pages/public/istorija-studiranja/istorija-studiranja/istorija-studiranja.component').then(m => m.IstorijaStudiranjaComponent)
+  },
+
+  {
+  path: 'upis-studenta',
+  loadComponent: () => import('./pages/public/osoblje/components/upis-form/upis-form/upis-form.component').then( (m) => m.UpisFormComponent),
+   canActivate: [roleGuard],
+  data: {roles: ['ROLE_NASTAVNIK']}
   }
 ];

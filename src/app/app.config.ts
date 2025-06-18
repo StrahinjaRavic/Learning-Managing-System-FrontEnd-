@@ -1,6 +1,7 @@
 import { provideRouter } from '@angular/router';
 import { ApplicationConfig } from '@angular/core';
 import { provideHttpClient, withFetch } from '@angular/common/http';
+import { roleGuard } from './services/role.guard';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -75,6 +76,20 @@ export const appConfig: ApplicationConfig = {
                 (m) => m.StudentPredmetiComponent
               ),
           },
+          {
+            path: 'istorija-studiranja',
+            loadComponent: () =>
+              import('./pages/public/istorija-studiranja/istorija-studiranja/istorija-studiranja.component').then(
+                (m) => m.IstorijaStudiranjaComponent
+              ),
+          },
+          {
+            path: 'upis-studenta',
+            loadComponent: () =>
+              import('./pages/public/osoblje/components/upis-form/upis-form/upis-form.component').then(
+                (m) => m.UpisFormComponent
+              ),
+          }
         ],
       },
     ]),

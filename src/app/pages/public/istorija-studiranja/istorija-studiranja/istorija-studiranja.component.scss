@@ -1,0 +1,21 @@
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+}
+
+th, td {
+  border: 1px solid #444;
+  padding: 8px;
+  text-align: center;
+}
+
+thead {
+  background-color: #333;
+  color: #fff;
+}
+
+.statistika {
+  margin-top: 20px;
+  font-size: 1.1rem;
+}

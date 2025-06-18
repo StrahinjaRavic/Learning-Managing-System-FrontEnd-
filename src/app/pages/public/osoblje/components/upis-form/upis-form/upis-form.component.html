@@ -1,0 +1,27 @@
+<div class="container">
+  <h2>Upis studenta na godinu</h2>
+
+  <div>
+    <label for="student">Student:</label>
+    <select [(ngModel)]="izabraniStudentId" id="student">
+      <option [ngValue]="null" disabled>-- Izaberite studenta --</option>
+      <option *ngFor="let s of studenti" [ngValue]="s.id">
+        {{ s.osoba.ime }} {{ s.osoba.prezime }} {{s.osoba.adresa.mesto.drzava.naziv}}
+      </option>
+    </select>
+  </div>
+
+  <div>
+    <label for="godina">Godina studija:</label>
+    <select [(ngModel)]="izabranaGodinaId" id="godina">
+      <option [ngValue]="null" disabled>-- Izaberite godinu --</option>
+      <option *ngFor="let g of godineStudija" [ngValue]="g.id">
+        Godina {{ g.godina }}
+      </option>
+    </select>
+  </div>
+
+  <button (click)="upisiStudenta()">Upiši studenta</button>
+
+  <p>{{ poruka }}</p>
+</div>

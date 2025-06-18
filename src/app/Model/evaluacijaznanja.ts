@@ -6,7 +6,7 @@ export interface EvaluacijaZnanja {
     naziv: string,
     brojBodova: number,
     datum: string,
-    pohadjanjepredmeta: PohadjanjePredmeta,
-    rok: Rok,
+    pohadjanjepredmetaId: number,
+    rok: string,
     obrisano: boolean,
 }

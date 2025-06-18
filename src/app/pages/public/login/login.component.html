@@ -1,8 +1,8 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <label>Email</label>
-  <input type="email" formControlName="email" />
-  <div *ngIf="form.get('email')?.invalid && form.get('email')?.touched">
-    Email nije ispravan.
+  <label>Korisničko ime</label>
+  <input type="text" formControlName="username" />
+  <div *ngIf="form.get('username')?.invalid && form.get('username')?.touched">
+    Korisničko ime je obavezno.
   </div>
 
   <label>Lozinka</label>

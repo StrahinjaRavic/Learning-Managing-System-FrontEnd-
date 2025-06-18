@@ -1,22 +1,30 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet, RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
 
 @Component({
-  selector: 'app-public',
+  selector: 'app-navbar',
   standalone: true,
-  imports: [
-    CommonModule,
-    RouterOutlet,
-    RouterModule,
-    MatToolbarModule,
-    MatButtonModule,
-    MatIconModule
-  ],
+  imports: [CommonModule, RouterModule, MatToolbarModule],
   templateUrl: './public.component.html',
   styleUrls: ['./public.component.scss']
 })
-export class PublicComponent {}
+export class PublicComponent {
+  userRoles: string [] = [];
+
+  constructor(public auth: AuthService, private router: Router) {}
+
+  ngOnInit(): void {
+    this.auth.userRole$.subscribe(roles => {
+      this.userRoles = roles;
+      console.log('User role:', this.auth.getUserRoles());
+    });
+  }
+
+  logout(): void {
+    this.auth.logout();
+    this.router.navigate(['/']);
+  }
+}

@@ -1,12 +1,28 @@
-<mat-toolbar color="primary">
-  <span style="flex: 1">Univerzitet</span>
-  <button mat-button routerLink="/">Početna</button>
-  <button mat-button routerLink="/fakultet">Fakulteti</button>
-  <button mat-button routerLink="/studijski-programi">Studijski programi</button>
-  <button mat-button routerLink="/materijali">Materijali</button>
-  <button mat-button routerLink="/register">Registracija</button>
-</mat-toolbar>
+<nav class="navbar">
+<mat-toolbar color="primary" class="toolbar">
+      <span class="app-title" routerLink="/" style="cursor: pointer;">Univerzitet</span>
 
-<div style="padding: 16px;">
-  <router-outlet></router-outlet>
-</div>
+      <span class="spacer"></span>
+
+      <ng-container *ngIf="auth.isLoggedIn(); else guestLinks">
+    <ng-container *ngIf="userRoles && userRoles.includes('ROLE_STUDENT')">
+      <a  routerLink="/student-predmeti">Moji Predmeti</a>
+      <a  routerLink="/student-predmeti">Istorija studiranja</a>
+      <a  routerLink="/student-predmeti">Obavestenja</a>
+      <a  routerLink="/student-predmeti">Prijava ispita</a>
+    </ng-container>
+
+    <ng-container *ngIf="userRoles.includes('ROLE_PROFESOR')">
+      <button mat-button routerLink="/fakultet">Fakultet</button>
+    </ng-container>
+
+        <a (click)="logout()">Odjava</a>
+      </ng-container>
+
+      <ng-template #guestLinks>
+        <button mat-button routerLink="/login">Prijava</button>
+        <button mat-button routerLink="/register">Registracija</button>
+      </ng-template>
+    </mat-toolbar>
+</nav>
+<router-outlet></router-outlet>

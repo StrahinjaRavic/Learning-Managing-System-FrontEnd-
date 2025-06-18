@@ -1,12 +1,10 @@
-import { EvaluacijaZnanja } from "./evaluacijaznanja";
 import { RealizacijaPredmeta } from "./realizacijapredmeta";
-import { StudentNaGodini } from "./studentnagodini";
 
 export interface PohadjanjePredmeta {
-    id: number,
-    konacnaOcena: number,
-    studentNaGodini: StudentNaGodini,
-    realizacijaPredmeta: RealizacijaPredmeta,
-    evaluacijeZnanja: EvaluacijaZnanja[],
-    obrisano: boolean,
+  id: number;
+  konacnaOcena: number;
+  studentNaGodiniId: number;
+  realizacijaPredmeta: RealizacijaPredmeta;
+  evaluacijeZnanjaIds: number[];
+  obrisano: boolean;
 }

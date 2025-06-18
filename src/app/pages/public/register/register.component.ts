@@ -42,7 +42,7 @@ export class RegisterComponent {
     const password = this.form.value.password ?? '';
 
     this.authService.register({ username, email, password }).subscribe({
-      next: () => {
+      next: (msg) => {
         this.registrationSuccess = 'Uspešno ste se registrovali. Možete se prijaviti.';
         this.form.reset();
       },

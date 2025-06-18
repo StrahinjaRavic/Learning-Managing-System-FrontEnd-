@@ -1,21 +1,21 @@
 import { Component, OnInit } from '@angular/core';
-import { Predmet } from '../../../../Model/predmet';
+import { CommonModule } from '@angular/common';
 import { StudentService } from '../../../../services/student.service';
+import { Predmet } from '../../../../Model/predmet';
 import { AuthService } from '../../../../services/auth.service';
 import { MatCardModule } from '@angular/material/card';
-import { MatTableModule } from '@angular/material/table';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-student-predmeti',
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatTableModule],
+  imports: [CommonModule, MatCardModule],
   templateUrl: './student-predmeti.component.html',
   styleUrls: ['./student-predmeti.component.scss']
 })
 export class StudentPredmetiComponent implements OnInit {
   predmeti: Predmet[] = [];
-  displayedColumns: string[] = ['naziv', 'espb', 'silabus'];
+  loading = false;
+  error = '';
 
   constructor(
     private studentService: StudentService,
@@ -23,18 +23,23 @@ export class StudentPredmetiComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const id = this.authService.getLoggedInUserId();
-    if (id !== null) {
-      this.studentService.getPredmetiZaStudenta(id).subscribe({
-        next: (predmeti) => {
-          this.predmeti = predmeti;
+    const studentId = this.authService.getLoggedInUserId();
+    console.log(studentId)
+
+    if (studentId) {
+      this.loading = true;
+      this.studentService.getPredmetiZaStudentaKojeSlusa(studentId).subscribe({
+        next: (data) => {
+          this.predmeti = data;
+          this.loading = false;
         },
         error: (err) => {
-          console.error('Greška pri učitavanju predmeta:', err);
+          this.error = 'Greška pri učitavanju predmeta.';
+          this.loading = false;
         }
       });
     } else {
-      console.error('Nema ulogovanog korisnika');
+      this.error = 'Niste prijavljeni kao student.';
     }
   }
 }

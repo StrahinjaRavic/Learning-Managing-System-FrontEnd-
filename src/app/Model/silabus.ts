@@ -1,8 +1,6 @@
-import { Predmet } from "./predmet";
-
 export interface Silabus {
-    id: number,
-    opis: string,
-    predmet: Predmet,
-    obrisano: boolean,
+  id: number;
+  opis: string;
+  predmetId: number;
+  obrisano: boolean;
 }

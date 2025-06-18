@@ -26,6 +26,6 @@ export class SmeroviComponent implements OnInit {
   constructor(private programService: StudijskiProgramService) {}
 
   ngOnInit(): void {
-    this.programService.getSviProgrami().subscribe(res => this.programi = res);
+    this.programService.getAll().subscribe(res => this.programi = res);
   }
 }

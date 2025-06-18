@@ -1,4 +1,3 @@
-// src/app/fakultet-info/fakultet-info.component.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FakultetService } from '../../../services/fakultet.service';

@@ -31,7 +31,7 @@ export class SmerDetaljiComponent implements OnInit {
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      this.programService.getSviProgrami().subscribe(res => {
+      this.programService.getAll().subscribe(res => {
         const found = res.find(p => p.id === +id);
         if (found) this.smer = found;
       });

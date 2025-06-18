@@ -14,7 +14,7 @@ export class LoginComponent {
   private authService = inject(AuthService);
 
   form = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
+    username: ['', [Validators.required]],
     password: ['', [Validators.required, Validators.minLength(6)]],
   });
 
@@ -24,18 +24,19 @@ export class LoginComponent {
     if (this.form.invalid) return;
 
     this.loginError = null;
-    const email = this.form.value.email ?? '';
+    const username = this.form.value.username ?? '';
     const password = this.form.value.password ?? '';
 
-    this.authService.login({ email, password }).subscribe({
-      next: (res) => {
-        console.log('Uspešna prijava', res);
-        // npr. preusmeri korisnika ili prikazi poruku
+    this.authService.login({ username, password }).subscribe({
+      next: (token) => {
+        console.log('Uspešna prijava, token:', token);
+        // npr. preusmeri korisnika, npr:
+        // this.router.navigate(['/dashboard']);
         this.form.reset();
       },
       error: (err) => {
         console.error('Greška pri prijavi', err);
-        this.loginError = 'Pogrešan email ili lozinka.';
+        this.loginError = 'Pogrešan username ili lozinka.';
       },
     });
   }

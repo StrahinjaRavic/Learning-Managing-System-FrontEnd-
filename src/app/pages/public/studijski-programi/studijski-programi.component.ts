@@ -20,9 +20,14 @@ export class StudijskiProgramiComponent implements OnInit {
   constructor(private spService: StudijskiProgramService) {}
 
   ngOnInit(): void {
-    this.spService.getStudijskiProgrami().subscribe({
-      next: (data) => this.studijskiProgrami = data.filter(sp => !sp.obrisano),
-      error: (err) => console.error('Greška pri učitavanju studijskih programa', err)
-    });
+    this.spService.getAll().subscribe({
+    next: res => {
+      console.log('Dobijeni studijski programi:', res);
+      this.studijskiProgrami = res;
+    },
+    error: err => {
+      console.error('Greška pri učitavanju studijskih programa:', err);
+    }
+  });
   }
 }
