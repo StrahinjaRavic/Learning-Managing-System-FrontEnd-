@@ -89,6 +89,18 @@ export const appConfig: ApplicationConfig = {
               import('./pages/public/osoblje/components/upis-form/upis-form/upis-form.component').then(
                 (m) => m.UpisFormComponent
               ),
+          },
+          {
+            path: 'forum',
+            loadComponent: () => import('./pages/public/forum/forum.component').then(m => m.ForumComponent),
+          },
+          {
+            path: 'forum/:id',
+            loadComponent: () => import('./pages/public/forum/obavestenja/obavestenja.component').then(m => m.ObavestenjaComponent),
+          },
+          {
+            path: 'prijava-ispita',
+            loadComponent: () => import('./pages/public/prijava-ispita/prijava-ispita.component').then(m => m.PrijavaIspitaComponent),
           }
         ],
       },

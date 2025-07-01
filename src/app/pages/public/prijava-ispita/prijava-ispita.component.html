@@ -1,0 +1,16 @@
+<h2>Prijava ispita</h2>
+
+<p *ngIf="rok">Aktivan rok: {{ rok!.naziv }} ({{ rok!.pocetak | date }} - {{ rok!.kraj | date }})</p>
+
+<div *ngIf="nepolozeniPredmeti.length > 0; else nemaPredmeta">
+  <ul>
+    <li *ngFor="let predmet of nepolozeniPredmeti">
+      {{ predmet.naziv }}
+      <button (click)="prijavi(predmet)">Prijavi</button>
+    </li>
+  </ul>
+</div>
+
+<ng-template #nemaPredmeta>
+  <p>Nema nepoloženih predmeta za prijavu.</p>
+</ng-template>

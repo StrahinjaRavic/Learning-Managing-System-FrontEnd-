@@ -1,29 +1,12 @@
-<div class="container">
-  <h2>Istorija studiranja</h2>
+<div *ngIf="loading">Učitavanje...</div>
+<div *ngIf="error">{{ error }}</div>
 
-  <table border="1" cellpadding="8" cellspacing="0">
-    <thead>
-      <tr>
-        <th>Predmet</th>
-        <th>Broj polaganja</th>
-        <th>Broj bodova</th>
-        <th>Ocena</th>
-        <th>ESPB</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let zapis of istorija">
-        <td>{{ zapis.predmet }}</td>
-        <td>{{ zapis.brojPolaganja }}</td>
-        <td>{{ zapis.bodovi }}</td>
-        <td>{{ zapis.ocena }}</td>
-        <td>{{ zapis.espb }}</td>
-      </tr>
-    </tbody>
-  </table>
-
-  <div class="summary" style="margin-top: 20px;">
-    <p><strong>Prosečna ocena:</strong> {{ prosecnaOcena }}</p>
-    <p><strong>Ukupan broj ESPB:</strong> {{ ukupnoESPB }}</p>
-  </div>
-</div>
+<ng-container *ngIf="!loading && !error">
+  <mat-card *ngFor="let predmet of predmeti" class="mb-4">
+    <mat-card-title>{{ predmet.naziv }}</mat-card-title>
+    <mat-card-content>
+      <p>ESPB: {{ predmet.espb }}</p>
+      <p>Opis: {{ predmet.naziv }}</p>
+    </mat-card-content>
+  </mat-card>
+</ng-container>

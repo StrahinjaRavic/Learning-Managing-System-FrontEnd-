@@ -1,46 +1,46 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IstorijaStudiranjaService } from '../../../../services/istorija-studiranja.service';
+import { StudentService } from '../../../../services/student.service';
+import { Predmet } from '../../../../Model/predmet';
+import { AuthService } from '../../../../services/auth.service';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
+  selector: 'app-student-predmeti',
   standalone: true,
-  selector: 'app-istorija-studiranja',
-  imports: [CommonModule],
+  imports: [CommonModule, MatCardModule],
   templateUrl: './istorija-studiranja.component.html',
+  styleUrls: ['./istorija-studiranja.component.scss']
 })
 export class IstorijaStudiranjaComponent implements OnInit {
-  studentId = 1; // Trenutno "ulogovani" student
-  istorija: {
-    predmet: string;
-    brojPolaganja: number;
-    bodovi: number;
-    ocena: number;
-    espb: number;
-  }[] = [];
+  predmeti: Predmet[] = [];
+  loading = false;
+  error = '';
 
-  prosecnaOcena: number = 0;
-  ukupnoESPB: number = 0;
-
-  constructor(private istorijaService: IstorijaStudiranjaService) {}
+  constructor(
+    private studentService: StudentService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
-    this.istorijaService.getIstorijaStudiranja(this.studentId).subscribe((data) => {
-      this.istorija = data;
-      this.izracunajStatistiku();
-    });
-  }
+    //const studentId = this.authService.getLoggedInUserId();
+    const studentId = 1;
+    console.log(studentId)
 
-  private izracunajStatistiku(): void {
-    if (this.istorija.length === 0) {
-      this.prosecnaOcena = 0;
-      this.ukupnoESPB = 0;
-      return;
+    if (studentId) {
+      this.loading = true;
+      this.studentService.getGotoviPredmetiZaStudenta(studentId).subscribe({
+        next: (data) => {
+          this.predmeti = data;
+          this.loading = false;
+        },
+        error: (err) => {
+          this.error = 'Greška pri učitavanju predmeta.';
+          this.loading = false;
+        }
+      });
+    } else {
+      this.error = 'Niste prijavljeni kao student.';
     }
-
-    const sumaOcena = this.istorija.reduce((sum, p) => sum + p.ocena, 0);
-    const sumaESPB = this.istorija.reduce((sum, p) => sum + p.espb, 0);
-
-    this.prosecnaOcena = parseFloat((sumaOcena / this.istorija.length).toFixed(2));
-    this.ukupnoESPB = sumaESPB;
   }
 }

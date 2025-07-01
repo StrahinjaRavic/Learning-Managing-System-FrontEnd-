@@ -1,19 +1,36 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <label>Korisničko ime</label>
-  <input type="text" formControlName="username" />
-  <div *ngIf="form.get('username')?.invalid && form.get('username')?.touched">
-    Korisničko ime je obavezno.
-  </div>
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="login-form">
+  <mat-card class="mat-elevation-z4">
+    <mat-card-title>Prijava</mat-card-title>
+    <mat-card-content>
+      <div class="form-field">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Korisničko ime</mat-label>
+          <input matInput type="text" formControlName="username" />
+          <mat-error *ngIf="form.get('username')?.invalid && form.get('username')?.touched">
+            Korisničko ime je obavezno.
+          </mat-error>
+        </mat-form-field>
+      </div>
 
-  <label>Lozinka</label>
-  <input type="password" formControlName="password" />
-  <div *ngIf="form.get('password')?.invalid && form.get('password')?.touched">
-    Lozinka mora imati najmanje 6 karaktera.
-  </div>
+      <div class="form-field">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Lozinka</mat-label>
+          <input matInput type="password" formControlName="password" />
+          <mat-error *ngIf="form.get('password')?.invalid && form.get('password')?.touched">
+            Lozinka mora imati najmanje 6 karaktera.
+          </mat-error>
+        </mat-form-field>
+      </div>
 
-  <button type="submit" [disabled]="form.invalid">Prijavi se</button>
+      <div class="form-actions">
+        <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+          Prijavi se
+        </button>
+      </div>
 
-  <div *ngIf="loginError" style="color: red; margin-top: 8px;">
-    {{ loginError }}
-  </div>
+      <div *ngIf="loginError" class="error-message">
+        {{ loginError }}
+      </div>
+    </mat-card-content>
+  </mat-card>
 </form>

@@ -6,16 +6,16 @@ import { StudijskiProgramService } from './../../../../services/studijski-progra
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-studijski-program-detalji',
-  standalone: true,
-  imports: [CommonModule, MatCardModule, MatDividerModule, MatListModule],
   templateUrl: './studijski-program-detalji.component.html',
-  styleUrls: ['./studijski-program-detalji.component.scss']
+  standalone: true,
+  imports: [MatCardModule,MatDividerModule, CommonModule, MatListModule, MatIconModule],
 })
 export class StudijskiProgramDetaljiComponent implements OnInit {
-  program?: StudijskiProgram;
+  program!: StudijskiProgram;
 
   constructor(
     private route: ActivatedRoute,
@@ -25,9 +25,8 @@ export class StudijskiProgramDetaljiComponent implements OnInit {
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     if (id) {
-      this.programService.getById(id).subscribe({
-        next: (data) => (this.program = data),
-        error: (err) => console.error('Greška prilikom učitavanja podataka', err),
+      this.programService.getById(id).subscribe((data) => {
+        this.program = data;
       });
     }
   }

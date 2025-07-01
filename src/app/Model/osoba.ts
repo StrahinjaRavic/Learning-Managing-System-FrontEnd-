@@ -8,7 +8,7 @@ export interface Osoba {
     ime: string,
     prezime: string,
     adresa: Adresa,
-    nastavnikId: number,
-    studentId: number,
+    nastavnik: Nastavnik,
+    student: Student,
     obrisano: boolean,
 }

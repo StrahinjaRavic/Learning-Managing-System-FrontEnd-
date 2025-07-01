@@ -23,7 +23,8 @@ export class StudentPredmetiComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const studentId = this.authService.getLoggedInUserId();
+    //const studentId = this.authService.getLoggedInUserId();
+    const studentId = 1;
     console.log(studentId)
 
     if (studentId) {

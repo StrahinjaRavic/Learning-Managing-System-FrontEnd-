@@ -1,0 +1,39 @@
+.register-form {
+  max-width: 500px;
+  margin: 3rem auto;
+
+  mat-card-title {
+    text-align: center;
+    font-size: 1.6rem;
+    color: #065cac;
+    margin-bottom: 1rem;
+  }
+
+  .full-width {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+
+  .form-actions {
+    text-align: center;
+    margin-top: 1rem;
+
+    button {
+      width: 100%;
+    }
+  }
+
+  .error-message {
+    color: red;
+    margin-top: 1rem;
+    text-align: center;
+    font-weight: 500;
+  }
+
+  .success-message {
+    color: green;
+    margin-top: 1rem;
+    text-align: center;
+    font-weight: 500;
+  }
+}

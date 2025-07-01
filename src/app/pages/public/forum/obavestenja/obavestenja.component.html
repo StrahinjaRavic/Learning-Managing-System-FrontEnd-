@@ -1,0 +1,26 @@
+<mat-card class="mat-elevation-z4 notifications-card">
+  <mat-card-header>
+    <mat-card-title>
+      <mat-icon color="primary">notifications</mat-icon>
+      Obaveštenja
+    </mat-card-title>
+  </mat-card-header>
+
+  <mat-divider></mat-divider>
+
+  <mat-card-content>
+    <mat-list *ngIf="obavestenja && obavestenja.length > 0; else noNotifications">
+      <mat-list-item *ngFor="let obavestenje of obavestenja" class="notification-item" >
+        <div class="notification-details">
+          <h4 class="notification-title">{{ obavestenje.naslov }}</h4>
+          <p class="notification-text">{{ obavestenje.tekstObavjestenja }}</p>
+        </div>
+        <span class="notification-time">{{ obavestenje.vremePostavljanja | date: 'dd.MM.yyyy HH:mm' }}</span>
+      </mat-list-item>
+    </mat-list>
+
+    <ng-template #noNotifications>
+      <p class="empty-info">Trenutno nema obaveštenja.</p>
+    </ng-template>
+  </mat-card-content>
+</mat-card>

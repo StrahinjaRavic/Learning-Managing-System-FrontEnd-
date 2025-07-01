@@ -1,56 +1,79 @@
-import { Component, OnInit } from '@angular/core';
-import { UpisService } from '../../../../../../services/upis.service';
-import { Student } from '../../../../../../Model/student';
-import { GodinaStudija } from '../../../../../../Model/godinastudija';
-import { FormsModule } from '@angular/forms';
+import { Component, inject, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+
+import { GodinaStudija } from '../../../../../../Model/godinastudija';
+import { Student } from '../../../../../../Model/student';
+import { StudentNaGodini } from '../../../../../../Model/studentnagodini';
+
+import { UpisService } from '../../../../../../services/upis.service';
+import { MockUpisService } from '../../../../../../services/Mock/mock-upis.service';
 
 @Component({
-  selector: 'app-upis',
+  selector: 'app-upis-studenta',
+  standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatButtonModule,
+    MatSnackBarModule
+  ],
   templateUrl: './upis-form.component.html',
   styleUrls: ['./upis-form.component.scss'],
-  standalone: true,
-  imports: [FormsModule, CommonModule] 
+  providers: [
+    { provide: UpisService, useClass: MockUpisService }
+  ],
 })
+
 export class UpisFormComponent implements OnInit {
+  private upisService = inject(UpisService);
+  private snackBar = inject(MatSnackBar);
+  private fb = inject(FormBuilder);
+
+  forma: FormGroup = this.fb.group({
+    studentId: [null, Validators.required],
+    godinaStudijaId: [null, Validators.required],
+    datumUpisa: [null, Validators.required]
+  });
+
   studenti: Student[] = [];
-  godineStudija: GodinaStudija[] = [];
-
-  izabraniStudentId: number | null = null;
-  izabranaGodinaId: number | null = null;
-
-  poruka: string = '';
-
-  constructor(private upisService: UpisService) {}
+  godine: GodinaStudija[] = [];
 
   ngOnInit(): void {
-    this.ucitajPodatke();
-  }
-
-  ucitajPodatke(): void {
-    this.upisService.getStudenti().subscribe({
-      next: res => this.studenti = res,
-      error: err => console.error('Greška pri učitavanju studenata', err)
+    this.upisService.getSviStudenti().subscribe(data => {
+      this.studenti = data;
     });
 
-    this.upisService.getGodineStudija().subscribe({
-      next: res => this.godineStudija = res,
-      error: err => console.error('Greška pri učitavanju godina studija', err)
+    this.upisService.getSveGodineStudija().subscribe(data => {
+      this.godine = data;
     });
   }
 
-  upisiStudenta(): void {
-    if (!this.izabraniStudentId || !this.izabranaGodinaId) {
-      this.poruka = 'Morate izabrati studenta i godinu studija.';
-      return;
-    }
+  onSubmit(): void {
+    if (this.forma.invalid) return;
 
-    this.upisService.upisiNaGodinu(this.izabraniStudentId, this.izabranaGodinaId).subscribe({
-      next: _ => this.poruka = 'Uspešno upisan student!',
-      error: err => {
-        console.error(err);
-        this.poruka = 'Greška pri upisu.';
-      }
+    const dto = {
+      studentId: this.forma.value.studentId,
+      godinaStudijaId: this.forma.value.godinaStudijaId,
+      datumUpisa: this.forma.value.datumUpisa
+    };
+
+    this.upisService.upisiStudenta(dto).subscribe((rezultat: StudentNaGodini) => {
+      this.snackBar.open(
+        `Uspešno upisan student sa indeksom ${rezultat.brojIndeksa}`,
+        'Zatvori',
+        { duration: 3000 }
+      );
+
+      this.forma.reset();
     });
   }
 }

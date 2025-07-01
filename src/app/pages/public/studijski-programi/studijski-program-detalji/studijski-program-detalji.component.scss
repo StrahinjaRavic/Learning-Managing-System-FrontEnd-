@@ -1,14 +1,61 @@
-mat-card {
-  margin: 24px;
-  padding: 16px;
-  background-color: #1e1e1e;
-  color: #f1f1f1;
-}
+.program-detail-card {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1rem;
 
-h4 {
-  margin-top: 12px;
-}
+  mat-card-title {
+    font-size: 1.75rem;
+    font-weight: bold;
+    color: #065cac;
+  }
 
-mat-divider {
-  margin: 12px 0;
+  mat-card-subtitle {
+    font-size: 1rem;
+    color: #555;
+  }
+
+  .program-info {
+    margin-top: 1rem;
+
+    p {
+      margin: 0.5rem 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #333;
+    }
+
+    h3 {
+      margin-top: 1.5rem;
+      color: #065cac;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .godina-blok {
+      margin-top: 1rem;
+
+      h4 {
+        color: #444;
+        margin-bottom: 0.5rem;
+      }
+
+      ul {
+        padding-left: 1.5rem;
+
+        li {
+          margin-bottom: 0.3rem;
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+        }
+      }
+    }
+
+    .icon {
+      font-size: 20px;
+      color: #1976d2;
+    }
+  }
 }

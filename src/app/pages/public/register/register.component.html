@@ -1,36 +1,54 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="register-form">
+  <mat-card class="mat-elevation-z4">
+    <mat-card-title>Registracija</mat-card-title>
+    <mat-card-content>
 
-  <label>Korisničko ime</label>
-  <input type="text" formControlName="username" />
-  <div *ngIf="form.get('username')?.invalid && form.get('username')?.touched">
-    Korisničko ime mora imati najmanje 3 karaktera.
-  </div>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Korisničko ime</mat-label>
+        <input matInput type="text" formControlName="username" />
+        <mat-error *ngIf="form.get('username')?.invalid && form.get('username')?.touched">
+          Korisničko ime mora imati najmanje 3 karaktera.
+        </mat-error>
+      </mat-form-field>
 
-  <label>Email</label>
-  <input type="email" formControlName="email" />
-  <div *ngIf="form.get('email')?.invalid && form.get('email')?.touched">
-    Email nije validan.
-  </div>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" formControlName="email" />
+        <mat-error *ngIf="form.get('email')?.invalid && form.get('email')?.touched">
+          Email nije validan.
+        </mat-error>
+      </mat-form-field>
 
-  <label>Lozinka</label>
-  <input type="password" formControlName="password" />
-  <div *ngIf="form.get('password')?.invalid && form.get('password')?.touched">
-    Lozinka mora imati najmanje 6 karaktera.
-  </div>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Lozinka</mat-label>
+        <input matInput type="password" formControlName="password" />
+        <mat-error *ngIf="form.get('password')?.invalid && form.get('password')?.touched">
+          Lozinka mora imati najmanje 6 karaktera.
+        </mat-error>
+      </mat-form-field>
 
-  <label>Potvrdi lozinku</label>
-  <input type="password" formControlName="confirmPassword" />
-  <div *ngIf="form.errors?.['passwordMismatch']">
-  Lozinke se ne poklapaju.
-</div>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Potvrdi lozinku</mat-label>
+        <input matInput type="password" formControlName="confirmPassword" />
+        <mat-error *ngIf="form.errors?.['passwordMismatch']">
+          Lozinke se ne poklapaju.
+        </mat-error>
+      </mat-form-field>
 
-  <button type="submit" [disabled]="form.invalid">Registruj se</button>
+      <div class="form-actions">
+        <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+          Registruj se
+        </button>
+      </div>
 
-  <div *ngIf="registrationError" style="color: red; margin-top: 8px;">
-    {{ registrationError }}
-  </div>
+      <div *ngIf="registrationError" class="error-message">
+        {{ registrationError }}
+      </div>
 
-  <div *ngIf="registrationSuccess" style="color: green; margin-top: 8px;">
-    {{ registrationSuccess }}
-  </div>
+      <div *ngIf="registrationSuccess" class="success-message">
+        {{ registrationSuccess }}
+      </div>
+
+    </mat-card-content>
+  </mat-card>
 </form>

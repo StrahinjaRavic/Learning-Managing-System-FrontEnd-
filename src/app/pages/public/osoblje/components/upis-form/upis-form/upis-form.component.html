@@ -1,27 +1,32 @@
-<div class="container">
-  <h2>Upis studenta na godinu</h2>
+<div class="form-container">
+  <h2>Upis studenta na školsku godinu</h2>
 
-  <div>
-    <label for="student">Student:</label>
-    <select [(ngModel)]="izabraniStudentId" id="student">
-      <option [ngValue]="null" disabled>-- Izaberite studenta --</option>
-      <option *ngFor="let s of studenti" [ngValue]="s.id">
-        {{ s.osoba.ime }} {{ s.osoba.prezime }} {{s.osoba.adresa.mesto.drzava.naziv}}
-      </option>
-    </select>
-  </div>
+  <form [formGroup]="forma" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="fill" class="form-field">
+      <mat-label>Student</mat-label>
+      <mat-select formControlName="studentId" required>
+        <mat-option *ngFor="let s of studenti" [value]="s.id">
+          {{ s.osoba.ime }} {{ s.osoba.prezime }} (ID: {{ s.id }})
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
 
-  <div>
-    <label for="godina">Godina studija:</label>
-    <select [(ngModel)]="izabranaGodinaId" id="godina">
-      <option [ngValue]="null" disabled>-- Izaberite godinu --</option>
-      <option *ngFor="let g of godineStudija" [ngValue]="g.id">
-        Godina {{ g.godina }}
-      </option>
-    </select>
-  </div>
+    <mat-form-field appearance="fill" class="form-field">
+      <mat-label>Godina studija</mat-label>
+      <mat-select formControlName="godinaStudijaId" required>
+        <mat-option *ngFor="let g of godine" [value]="g.id">
+          {{ g.godina }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
 
-  <button (click)="upisiStudenta()">Upiši studenta</button>
+    <mat-form-field appearance="fill" class="form-field">
+      <mat-label>Datum upisa</mat-label>
+      <input matInput type="date" formControlName="datumUpisa" required />
+    </mat-form-field>
 
-  <p>{{ poruka }}</p>
+    <button mat-raised-button color="primary" type="submit" [disabled]="forma.invalid">
+      Upiši studenta
+    </button>
+  </form>
 </div>
