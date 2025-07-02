@@ -101,6 +101,8 @@ export const appConfig: ApplicationConfig = {
           {
             path: 'prijava-ispita',
             loadComponent: () => import('./pages/public/prijava-ispita/prijava-ispita.component').then(m => m.PrijavaIspitaComponent),
+            canActivate: [roleGuard],
+            data: {roles: ['ROLE_STUDENT']}
           }
         ],
       },
