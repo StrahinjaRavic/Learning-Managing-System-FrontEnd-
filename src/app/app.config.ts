@@ -103,6 +103,11 @@ export const appConfig: ApplicationConfig = {
             loadComponent: () => import('./pages/public/prijava-ispita/prijava-ispita.component').then(m => m.PrijavaIspitaComponent),
             canActivate: [roleGuard],
             data: {roles: ['ROLE_STUDENT']}
+          },
+
+          {
+            path: 'nastavnik-predmeti',
+            loadComponent: () => import('./pages/public/nastavnik-predmeti/nastavnik-predmeti.component').then(m => m.NastavnikPredmetiComponent)
           }
         ],
       },

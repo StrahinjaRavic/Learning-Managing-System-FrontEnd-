@@ -15,7 +15,7 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class ForumComponent implements OnInit {
   forumi: Forum[] = [];
-  private readonly userId = 2; // 🔴 ovde harcode-uj ID korisnika
+  private readonly userId = 1; // 🔴 ovde harcode-uj ID korisnika
 
   constructor(private forumService: ForumService) {}
 
