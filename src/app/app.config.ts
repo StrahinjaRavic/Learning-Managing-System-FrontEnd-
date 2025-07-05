@@ -101,7 +101,11 @@ export const appConfig: ApplicationConfig = {
           {
             path: 'prijava-ispita',
             loadComponent: () => import('./pages/public/prijava-ispita/prijava-ispita.component').then(m => m.PrijavaIspitaComponent),
-          }
+          },
+          {
+            path: 'admin/studijski-programi',
+            loadComponent: () => import('./pages/admin/administracija-studijskih-programa/administracija-studijskih-programa.component').then(m => m.AdministracijaStudijskihProgramaComponent),
+          },
         ],
       },
     ]),

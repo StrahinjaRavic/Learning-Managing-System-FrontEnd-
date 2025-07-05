@@ -1,0 +1,46 @@
+<mat-card class="mat-elevation-z4">
+  <mat-card-title>Administracija Studijskih Programa</mat-card-title>
+    <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+        
+        <button mat-flat-button color="primary" (click)="dodaj()">Dodaj Studijski Program</button>
+    </div>
+  <mat-table [dataSource]="studijskiProgrami" class="mat-elevation-z1">
+
+    <ng-container matColumnDef="naziv">
+      <mat-header-cell *matHeaderCellDef> Naziv </mat-header-cell>
+      <mat-cell *matCellDef="let program"> {{ program.naziv }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="katedra">
+      <mat-header-cell *matHeaderCellDef> Katedra </mat-header-cell>
+      <mat-cell *matCellDef="let program"> {{ program.katedra?.naziv || '-' }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="obrisano">
+      <mat-header-cell *matHeaderCellDef> Obrisano </mat-header-cell>
+      <mat-cell *matCellDef="let program"> {{ program.obrisano }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="akcije">
+      <mat-header-cell *matHeaderCellDef> Akcije </mat-header-cell>
+      <mat-cell *matCellDef="let program">
+
+        <button mat-icon-button color="primary" (click)="izmeni(program)">
+          <mat-icon>edit</mat-icon>
+        </button>
+
+        <button mat-icon-button color="warn" (click)="obrisi(program)">
+          <mat-icon>delete</mat-icon>
+        </button>
+
+        <button mat-icon-button color="accent" (click)="vrati(program)" *ngIf="program.obrisano">
+      <mat-icon>restore</mat-icon>
+        </button>
+
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+</mat-card>

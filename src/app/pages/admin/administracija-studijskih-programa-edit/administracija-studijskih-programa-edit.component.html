@@ -1,0 +1,20 @@
+<h2 mat-dialog-title>Izmeni Studijski Program</h2>
+    <form [formGroup]="form" (ngSubmit)="save()">
+      
+      <mat-form-field appearance="fill" style="width: 100%;">
+        <mat-label>Naziv</mat-label>
+        <input matInput formControlName="naziv" />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" style="width: 100%;">
+        <mat-label>Katedra</mat-label>
+        <mat-select formControlName="katedraId">
+          <mat-option *ngFor="let katedra of katedre" [value]="katedra.id">{{ katedra.naziv }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <div style="text-align: right; margin-top: 1rem;">
+        <button mat-button type="button" (click)="cancel()">Otkaži</button>
+        <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid">Sačuvaj</button>
+      </div>
+    </form>

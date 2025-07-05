@@ -13,7 +13,9 @@ export class AuthService {
   login(credentials: { username: string; password: string }): Observable<string> {
     return this.http.post(`${this.apiUrl}/auth/login`, credentials, { responseType: 'text' }).pipe(
       map(token => {
-        localStorage.setItem('authToken', token);
+        if (typeof window !== 'undefined' && window.localStorage) {
+          localStorage.setItem('authToken', token);
+        }
 
         this.userRolesSubject.next(this.getUserRolesFromToken());
         const payload = JSON.parse(atob(token.split('.')[1]));
@@ -32,12 +34,15 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-    return !!localStorage.getItem('authToken');
+    return !! this.getToken();
   }
 
   getToken(): string | null {
+  if (typeof window !== 'undefined' && window.localStorage) {
     return localStorage.getItem('authToken');
   }
+  return null;
+}
 
   getUserRolesFromToken(): string[] {
   const token = this.getToken();
