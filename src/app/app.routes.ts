@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './pages/public/home/home.component';
-import { StudijskiProgramDetaljiComponent } from './pages/public/studijski-programi/studijski-program-detalji/studijski-program-detalji.component';
 import { roleGuard } from './services/role.guard';
 
 export const routes: Routes = [

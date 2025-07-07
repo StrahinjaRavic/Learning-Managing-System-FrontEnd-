@@ -106,6 +106,11 @@ export const appConfig: ApplicationConfig = {
             path: 'admin/studijski-programi',
             loadComponent: () => import('./pages/admin/administracija-studijskih-programa/administracija-studijskih-programa.component').then(m => m.AdministracijaStudijskihProgramaComponent),
           },
+          {
+            path: 'dodavanje',
+            loadComponent: () => import('./pages/sluzba/dodavanje-osobe/dodavanje-osobe.component').then(m => m.DodavanjeOsobeComponent)
+          }
+          
         ],
       },
     ]),

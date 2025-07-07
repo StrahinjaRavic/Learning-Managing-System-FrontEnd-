@@ -24,7 +24,6 @@ export class StudijskiProgramiComponent implements OnInit {
   ngOnInit(): void {
     this.spService.getAll().subscribe({
     next: res => {
-      console.log('Dobijeni studijski programi:', res);
       this.studijskiProgrami = res;
     },
     error: err => {
