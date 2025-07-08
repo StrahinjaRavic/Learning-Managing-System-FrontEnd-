@@ -28,7 +28,6 @@ export class AdministracijaStudijskihProgramaComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadData();
-    console.log(this.studijskiProgrami)
   }
 
   loadData() {
@@ -61,11 +60,11 @@ export class AdministracijaStudijskihProgramaComponent implements OnInit {
       if (result) {
         this.Service.update(result.id!, result).subscribe({
           next: updated => {
-            // update local list
+            
             const index = this.studijskiProgrami.findIndex(p => p.id === updated.id);
             if (index !== -1) {
               this.studijskiProgrami[index] = updated;
-              this.studijskiProgrami = [...this.studijskiProgrami]; // trigger change detection
+              this.studijskiProgrami = [...this.studijskiProgrami];
             }
           },
           error: err => {
@@ -92,7 +91,7 @@ export class AdministracijaStudijskihProgramaComponent implements OnInit {
           next: updated => {
             
               this.studijskiProgrami.push(updated)
-              this.studijskiProgrami = [...this.studijskiProgrami]; // trigger change detection
+              this.studijskiProgrami = [...this.studijskiProgrami];
             
           },
           error: err => {
@@ -109,7 +108,6 @@ export class AdministracijaStudijskihProgramaComponent implements OnInit {
 
     this.Service.delete(program.id!).subscribe({
       next: () => {
-        // Remove deleted program from local list
         this.loadData();
         this.snackBar.open('Studijski program uspešno obrisan.', 'Zatvori', { duration: 3000 });
       },

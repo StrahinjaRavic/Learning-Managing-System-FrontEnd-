@@ -1,3 +1,4 @@
+
 <div style="display: flex; justify-content: center; margin-top: 40px;">
   <form [formGroup]="form" (ngSubmit)="onSubmit()" style="width: 100%; max-width: 500px;">
     <mat-card class="mat-elevation-z4">
@@ -20,10 +21,20 @@
             <input matInput formControlName="jmbg" />
             </mat-form-field>
 
+            <mat-checkbox formControlName="napraviNalog" style="margin-top: 16px;">Napravi nalog</mat-checkbox>
+
+            <div *ngIf="form.get('napraviNalog')?.value && role_admin_id !== null && role_nastavnik_id !== null" style="margin-top: 16px;">
+                <mat-label>Tip naloga</mat-label>
+                <mat-radio-group formControlName="tipNaloga">
+                    <mat-radio-button [value]="role_admin_id" style="display: block;">Administrator</mat-radio-button>
+                    <mat-radio-button [value]="role_nastavnik_id" style="display: block;">Nastavnik</mat-radio-button>
+                </mat-radio-group>
+            </div>
+
       </mat-card-content>
     </mat-card>
 
-    <mat-card style="margin-top: 50px;">
+    <mat-card style="margin-top: 50px; margin-bottom: 50px;">
         <mat-card-title class="form-title">Adresa</mat-card-title>
         <mat-card-content [formGroupName]="'adresa'" class="mat-card-content">
             <div>
@@ -50,7 +61,7 @@
                 </mat-form-field>
             </div>
             <div style="text-align: center;">
-                <button mat-raised-button color="primary" type="submit" >Sačuvaj Osobu</button>
+                <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid || (form.get('napraviNalog')?.value && (!role_admin_id || !role_nastavnik_id))" >Kreiraj Osobu</button>
             </div>
         </mat-card-content>
     </mat-card>

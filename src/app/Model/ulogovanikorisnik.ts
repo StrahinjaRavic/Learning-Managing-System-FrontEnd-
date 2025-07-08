@@ -5,10 +5,11 @@ import { Osoba } from "./osoba";
 
 export interface UlogovaniKorisnik {
     id: number,
-    username: string,
-    password: string,
+    korisnickoIme: string,
+    lozinka: string,
     email: string,
     osoba: Osoba,
+    osoba_id?: number,
     obavestenja: Obavestenje[],
     forumHasKorisnik: ForumHasKorisnik[],
     dodeljenaPravaPristupa: DodeljenoPravoPristupa[],

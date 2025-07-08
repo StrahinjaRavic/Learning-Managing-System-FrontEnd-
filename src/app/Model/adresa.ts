@@ -6,8 +6,9 @@ export interface Adresa {
     id: number,
     ulica: string,
     broj: string,
-    mesto: Mesto,
-    univerziteti: Univerzitet[],
-    osobe: Osoba[],
+    mesto?: Mesto,
+    mesto_id?: number,
+    univerziteti?: Univerzitet[],
+    osobe?: Osoba[],
     obrisano: boolean,
 }

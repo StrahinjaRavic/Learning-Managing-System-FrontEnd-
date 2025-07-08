@@ -1,1 +1,62 @@
-<p>administracija-registrovanih-korisnika works!</p>
+
+<mat-card class="mat-elevation-z4">
+    <div style="display: flex; flex-direction: column; align-items: center; width: 100%; margin-top: 20px; margin-bottom: 20px;">
+        <mat-card-title>Administracija Registrovanih Korisnika</mat-card-title>
+    </div>
+  <mat-table [dataSource]="ulogovaniKorisnici" class="mat-elevation-z1">
+
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
+      <mat-cell *matCellDef="let korisnik"> {{ korisnik.id }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="korisnickoIme">
+      <mat-header-cell *matHeaderCellDef> Korisnicko Ime </mat-header-cell>
+      <mat-cell *matCellDef="let korisnik"> {{ korisnik.korisnickoIme }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="lozinka">
+      <mat-header-cell *matHeaderCellDef> Lozinka </mat-header-cell>
+      <mat-cell *matCellDef="let korisnik"> {{ korisnik.lozinka || '-' }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="email">
+      <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
+      <mat-cell *matCellDef="let korisnik"> {{ korisnik.email }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="obrisano">
+      <mat-header-cell *matHeaderCellDef> Obrisano </mat-header-cell>
+      <mat-cell *matCellDef="let korisnik"> {{ korisnik.obrisano }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="pravaPristupa">
+        <mat-header-cell *matHeaderCellDef> Prava Pristupa </mat-header-cell>
+        <mat-cell *matCellDef="let korisnik">
+            <button mat-button (click)="otvoriPravaDialog(korisnik)">Proveri prava</button>
+        </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="akcije">
+      <mat-header-cell *matHeaderCellDef> Akcije </mat-header-cell>
+      <mat-cell *matCellDef="let korisnik">
+
+        <button mat-icon-button color="primary" (click)="izmeni(korisnik)">
+          <mat-icon>edit</mat-icon>
+        </button>
+
+        <button mat-icon-button color="warn" (click)="obrisi(korisnik)">
+          <mat-icon>delete</mat-icon>
+        </button>
+
+        <button mat-icon-button color="accent" (click)="vrati(korisnik)" *ngIf="korisnik.obrisano">
+      <mat-icon>restore</mat-icon>
+        </button>
+
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+</mat-card>
