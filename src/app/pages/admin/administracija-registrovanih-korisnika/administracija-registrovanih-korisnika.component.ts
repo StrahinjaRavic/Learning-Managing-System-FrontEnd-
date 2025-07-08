@@ -87,7 +87,7 @@ export class AdministracijaRegistrovanihKorisnikaComponent implements OnInit{
     this.dialog.open(PravaDialogComponent, {
     width: '400px',
     data: {
-      prava: this.pravaPristupa
+      korisnik_id: korisnik.id
     }
   });
   }

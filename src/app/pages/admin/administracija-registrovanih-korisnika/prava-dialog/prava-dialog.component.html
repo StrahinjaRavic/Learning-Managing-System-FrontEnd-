@@ -1,6 +1,17 @@
 <h2 mat-dialog-title>Prava pristupa</h2>
-<mat-dialog-content>
-  <p>this works</p>
+
+<mat-dialog-content style="overflow: hidden;">
+  <div *ngIf="pravaPristupa.length > 0" style="display: flex; flex-direction: column; gap: 8px;">
+    <mat-checkbox *ngFor="let pravo of pravaPristupa" [(ngModel)]="pravaStanja[pravo.id]" [name]="'pravo_' + pravo.id">
+      {{ pravo.naziv }}
+    </mat-checkbox>
+  </div>
+  <div *ngIf="pravaPristupa.length === 0">
+    <p>Učitavanje prava pristupa...</p>
+  </div>
+</mat-dialog-content>
+
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close>Zatvori</button>
+  <button mat-flat-button color="primary" (click)="save()">Sačuvaj</button>
 </mat-dialog-actions>

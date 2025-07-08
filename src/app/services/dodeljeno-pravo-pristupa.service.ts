@@ -19,6 +19,14 @@ export class DodeljenoPravoPristupaService {
     getActive(): Observable<DodeljenoPravoPristupa[]> {
       return this.http.get<DodeljenoPravoPristupa[]>(`${this.API_URL}/active`);
     }
+
+    getByKorisnikId(id: number): Observable<DodeljenoPravoPristupa[]> {
+      return this.http.get<DodeljenoPravoPristupa[]>(`${this.API_URL}/korisnik/${id}`);
+    }
+
+    getByKorisnikUsername(username: String): Observable<DodeljenoPravoPristupa[]> {
+      return this.http.get<DodeljenoPravoPristupa[]>(`${this.API_URL}/korisnik/${username}`);
+    }
   
     getDeleted(): Observable<DodeljenoPravoPristupa[]> {
       return this.http.get<DodeljenoPravoPristupa[]>(`${this.API_URL}/deleted`);
