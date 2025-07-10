@@ -11,6 +11,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { PravaDialogComponent } from './prava-dialog/prava-dialog.component';
 import { PravoPristupa } from '../../../Model/pravopristupa';
 import { PravoPristupaService } from '../../../services/pravo-pristupa.service';
+import { KorisnikEditComponent } from './korisnik-edit/korisnik-edit.component';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 @Component({
   selector: 'app-administracija-registrovanih-korisnika',
@@ -20,9 +23,11 @@ import { PravoPristupaService } from '../../../services/pravo-pristupa.service';
 })
 export class AdministracijaRegistrovanihKorisnikaComponent implements OnInit{
   constructor(private Service: UlogovaniKorisnikService,private pravoService: PravoPristupaService, private snackBar: MatSnackBar,private dialog: MatDialog){}
+
   ulogovaniKorisnici: UlogovaniKorisnik[] = [];
   displayedColumns: string[] = ['id','korisnickoIme', 'lozinka', 'email', 'obrisano', 'pravaPristupa','akcije'];
   pravaPristupa:PravoPristupa[] = []
+
   ngOnInit(): void {
     this.loadData();
   }
@@ -48,9 +53,28 @@ export class AdministracijaRegistrovanihKorisnikaComponent implements OnInit{
   }
 
   izmeni(korisnik: UlogovaniKorisnik){
-    for(korisnik of this.ulogovaniKorisnici){
-      console.log(korisnik)
-    }
+    const dialogRef = this.dialog.open(KorisnikEditComponent, {
+      width: '400px',
+      data: {...korisnik}
+    });
+
+    dialogRef.afterClosed().subscribe((result: UlogovaniKorisnik | undefined) => {
+          if (result) {
+            this.Service.update(result.id!, result).subscribe({
+              next: updated => {
+                
+                const index = this.ulogovaniKorisnici.findIndex(p => p.id === updated.id);
+                if (index !== -1) {
+                  this.ulogovaniKorisnici[index] = updated;
+                  this.ulogovaniKorisnici = [...this.ulogovaniKorisnici];
+                }
+              },
+              error: err => {
+                console.error('Greška pri ažuriranju:', err);
+              }
+            });
+          }
+        });
   }
 
   obrisi(korisnik: UlogovaniKorisnik){
@@ -85,10 +109,71 @@ export class AdministracijaRegistrovanihKorisnikaComponent implements OnInit{
 
   otvoriPravaDialog(korisnik: UlogovaniKorisnik){
     this.dialog.open(PravaDialogComponent, {
-    width: '400px',
-    data: {
-      korisnik_id: korisnik.id
-    }
-  });
+      width: '400px',
+      data: {
+        korisnik_id: korisnik.id
+      }
+    });
   }
+
+  generatePDF() {
+    const doc = new jsPDF();
+
+    doc.setFontSize(16);
+    doc.text('Lista Registrovanih Korisnika', 14, 15);
+
+    const rows = this.ulogovaniKorisnici.map(korisnik => [
+      korisnik.id,
+      korisnik.korisnickoIme,
+      korisnik.lozinka || '-',
+      korisnik.email,
+      korisnik.obrisano ? 'Da' : 'Ne'
+    ]);
+
+    autoTable(doc, {
+      head: [['ID', 'Korisničko ime', 'Lozinka', 'Email', 'Obrisano']],
+      body: rows,
+      startY: 25
+    });
+
+    doc.save('registrovani_korisnici.pdf');
+  }
+
+  generateXML() {
+    let xml = `<?xml version="1.0" encoding="UTF-8"?>\n<korisnici>\n`;
+
+    this.ulogovaniKorisnici.forEach(k => {
+      xml += `  <korisnik>\n`;
+      xml += `    <id>${k.id}</id>\n`;
+      xml += `    <korisnickoIme>${this.escapeXml(k.korisnickoIme)}</korisnickoIme>\n`;
+      xml += `    <lozinka>${this.escapeXml(k.lozinka || '')}</lozinka>\n`;
+      xml += `    <email>${this.escapeXml(k.email)}</email>\n`;
+      xml += `    <obrisano>${k.obrisano}</obrisano>\n`;
+      xml += `  </korisnik>\n`;
+    });
+
+    xml += `</korisnici>`;
+
+    const blob = new Blob([xml], { type: 'application/xml' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'registrovani_korisnici.xml';
+    a.click();
+    window.URL.revokeObjectURL(url);
+  }
+
+  escapeXml(unsafe: string): string {
+    return unsafe.replace(/[<>&'"]/g, function (c) {
+      switch (c) {
+        case '<': return '&lt;';
+        case '>': return '&gt;';
+        case '&': return '&amp;';
+        case '\'': return '&apos;';
+        case '"': return '&quot;';
+        default: return c;
+      }
+    });
+  }
+
 }

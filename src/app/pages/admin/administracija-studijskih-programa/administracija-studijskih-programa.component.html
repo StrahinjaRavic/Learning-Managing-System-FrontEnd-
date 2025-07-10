@@ -2,6 +2,7 @@
     <div style="display: flex; flex-direction: column; align-items: center; width: 100%; margin-top: 20px; margin-bottom: 20px;">
         <mat-card-title>Administracija Studijskih Programa</mat-card-title>
         <button mat-flat-button color="primary" (click)="dodaj()" style="margin-top: 20px;">Dodaj Studijski Program</button>
+        <button mat-flat-button color="accent" (click)="generatePDF()" style="margin-top: 10px;">Preuzmi PDF</button>
     </div>
   <mat-table [dataSource]="studijskiProgrami" class="mat-elevation-z1">
 

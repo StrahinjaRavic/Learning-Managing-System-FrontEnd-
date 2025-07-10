@@ -11,6 +11,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { AdministracijaStudijskihProgramaEditComponent } from '../administracija-studijskih-programa-edit/administracija-studijskih-programa-edit.component';
 import { KatedraService } from '../../../services/katedra.service';
 import { Katedra } from '../../../Model/katedra';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
+
 
 @Component({
   selector: 'app-administracija-studijskih-programa',
@@ -130,4 +133,26 @@ export class AdministracijaStudijskihProgramaComponent implements OnInit {
       }
     });
   }
+
+  generatePDF() {
+  const doc = new jsPDF();
+
+  const naslov = 'Lista Studijskih Programa';
+  doc.setFontSize(16);
+  doc.text(naslov, 14, 15);
+
+  const rows = this.studijskiProgrami.map(program => [
+    program.naziv,
+    program.katedra?.naziv || '-',
+    program.obrisano ? 'Da' : 'Ne'
+  ]);
+
+  autoTable(doc, {
+    head: [['Naziv', 'Katedra', 'Obrisano']],
+    body: rows,
+    startY: 25
+  });
+
+  doc.save('studijski_programi.pdf');
+}
 }
