@@ -12,12 +12,13 @@ import { PravaDialogComponent } from './prava-dialog/prava-dialog.component';
 import { PravoPristupa } from '../../../Model/pravopristupa';
 import { PravoPristupaService } from '../../../services/pravo-pristupa.service';
 import { KorisnikEditComponent } from './korisnik-edit/korisnik-edit.component';
+import { MatMenuModule } from '@angular/material/menu';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
 @Component({
   selector: 'app-administracija-registrovanih-korisnika',
-  imports: [CommonModule,MatTableModule, MatButtonModule, MatIconModule, MatCardModule],
+  imports: [CommonModule,MatTableModule, MatButtonModule, MatIconModule, MatCardModule,MatMenuModule],
   templateUrl: './administracija-registrovanih-korisnika.component.html',
   styleUrl: './administracija-registrovanih-korisnika.component.scss'
 })

@@ -8,38 +8,37 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { UlogovaniKorisnik } from '../../../../Model/ulogovanikorisnik';
+import { Sifarnik } from '../../../../Model/sifarnik';
+
+
 @Component({
-  selector: 'app-korisnik-edit',
+  selector: 'app-sifarnik-edit',
   imports: [CommonModule, MatDialogModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule,MatSelectModule,MatOptionModule],
-  templateUrl: './korisnik-edit.component.html',
-  styleUrl: './korisnik-edit.component.scss'
+  templateUrl: './sifarnik-edit.component.html',
+  styleUrl: './sifarnik-edit.component.scss'
 })
-export class KorisnikEditComponent {
+export class SifarnikEditComponent {
   form: FormGroup;
 
-
   constructor(
-    private dialogRef: MatDialogRef<KorisnikEditComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: UlogovaniKorisnik,
+    private dialogRef: MatDialogRef<SifarnikEditComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: Sifarnik,
     private fb: FormBuilder
   ) {
     this.form = this.fb.group({
-      korisnickoIme: [data.korisnickoIme ?? null, Validators.required],
-      lozinka: [data.lozinka ?? null, Validators.required],
-      email: [data.email ?? null, [Validators.required, Validators.email]]
+      naziv: [data.naziv ?? null, Validators.required],
+      tekst: [data.tekst ?? null, Validators.required],
     });
   }
 
   save() {
     if (this.form.valid) {
-      const updatedNalog: UlogovaniKorisnik = {
+      const updatedSifarnik: Sifarnik = {
         ...this.data,
-        korisnickoIme: this.form.value.korisnickoIme,
-        lozinka: this.form.value.lozinka,
-        email:this.form.value.email,
-        osoba_id: this.data.osoba?.id
+        naziv: this.form.value.naziv,
+        tekst: this.form.value.tekst,
       };
-      this.dialogRef.close(updatedNalog);
+      this.dialogRef.close(updatedSifarnik);
     }
   }
 

@@ -113,8 +113,11 @@ export const appConfig: ApplicationConfig = {
           {
             path: 'admin/korisnici',
             loadComponent: () => import('./pages/admin/administracija-registrovanih-korisnika/administracija-registrovanih-korisnika.component').then(m => m.AdministracijaRegistrovanihKorisnikaComponent)
+          },
+          {
+            path: 'admin/sifarnici',
+            loadComponent: () => import('./pages/admin/administracija-sifarnika/administracija-sifarnika.component').then(m => m.AdministracijaSifarnikaComponent)
           }
-          
         ],
       },
     ]),

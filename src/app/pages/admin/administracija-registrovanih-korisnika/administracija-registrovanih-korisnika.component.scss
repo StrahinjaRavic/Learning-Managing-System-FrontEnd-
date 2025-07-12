@@ -1,0 +1,25 @@
+.dropDown {
+  background-color: #0067B1;
+  color: white;
+  border-radius: 20px;
+  margin-right: 20px;
+
+  &:hover {
+    background-color: #004B87;
+  }
+}
+
+.titleBar{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.title{
+    text-align: center;
+    flex-grow: 1;
+}

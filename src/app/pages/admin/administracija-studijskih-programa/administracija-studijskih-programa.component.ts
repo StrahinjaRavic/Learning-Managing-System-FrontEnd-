@@ -11,6 +11,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { AdministracijaStudijskihProgramaEditComponent } from '../administracija-studijskih-programa-edit/administracija-studijskih-programa-edit.component';
 import { KatedraService } from '../../../services/katedra.service';
 import { Katedra } from '../../../Model/katedra';
+import { MatMenuModule } from '@angular/material/menu';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
@@ -18,7 +19,7 @@ import autoTable from 'jspdf-autotable';
 @Component({
   selector: 'app-administracija-studijskih-programa',
   standalone: true,
-  imports: [CommonModule, MatTableModule, MatButtonModule, MatIconModule, MatCardModule],
+  imports: [CommonModule, MatTableModule, MatButtonModule, MatIconModule, MatCardModule,MatMenuModule],
   templateUrl: './administracija-studijskih-programa.component.html',
   styleUrls: ['./administracija-studijskih-programa.component.scss']
 })
@@ -135,24 +136,60 @@ export class AdministracijaStudijskihProgramaComponent implements OnInit {
   }
 
   generatePDF() {
-  const doc = new jsPDF();
+    const doc = new jsPDF();
 
-  const naslov = 'Lista Studijskih Programa';
-  doc.setFontSize(16);
-  doc.text(naslov, 14, 15);
+    const naslov = 'Lista Studijskih Programa';
+    doc.setFontSize(16);
+    doc.text(naslov, 14, 15);
 
-  const rows = this.studijskiProgrami.map(program => [
-    program.naziv,
-    program.katedra?.naziv || '-',
-    program.obrisano ? 'Da' : 'Ne'
-  ]);
+    const rows = this.studijskiProgrami.map(program => [
+      program.naziv,
+      program.katedra?.naziv || '-',
+      program.obrisano ? 'Da' : 'Ne'
+    ]);
 
-  autoTable(doc, {
-    head: [['Naziv', 'Katedra', 'Obrisano']],
-    body: rows,
-    startY: 25
+    autoTable(doc, {
+      head: [['Naziv', 'Katedra', 'Obrisano']],
+      body: rows,
+      startY: 25
+    });
+
+    doc.save('studijski_programi.pdf');
+  }
+
+  generateXML() {
+  let xml = `<?xml version="1.0" encoding="UTF-8"?>\n<studijskiProgrami>\n`;
+
+  this.studijskiProgrami.forEach(p => {
+    xml += `  <studijskiProgram>\n`;
+    xml += `    <id>${p.id}</id>\n`;
+    xml += `    <naziv>${this.escapeXml(p.naziv)}</naziv>\n`;
+    xml += `    <katedra>${this.escapeXml(p.katedra?.naziv || '')}</katedra>\n`;
+    xml += `    <obrisano>${p.obrisano}</obrisano>\n`;
+    xml += `  </studijskiProgram>\n`;
   });
 
-  doc.save('studijski_programi.pdf');
+  xml += `</studijskiProgrami>`;
+
+  const blob = new Blob([xml], { type: 'application/xml' });
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'studijski_programi.xml';
+  a.click();
+  window.URL.revokeObjectURL(url);
 }
+
+  escapeXml(unsafe: string): string {
+    return unsafe.replace(/[<>&'"]/g, function (c) {
+      switch (c) {
+        case '<': return '&lt;';
+        case '>': return '&gt;';
+        case '&': return '&amp;';
+        case '\'': return '&apos;';
+        case '"': return '&quot;';
+        default: return c;
+      }
+    });
+  }
 }
