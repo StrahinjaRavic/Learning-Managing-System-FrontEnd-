@@ -9,17 +9,28 @@ import { Sifarnik } from '../../../Model/sifarnik';
 import { SifarnikService } from '../../../services/sifarnik.service';
 import { SifarnikEditComponent } from './sifarnik-edit/sifarnik-edit.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { FormsModule } from '@angular/forms';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
 @Component({
   selector: 'app-administracija-sifarnika',
-  imports: [CommonModule,MatCardModule,MatButtonModule,MatIconModule,MatMenuModule],
+  imports: [CommonModule,MatCardModule,MatButtonModule,MatIconModule,MatMenuModule,FormsModule,MatFormFieldModule,MatInputModule,MatCheckboxModule],
   templateUrl: './administracija-sifarnika.component.html',
   styleUrl: './administracija-sifarnika.component.scss'
 })
 export class AdministracijaSifarnikaComponent implements OnInit{
 
+  filter = {
+    naziv: '',
+    tekst: '',
+    obrisano: false
+  };
+
+  sviSifarnici: Sifarnik[] = [];
   sifarnici: Sifarnik[] = []
 
   constructor(private Service : SifarnikService,private dialog: MatDialog,private snackBar: MatSnackBar){}
@@ -31,12 +42,24 @@ export class AdministracijaSifarnikaComponent implements OnInit{
   loadData() {
     this.Service.getAll().subscribe({
       next: res => {
-        this.sifarnici = res;
+        this.sviSifarnici  = res;
+        this.applyFilter();
       },
       error: err => {
         console.error('Greška pri učitavanju sifarnika:', err);
       }
     });
+  }
+
+  applyFilter() {
+    const naziv = this.filter.naziv.toLowerCase();
+    const tekst = this.filter.tekst.toLowerCase();
+
+    this.sifarnici = this.sviSifarnici.filter(s =>
+      s.naziv.toLowerCase().includes(naziv) &&
+      s.tekst.toLowerCase().includes(tekst) &&
+      (this.filter.obrisano || !s.obrisano)
+    );
   }
 
   obrisi(sifarnik: Sifarnik) {
@@ -157,5 +180,63 @@ export class AdministracijaSifarnikaComponent implements OnInit{
     });
 
     doc.save('sifarnici.pdf');
+  }
+
+  onXMLImport(event: Event): void {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (!file) return;
+
+    // parsiranje dokumenta
+    const reader = new FileReader();
+    reader.onload = () => {
+      const parser = new DOMParser();
+      const xmlDoc = parser.parseFromString(reader.result as string, 'application/xml');
+      const sifarnikElements = Array.from(xmlDoc.getElementsByTagName('sifarnik'));
+
+      // parsiranje sifarnika
+      const parsedSifarnici: Sifarnik[] = sifarnikElements.map(el => ({
+        id: Number(el.getElementsByTagName('id')[0]?.textContent),
+        naziv: el.getElementsByTagName('naziv')[0]?.textContent?.trim() || '',
+        tekst: el.getElementsByTagName('tekst')[0]?.textContent?.trim() || '',
+        obrisano: el.getElementsByTagName('obrisano')[0]?.textContent?.trim() === 'true'
+      }));
+
+      parsedSifarnici.forEach(sifarnik => {
+        // provera da li sifarnik sa datim indeksom vec postoji
+        const existingIndex = this.sifarnici.findIndex(s => s.id === sifarnik.id);
+
+        if (existingIndex !== -1) {
+          // Update ako sifarnik vec postoji
+          this.Service.update(sifarnik.id!, sifarnik).subscribe({
+            next: updated => {
+              this.sifarnici[existingIndex] = updated;
+              this.sifarnici = [...this.sifarnici];
+            },
+            error: err => {
+              console.error('Greška pri ažuriranju iz XML-a:', err);
+              this.snackBar.open('Greška pri ažuriranju šifarnika.', 'Zatvori', { duration: 3000 });
+            }
+          });
+        } else {
+          // Napravi novi ako sifarnik ne postoji
+          const sifarnikZaKreiranje = {
+            naziv: sifarnik.naziv,
+            tekst: sifarnik.tekst,
+          };
+
+          this.Service.create(sifarnikZaKreiranje).subscribe({
+            next: created => {
+              this.sifarnici.push(created);
+              this.sifarnici = [...this.sifarnici];
+            },
+            error: err => {
+              console.error('Greška pri kreiranju iz XML-a:', err);
+              this.snackBar.open('Greška pri kreiranju šifarnika.', 'Zatvori', { duration: 3000 });
+            }
+          });
+        }
+      });
+    };
+    reader.readAsText(file);
   }
 }

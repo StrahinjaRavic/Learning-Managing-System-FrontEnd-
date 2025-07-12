@@ -51,3 +51,9 @@
   right: 8px;
   opacity: 0.7;
 }
+
+::ng-deep .mat-menu-panel {
+  max-width: 300px !important;
+  overflow-x: hidden !important;
+  padding: 0 !important;
+}

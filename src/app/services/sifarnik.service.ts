@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Sifarnik } from '../Model/sifarnik';
+import { SifarnikCreateDTO } from '../Model/DTO/SifarnikCreateDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +28,7 @@ private readonly API_URL = 'http://localhost:8080/api/sifarniks';
       return this.http.get<Sifarnik>(`${this.API_URL}/${id}`);
     }
   
-    create(sifarnik: Sifarnik): Observable<Sifarnik> {
+    create(sifarnik: SifarnikCreateDTO): Observable<Sifarnik> {
       return this.http.post<Sifarnik>(this.API_URL, sifarnik);
     }
   
