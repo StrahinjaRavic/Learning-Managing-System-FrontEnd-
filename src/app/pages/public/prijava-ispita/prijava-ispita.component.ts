@@ -1,66 +1,58 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Rok } from '../../../Model/rok';
-import { Predmet } from '../../../Model/predmet';
-import { EvaluacijaZnanja } from '../../../Model/evaluacijaznanja';
-import { AuthService } from '../../../services/auth.service';
+import { PrijavaIspitaService } from '../../../services/prijava-ispita.service';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatOption, MatSelect, MatSelectModule } from '@angular/material/select';
+import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-prijava-ispita',
-  imports: [CommonModule],
   templateUrl: './prijava-ispita.component.html',
+  styleUrls: ['./prijava-ispita.component.scss'],
+  standalone: true,
+  imports: [MatFormFieldModule, MatSelectModule, MatOption, ReactiveFormsModule, CommonModule],
 })
 export class PrijavaIspitaComponent implements OnInit {
-  rok: Rok | null = null;
-  nepolozeniPredmeti: Predmet[] = [];
-  studentId: number = 1;
+  form!: FormGroup;
+  predmeti: any[] = [];
+  aktivniRok: any = null;
+  studentNaGodiniId: number = 1; // TODO: zameni iz auth servisa
 
-  constructor(private http: HttpClient, private auth: AuthService) {}
+  constructor(
+    private prijavaService: PrijavaIspitaService,
+    private fb: FormBuilder
+  ) {}
 
   ngOnInit(): void {
-    //this.studentId = this.auth.getUser().osoba.id;
-    this.studentId = 1;
+    this.form = this.fb.group({
+      predmet: [''],
+    });
 
-    this.http.get<Rok[]>('http://localhost:8080/api/roks/active').subscribe({
-      next: roks => {
-        this.rok = roks[0] || null;
-        if (this.rok) this.ucitajNepolozenePredmete();
-      },
-      error: err => console.error('Greška kod roka:', err)
+    this.ucitajAktivniRok();
+    this.ucitajPredmete();
+  }
+
+  ucitajAktivniRok() {
+    this.prijavaService.getAktivniRok().subscribe((rok) => {
+      this.aktivniRok = rok;
     });
   }
 
-  ucitajNepolozenePredmete() {
-    this.http.get<Predmet[]>(`http://localhost:8080/api/pohadjanjepredmetas/predmeti/nepolozeni/${this.studentId}`)
-      .subscribe({
-        next: predmeti => this.nepolozeniPredmeti = predmeti,
-        error: err => console.error('Greška kod predmeta:', err)
-      });
+  ucitajPredmete() {
+    this.prijavaService
+      .getMojiPredmeti(this.studentNaGodiniId)
+      .subscribe((data) => (this.predmeti = data));
   }
 
-  prijavi(predmet: Predmet) {
-    const body: Partial<EvaluacijaZnanja> = {
-      naziv: 'Prijava ispita',
-      brojBodova: 0,
-      datum: new Date().toISOString(), // backend će overwrite-ovati ako postoji datumPredmeta
-      obrisano: false,
-      pohadjanjepredmeta: {
-        id: this.nadjiPohadjanjeZaPredmet(predmet.id)
-      } as any, // ako znaš ID pohadjanja, ubaci ovde
-      rok: {id: this.rok!.id} as any
-    };
+  prijaviIspit() {
+    const predmetId = this.form.value.predmet;
+    const rokId = this.aktivniRok?.id;
 
-    this.http.post<EvaluacijaZnanja>('http://localhost:8080/api/evaluacijaznanjas', body)
-      .subscribe({
-        next: () => alert(`Uspešno prijavljen predmet: ${predmet.naziv}`),
-        error: err => alert(`Greška: ${err.error?.message || 'Nije uspelo'}`)
-      });
-  }
+    if (!predmetId || !rokId) return;
 
-  // Dummy logika, zameni kad povežeš pohadjanje
-  nadjiPohadjanjeZaPredmet(predmetId: number): number {
-    // npr. koristi servis koji vraća PohadjanjePredmeta po studentId i predmetId
-    return 0;
+    this.prijavaService
+      .prijaviIspit(predmetId, rokId)
+      .subscribe(() => alert('Uspešno prijavljen ispit'));
   }
 }

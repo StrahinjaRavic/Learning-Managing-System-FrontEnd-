@@ -101,6 +101,29 @@ export const appConfig: ApplicationConfig = {
           {
             path: 'prijava-ispita',
             loadComponent: () => import('./pages/public/prijava-ispita/prijava-ispita.component').then(m => m.PrijavaIspitaComponent),
+            canActivate: [roleGuard],
+            data: {roles: ['ROLE_STUDENT']}
+          },
+
+          {
+            path: 'nastavnik-predmeti',
+            loadComponent: () => import('./pages/public/nastavnik-predmeti/nastavnik-predmeti.component').then(m => m.NastavnikPredmetiComponent)
+          },
+           {
+            path: 'nastavnik/silabus/:predmetId',
+            loadComponent: () => import('./pages/public/silabus-edit/silabus-edit.component').then(m => m.SilabusEditComponent)
+          },
+          {
+            path: 'nastavnik/predmet/:predmetId/studenti',
+            loadComponent: () => import('./pages/public/studenti-na-predmetu/studenti-na-predmetu.component').then(m => m.StudentiNaPredmetuComponent)
+          },
+          {
+            path: 'student-pretraga',
+            loadComponent: () => import('./pages/public/student-pretraga/student-pretraga.component').then(m => m.StudentPretragaComponent)
+          },
+          {
+            path: 'prijava-ispita',
+            loadComponent: () => import('./pages/public/prijava-ispita/prijava-ispita.component').then(m => m.PrijavaIspitaComponent)
           }
         ],
       },

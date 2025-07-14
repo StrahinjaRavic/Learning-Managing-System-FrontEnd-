@@ -1,0 +1,25 @@
+<div *ngIf="loading">Učitavanje...</div>
+<div *ngIf="error">{{ error }}</div>
+
+<table *ngIf="!loading && studenti.length > 0" class="studenti-table">
+  <thead>
+    <tr>
+      <th>Ime</th>
+      <th>Prezime</th>
+      <th>JMBG</th>
+      <th>Broj indeksa</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let student of studenti">
+      <td>{{ student.ime }}</td>
+      <td>{{ student.prezime }}</td>
+      <td>{{ student.jmbg }}</td>
+      <td>{{ student.brojIndeksa }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<div *ngIf="!loading && studenti.length === 0">
+  Nema studenata na ovom predmetu.
+</div>
