@@ -2,13 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { RealizacijaPredmetaService } from '../../../services/realizacija-predmeta.service';
 import { AuthService } from '../../../services/auth.service';
 import { Predmet } from '../../../Model/predmet';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgIf } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-nastavnik-predmeti',
   templateUrl: './nastavnik-predmeti.component.html',
   styleUrls: ['./nastavnik-predmeti.component.scss'],
-  imports: [CommonModule]
+  imports: [CommonModule, RouterModule, NgIf]
 })
 export class NastavnikPredmetiComponent implements OnInit {
   predmeti: Predmet[] = [];

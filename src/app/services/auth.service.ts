@@ -112,6 +112,7 @@ export class AuthService {
     if (!payload) return null;
 
     const userId = payload.sub;
+    console.log(userId)
     return typeof userId === 'number' ? userId : parseInt(userId, 10);
   }
 
@@ -157,4 +158,9 @@ export class AuthService {
         catchError(() => of(null))
       );
   }
+
+  getUserIdByUsername(username: string): Observable<number> {
+  return this.http.get<number>(`http://localhost:8080/api/ulogovanikorisniks/idByUsername/${username}`);
+}
+
 }

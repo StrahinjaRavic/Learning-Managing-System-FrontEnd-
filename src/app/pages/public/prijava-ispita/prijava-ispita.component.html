@@ -1,16 +1,16 @@
 <h2>Prijava ispita</h2>
 
-<p *ngIf="rok">Aktivan rok: {{ rok!.naziv }} ({{ rok!.pocetak | date }} - {{ rok!.kraj | date }})</p>
+<p *ngIf="!aktivniRok">Trenutno nema aktivnog roka za prijavu.</p>
 
-<div *ngIf="nepolozeniPredmeti.length > 0; else nemaPredmeta">
-  <ul>
-    <li *ngFor="let predmet of nepolozeniPredmeti">
-      {{ predmet.naziv }}
-      <button (click)="prijavi(predmet)">Prijavi</button>
-    </li>
-  </ul>
-</div>
+<form *ngIf="aktivniRok" [formGroup]="form" (ngSubmit)="prijaviIspit()">
+  <mat-form-field appearance="fill">
+    <mat-label>Predmet</mat-label>
+    <mat-select formControlName="predmet">
+      <mat-option *ngFor="let p of predmeti" [value]="p.id">
+  {{ p.realizacijaPredmeta?.predmet?.naziv }}
+</mat-option>
+    </mat-select>
+  </mat-form-field>
 
-<ng-template #nemaPredmeta>
-  <p>Nema nepoloženih predmeta za prijavu.</p>
-</ng-template>
+  <button mat-raised-button color="primary" type="submit">Prijavi ispit</button>
+</form>
