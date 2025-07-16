@@ -16,7 +16,7 @@ export class FakultetInfoComponent implements OnInit {
   constructor(private fakultetService: FakultetService) {}
 
   ngOnInit(): void {
-  this.fakultetService.getFakultet().subscribe({
+  this.fakultetService.getActive().subscribe({
     next: res => {
       console.log('Dobijeni fakulteti:', res);
       this.fakulteti = res;

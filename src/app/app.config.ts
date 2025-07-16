@@ -101,6 +101,33 @@ export const appConfig: ApplicationConfig = {
           {
             path: 'prijava-ispita',
             loadComponent: () => import('./pages/public/prijava-ispita/prijava-ispita.component').then(m => m.PrijavaIspitaComponent),
+
+          },
+          {
+            path: 'admin',
+            loadComponent: () => import('./pages/admin/landing-page/landing-page.component').then(m => m.LandingPageComponent)
+          },
+          {
+            path: 'admin/studijski-programi',
+            loadComponent: () => import('./pages/admin/administracija-studijskih-programa/administracija-studijskih-programa.component').then(m => m.AdministracijaStudijskihProgramaComponent),
+          },
+          {
+            path: 'admin/dodavanje',
+            loadComponent: () => import('./pages/sluzba/dodavanje-osobe/dodavanje-osobe.component').then(m => m.DodavanjeOsobeComponent)
+          },
+          {
+            path: 'admin/korisnici',
+            loadComponent: () => import('./pages/admin/administracija-registrovanih-korisnika/administracija-registrovanih-korisnika.component').then(m => m.AdministracijaRegistrovanihKorisnikaComponent)
+          },
+          {
+            path: 'admin/sifarnici',
+            loadComponent: () => import('./pages/admin/administracija-sifarnika/administracija-sifarnika.component').then(m => m.AdministracijaSifarnikaComponent)
+          },
+          {
+            path: '**',
+            loadComponent: () => import('./pages/public/not-found/not-found.component').then(m => m.NotFoundComponent)
+}
+
             canActivate: [roleGuard],
             data: {roles: ['ROLE_STUDENT']}
           },
@@ -125,6 +152,7 @@ export const appConfig: ApplicationConfig = {
             path: 'prijava-ispita',
             loadComponent: () => import('./pages/public/prijava-ispita/prijava-ispita.component').then(m => m.PrijavaIspitaComponent)
           }
+
         ],
       },
     ]),

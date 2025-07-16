@@ -21,4 +21,12 @@ export class StudentService {
   getLoggedInStudent(): Observable<Student> {
     return this.http.get<Student>(`${this.API_URL1}/me`);
   }
+
+  getActive(): Observable<Student[]> {
+    return this.http.get<Student[]>(`${this.API_URL}/active`);
+  }
+
+  getAll(): Observable<Student[]> {
+    return this.http.get<Student[]>(this.API_URL);
+  }
 }
