@@ -1,23 +1,45 @@
 <mat-card class="mat-elevation-z4">
     <div class="titleBar">
 
-        <div style="width: 40px;"></div>
-        <mat-card-title class="title">Administracija Studijskih Programa</mat-card-title>
+      <mat-menu #filterMenu="matMenu" class="filter-menu">
+        <ng-template matMenuContent>
+          <div style="padding: 16px; max-height: 500px; overflow-y: auto; overflow-x: hidden; width: 100%; box-sizing: border-box;" (click)="$event.stopPropagation()">
+            <mat-form-field appearance="fill" style="width: 100%;">
+              <mat-label>Naziv</mat-label>
+              <input matInput [(ngModel)]="filter.naziv" (input)="applyFilter()" />
+            </mat-form-field>
 
-        <button mat-icon-button [matMenuTriggerFor]="menu" class="dropDown">
-          <mat-icon>more_vert</mat-icon>
+            <mat-form-field appearance="fill" style="width: 100%;">
+              <mat-label>Katedra</mat-label>
+              <input matInput [(ngModel)]="filter.katedra" (input)="applyFilter()" />
+            </mat-form-field>
+
+            <mat-checkbox [(ngModel)]="filter.obrisano" (change)="applyFilter()">Prikaži obrisane</mat-checkbox>
+          </div>
+        </ng-template>
+      </mat-menu>
+
+      <button mat-icon-button [matMenuTriggerFor]="filterMenu" [matMenuTriggerRestoreFocus]="false" class="searchButton">
+        <mat-icon>search</mat-icon>
+      </button>
+
+      <div style="width: 40px;"></div>
+      <mat-card-title class="title">Administracija Studijskih Programa</mat-card-title>
+
+      <button mat-icon-button [matMenuTriggerFor]="menu" class="dropDown">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="generatePDF()">
+          <mat-icon>picture_as_pdf</mat-icon>
+          <span>Preuzmi PDF</span>
         </button>
-
-        <mat-menu #menu="matMenu">
-          <button mat-menu-item (click)="generatePDF()">
-            <mat-icon>picture_as_pdf</mat-icon>
-            <span>Preuzmi PDF</span>
-          </button>
-          <button mat-menu-item (click)="generateXML()">
-            <mat-icon>code</mat-icon>
-            <span>Preuzmi XML</span>
-          </button>
-        </mat-menu>
+        <button mat-menu-item (click)="generateXML()">
+          <mat-icon>code</mat-icon>
+          <span>Preuzmi XML</span>
+        </button>
+      </mat-menu>
     </div>
 
     <div class="buttonBar">

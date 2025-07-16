@@ -57,3 +57,23 @@
   overflow-x: hidden !important;
   padding: 0 !important;
 }
+
+.dropDown {
+  background-color: #0067B1;
+  color: white;
+  border-radius: 20px;
+  margin-right: 20px;
+
+  &:hover {
+    background-color: #004B87;
+  }
+}
+
+.searchButton{
+  background-color: #0067B1;
+  color: white;
+
+  &:hover {
+    background-color: #004B87;
+  }
+}

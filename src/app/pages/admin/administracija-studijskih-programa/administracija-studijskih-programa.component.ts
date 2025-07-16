@@ -12,6 +12,10 @@ import { AdministracijaStudijskihProgramaEditComponent } from '../administracija
 import { KatedraService } from '../../../services/katedra.service';
 import { Katedra } from '../../../Model/katedra';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { FormsModule } from '@angular/forms';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
@@ -19,14 +23,22 @@ import autoTable from 'jspdf-autotable';
 @Component({
   selector: 'app-administracija-studijskih-programa',
   standalone: true,
-  imports: [CommonModule, MatTableModule, MatButtonModule, MatIconModule, MatCardModule,MatMenuModule],
+  imports: [CommonModule, MatTableModule, MatButtonModule, MatIconModule, MatCardModule,MatMenuModule,FormsModule,MatFormFieldModule,MatInputModule,MatCheckboxModule],
   templateUrl: './administracija-studijskih-programa.component.html',
   styleUrls: ['./administracija-studijskih-programa.component.scss']
 })
 export class AdministracijaStudijskihProgramaComponent implements OnInit {
+
   studijskiProgrami: StudijskiProgram[] = [];
+  sviStudijskiProgrami: StudijskiProgram[] = []; 
   katedre: Katedra[] = []
   displayedColumns: string[] = ['naziv', 'katedra', 'obrisano', 'akcije'];
+
+  filter = {
+    naziv: '',
+    katedra: '',
+    obrisano: false
+  };
 
   constructor(private Service: StudijskiProgramService, private katedraService: KatedraService, private dialog: MatDialog, private snackBar: MatSnackBar) {}
 
@@ -37,7 +49,8 @@ export class AdministracijaStudijskihProgramaComponent implements OnInit {
   loadData() {
     this.Service.getAll().subscribe({
       next: res => {
-        this.studijskiProgrami = res;
+        this.sviStudijskiProgrami = res;
+        this.applyFilter()
       },
       error: err => {
         console.error('Greška pri učitavanju studijskih programa:', err);
@@ -52,6 +65,17 @@ export class AdministracijaStudijskihProgramaComponent implements OnInit {
         console.error('Greška pri učitavanju katedri:', err);
       }
     });
+  }
+
+  applyFilter() {
+    const naziv = this.filter.naziv.toLowerCase();
+    const katedra = this.filter.katedra.toLowerCase();
+
+    this.studijskiProgrami = this.sviStudijskiProgrami.filter(s =>
+      s.naziv.toLowerCase().includes(naziv) &&
+      s.katedra.naziv.toLowerCase().includes(katedra) &&
+      (this.filter.obrisano || !s.obrisano)
+    );
   }
 
   izmeni(program: StudijskiProgram) {

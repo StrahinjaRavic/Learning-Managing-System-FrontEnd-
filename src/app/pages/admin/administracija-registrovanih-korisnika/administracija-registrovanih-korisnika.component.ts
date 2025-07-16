@@ -13,12 +13,16 @@ import { PravoPristupa } from '../../../Model/pravopristupa';
 import { PravoPristupaService } from '../../../services/pravo-pristupa.service';
 import { KorisnikEditComponent } from './korisnik-edit/korisnik-edit.component';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { FormsModule } from '@angular/forms';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
 @Component({
   selector: 'app-administracija-registrovanih-korisnika',
-  imports: [CommonModule,MatTableModule, MatButtonModule, MatIconModule, MatCardModule,MatMenuModule],
+  imports: [CommonModule,MatTableModule, MatButtonModule, MatIconModule, MatCardModule,MatMenuModule,FormsModule,MatFormFieldModule,MatInputModule,MatCheckboxModule],
   templateUrl: './administracija-registrovanih-korisnika.component.html',
   styleUrl: './administracija-registrovanih-korisnika.component.scss'
 })
@@ -26,8 +30,15 @@ export class AdministracijaRegistrovanihKorisnikaComponent implements OnInit{
   constructor(private Service: UlogovaniKorisnikService,private pravoService: PravoPristupaService, private snackBar: MatSnackBar,private dialog: MatDialog){}
 
   ulogovaniKorisnici: UlogovaniKorisnik[] = [];
+  sviUlogovaniKorisnici: UlogovaniKorisnik[] = [];
   displayedColumns: string[] = ['id','korisnickoIme', 'lozinka', 'email', 'obrisano', 'pravaPristupa','akcije'];
   pravaPristupa:PravoPristupa[] = []
+
+  filter = {
+    korisnickoIme: '',
+    email: '',
+    obrisano: false
+  };
 
   ngOnInit(): void {
     this.loadData();
@@ -36,7 +47,8 @@ export class AdministracijaRegistrovanihKorisnikaComponent implements OnInit{
   loadData(){
     this.Service.getAll().subscribe({
       next: res => {
-        this.ulogovaniKorisnici = res;
+        this.sviUlogovaniKorisnici = res;
+        this.applyFilter()
       },
       error: err => {
         console.error('Greška pri učitavanju korisnika:', err);
@@ -51,6 +63,17 @@ export class AdministracijaRegistrovanihKorisnikaComponent implements OnInit{
         console.error('Greška pri učitavanju korisnika:', err);
       }
     });
+  }
+
+  applyFilter() {
+    const korisnickoIme = this.filter.korisnickoIme.toLowerCase();
+    const email = this.filter.email.toLowerCase();
+
+    this.ulogovaniKorisnici = this.sviUlogovaniKorisnici.filter(s =>
+      (s.korisnickoIme?.toLowerCase() ?? '').includes(korisnickoIme) &&
+      (s.email?.toLowerCase() ?? '').includes(email) &&
+      (this.filter.obrisano || !s.obrisano)
+    );
   }
 
   izmeni(korisnik: UlogovaniKorisnik){

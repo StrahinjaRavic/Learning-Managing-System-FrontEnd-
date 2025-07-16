@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './pages/public/home/home.component';
 import { roleGuard } from './services/role.guard';
+import { NotFoundComponent } from './pages/public/not-found/not-found.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -44,5 +45,9 @@ export const routes: Routes = [
   loadComponent: () => import('./pages/public/osoblje/components/upis-form/upis-form/upis-form.component').then( (m) => m.UpisFormComponent),
    canActivate: [roleGuard],
   data: {roles: ['ROLE_NASTAVNIK']}
+  },
+  {
+  path: '**',
+  component:NotFoundComponent 
   }
 ];

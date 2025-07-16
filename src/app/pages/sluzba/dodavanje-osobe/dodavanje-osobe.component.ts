@@ -30,18 +30,7 @@ import { DodeljenoPravoPristupaCreateDTO } from '../../../Model/DTO/DodeljenoPra
   standalone: true,
   templateUrl: './dodavanje-osobe.component.html',
   styleUrls: ['./dodavanje-osobe.component.scss'],
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    MatCardModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    MatButtonModule,
-    MatAutocompleteModule,
-    MatCheckboxModule,
-    MatRadioModule
-  ]
+  imports: [CommonModule,ReactiveFormsModule,MatCardModule,MatFormFieldModule,MatInputModule,MatSelectModule,MatButtonModule,MatAutocompleteModule,MatCheckboxModule,MatRadioModule]
 
 })
 export class DodavanjeOsobeComponent {
@@ -89,8 +78,6 @@ export class DodavanjeOsobeComponent {
   
         this.role_nastavnik_id = nastavnik?.id ?? null;
         this.role_admin_id = admin?.id ?? null;
-        console.log(this.role_admin_id)
-        console.log(this.role_nastavnik_id)
       },
       error: err => console.error('Greška pri učitavanju prava pristupa:', err)
     });

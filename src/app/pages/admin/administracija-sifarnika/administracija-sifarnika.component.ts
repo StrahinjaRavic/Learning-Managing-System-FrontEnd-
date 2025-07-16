@@ -63,8 +63,19 @@ export class AdministracijaSifarnikaComponent implements OnInit{
   }
 
   obrisi(sifarnik: Sifarnik) {
-    this.Service.delete(sifarnik.id).subscribe(() => {
-      this.loadData(); 
+
+    const confirmed = confirm(`Da li ste sigurni da želite da obrišete sifarnik sa naslovom: "${sifarnik.naziv}"?`);
+    if (!confirmed) return;
+
+    this.Service.delete(sifarnik.id).subscribe({
+      next: () => {
+        this.loadData();
+        this.snackBar.open('Sifarnik nalog uspešno obrisan.', 'Zatvori', { duration: 3000 });
+      },
+      error: err => {
+        console.error('Greška pri brisanju:', err);
+        this.snackBar.open('Greška pri brisanju Sifarnika.', 'Zatvori', { duration: 3000 });
+      }
     });
   }
 

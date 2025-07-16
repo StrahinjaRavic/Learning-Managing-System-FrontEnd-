@@ -103,6 +103,10 @@ export const appConfig: ApplicationConfig = {
             loadComponent: () => import('./pages/public/prijava-ispita/prijava-ispita.component').then(m => m.PrijavaIspitaComponent),
           },
           {
+            path: 'admin',
+            loadComponent: () => import('./pages/admin/landing-page/landing-page.component').then(m => m.LandingPageComponent)
+          },
+          {
             path: 'admin/studijski-programi',
             loadComponent: () => import('./pages/admin/administracija-studijskih-programa/administracija-studijskih-programa.component').then(m => m.AdministracijaStudijskihProgramaComponent),
           },
@@ -117,7 +121,11 @@ export const appConfig: ApplicationConfig = {
           {
             path: 'admin/sifarnici',
             loadComponent: () => import('./pages/admin/administracija-sifarnika/administracija-sifarnika.component').then(m => m.AdministracijaSifarnikaComponent)
-          }
+          },
+          {
+            path: '**',
+            loadComponent: () => import('./pages/public/not-found/not-found.component').then(m => m.NotFoundComponent)
+}
         ],
       },
     ]),

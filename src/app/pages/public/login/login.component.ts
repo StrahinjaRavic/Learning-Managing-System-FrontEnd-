@@ -6,17 +6,19 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
+import { Router, RouterModule } from '@angular/router';
 
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatCardModule, MatButtonModule],
+  imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatCardModule, MatButtonModule,RouterModule],
   templateUrl: './login.component.html',
 })
 export class LoginComponent {
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
+  private router = inject(Router);
 
   form = this.fb.group({
     username: ['', [Validators.required]],
@@ -36,7 +38,7 @@ export class LoginComponent {
       next: (token) => {
         console.log('Uspešna prijava, token:', token);
         // npr. preusmeri korisnika, npr:
-        // this.router.navigate(['/dashboard']);
+        this.router.navigate(['/admin']);
         this.form.reset();
       },
       error: (err) => {

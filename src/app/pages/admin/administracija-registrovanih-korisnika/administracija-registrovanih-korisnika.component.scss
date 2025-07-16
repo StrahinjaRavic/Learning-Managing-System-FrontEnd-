@@ -23,3 +23,13 @@
     text-align: center;
     flex-grow: 1;
 }
+
+.searchButton{
+  margin-left: 20px;
+  background-color: #0067B1;
+  color: white;
+
+  &:hover {
+    background-color: #004B87;
+  }
+}
