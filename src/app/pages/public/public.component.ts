@@ -35,6 +35,7 @@ export class PublicComponent {
 
   ngOnInit(): void {
     this.auth.userRole$.subscribe(roles => {
+      console.log('roles from userRole$:', roles);
       this.userRoles = roles;
       console.log('User role:', this.auth.getUserRoles());
     });

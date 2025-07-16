@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, BehaviorSubject, map, catchError, throwError } from 'rxjs';
+import { Observable, BehaviorSubject, map, catchError, throwError, of } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -38,10 +38,15 @@ export class AuthService {
   }
 
   getToken(): string | null {
+
   if (typeof window !== 'undefined' && window.localStorage) {
     return localStorage.getItem('authToken');
   }
   return null;
+
+  if (typeof window === 'undefined') return null; // sprečava SSR crash
+  return localStorage.getItem('authToken');
+
 }
 
   getUserRolesFromToken(): string[] {
@@ -51,8 +56,12 @@ export class AuthService {
   try {
     const payload = JSON.parse(atob(token.split('.')[1]));
 
-    // ✅ Konvertuj niz objekata u niz stringova
     if (Array.isArray(payload.authorities)) {
+      // ako su stringovi, vrati ih direktno
+      if (typeof payload.authorities[0] === 'string') {
+        return payload.authorities;
+      }
+      // ako su objekti (staro stanje), mapiraj ih na property 'authority'
       return payload.authorities.map((auth: any) => auth.authority);
     }
 
@@ -64,18 +73,20 @@ export class AuthService {
 }
 
 
+
   getUserRoles(): string[] {
   const token = this.getToken();
   if (!token) return [];
 
   try {
-    const payloadBase64 = token.split('.')[1];
-    const payloadJson = atob(payloadBase64);
+    const payloadJson = atob(token.split('.')[1]);
     const payload = JSON.parse(payloadJson);
 
-    // Prava lokacija rola
     if (Array.isArray(payload.authorities)) {
-      return payload.authorities;
+      if (typeof payload.authorities[0] === 'string') {
+        return payload.authorities;
+      }
+      return payload.authorities.map((auth: any) => auth.authority);
     } else if (typeof payload.authorities === 'string') {
       return [payload.authorities];
     }
@@ -85,6 +96,7 @@ export class AuthService {
 
   return [];
 }
+
 
 
 
@@ -109,6 +121,7 @@ export class AuthService {
     if (!payload) return null;
 
     const userId = payload.sub;
+    console.log(userId)
     return typeof userId === 'number' ? userId : parseInt(userId, 10);
   }
 
@@ -123,4 +136,40 @@ export class AuthService {
       return null;
     }
   }
+
+  getUsernameFromToken(): string | null {
+  if (typeof window === 'undefined') return null;
+
+  const token = localStorage.getItem('authToken');
+  if (!token) return null;
+
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload.sub || payload.preferred_username || null;
+  } catch {
+    return null;
+  }
+}
+
+
+  getNastavnikIdByUsername(username: string): Observable<number | null> {
+    if (!username) return of(null);
+    return this.http.get<number>(`${this.apiUrl}/nastavniks/idByUsername/${username}`)
+      .pipe(
+        catchError(() => of(null))
+      );
+  }
+
+  getStudentIdByUsername(username: string): Observable<number | null> {
+    if (!username) return of(null);
+    return this.http.get<number>(`${this.apiUrl}/students/idByUsername/${username}`)
+      .pipe(
+        catchError(() => of(null))
+      );
+  }
+
+  getUserIdByUsername(username: string): Observable<number> {
+  return this.http.get<number>(`http://localhost:8080/api/ulogovanikorisniks/idByUsername/${username}`);
+}
+
 }

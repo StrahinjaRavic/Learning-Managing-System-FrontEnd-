@@ -23,24 +23,35 @@ export class IstorijaStudiranjaComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    //const studentId = this.authService.getLoggedInUserId();
-    const studentId = 1;
-    console.log(studentId)
-
-    if (studentId) {
-      this.loading = true;
-      this.studentService.getGotoviPredmetiZaStudenta(studentId).subscribe({
-        next: (data) => {
-          this.predmeti = data;
-          this.loading = false;
-        },
-        error: (err) => {
-          this.error = 'Greška pri učitavanju predmeta.';
-          this.loading = false;
-        }
-      });
-    } else {
-      this.error = 'Niste prijavljeni kao student.';
-    }
+  const username = this.authService.getUsernameFromToken();
+  if (!username) {
+    console.error('Nije pronađen username u tokenu.');
+    return;
   }
+  console.log(username)
+
+  this.authService.getStudentIdByUsername(username).subscribe({
+    next: (studentId) => {
+      if (studentId !== null && studentId !== undefined) {
+        this.loading = true;
+        this.studentService.getGotoviPredmetiZaStudenta(studentId).subscribe({
+          next: (data) => {
+            this.predmeti = data;
+            this.loading = false;
+          },
+          error: () => {
+            this.error = 'Greška pri učitavanju predmeta.';
+            this.loading = false;
+          }
+        });
+      } else {
+        this.error = 'Niste prijavljeni kao student.';
+      }
+    },
+    error: () => {
+      this.error = 'Greška pri dohvatanju ID studenta.';
+    }
+  });
+}
+
 }

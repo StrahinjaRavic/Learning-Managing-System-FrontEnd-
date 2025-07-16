@@ -1,0 +1,9 @@
+<div *ngIf="isLoading">Učitavanje silabusa...</div>
+<div *ngIf="error">{{ error }}</div>
+
+<div *ngIf="!isLoading && !error">
+  <h2>Izmena silabusa za predmet</h2>
+  <textarea [(ngModel)]="silabus.opis" rows="10" cols="50"></textarea>
+
+  <button (click)="save()">Sačuvaj</button>
+</div>
