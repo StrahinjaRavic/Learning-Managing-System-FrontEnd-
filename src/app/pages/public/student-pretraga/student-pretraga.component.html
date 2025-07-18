@@ -1,50 +1,13 @@
-<form [formGroup]="form" (ngSubmit)="pretrazi()" class="pretraga-forma">
-  <mat-form-field appearance="fill">
-    <mat-label>Ime</mat-label>
-    <input matInput formControlName="ime">
-  </mat-form-field>
-
-  <mat-form-field appearance="fill">
-    <mat-label>Prezime</mat-label>
-    <input matInput formControlName="prezime">
-  </mat-form-field>
-
-  <mat-form-field appearance="fill">
-    <mat-label>Broj indeksa</mat-label>
-    <input matInput formControlName="brojIndeksa" type="number">
-  </mat-form-field>
-
-  <mat-form-field appearance="fill">
-    <mat-label>Godina upisa</mat-label>
-    <input matInput formControlName="godinaUpisa" type="number">
-  </mat-form-field>
-
-  <button mat-raised-button color="primary" type="submit">Pretraži</button>
-</form>
-
-<table mat-table [dataSource]="rezultati" class="mat-elevation-z4" *ngIf="rezultati.length > 0">
-  <ng-container matColumnDef="ime">
-    <th mat-header-cell *matHeaderCellDef>Ime</th>
-    <td mat-cell *matCellDef="let s">{{ s.student.osoba.ime }}</td>
-  </ng-container>
-
-  <ng-container matColumnDef="prezime">
-    <th mat-header-cell *matHeaderCellDef>Prezime</th>
-    <td mat-cell *matCellDef="let s">{{ s.student.osoba.prezime }}</td>
-  </ng-container>
-
-  <ng-container matColumnDef="brojIndeksa">
-    <th mat-header-cell *matHeaderCellDef>Indeks</th>
-    <td mat-cell *matCellDef="let s">{{ s.brojIndeksa }}</td>
-  </ng-container>
-
-  <ng-container matColumnDef="godinaUpisa">
-    <th mat-header-cell *matHeaderCellDef>Godina upisa</th>
-    <td mat-cell *matCellDef="let s">{{ s.datumUpisa | date:'yyyy' }}</td>
-  </ng-container>
-
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-</table>
-
-<p *ngIf="rezultati.length === 0 && form.dirty" class="no-results">Nema rezultata.</p>
+<mat-form-field appearance="outline" class="student-search">
+  <input
+    matInput
+    placeholder="Pretraga studenta"
+    [formControl]="searchControl"
+    [matAutocomplete]="auto"
+  />
+  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectStudent($event.option.value)">
+    <mat-option *ngFor="let s of suggestions" [value]="s">
+      {{ s.student.osoba.ime }} {{ s.student.osoba.prezime }} - {{ s.brojIndeksa }}
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>

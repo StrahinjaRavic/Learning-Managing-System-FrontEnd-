@@ -124,6 +124,18 @@ export const appConfig: ApplicationConfig = {
           {
             path: 'prijava-ispita',
             loadComponent: () => import('./pages/public/prijava-ispita/prijava-ispita.component').then(m => m.PrijavaIspitaComponent)
+          },
+          {
+            path: 'student-detalji/:id',
+            loadComponent: () => import('./pages/public/student-detalje/student-detalje.component').then(m => m.StudentDetaljiComponent)
+          },
+          {
+            path: 'izmena-profila',
+            loadComponent: () => import('./pages/public/edit-profile/edit-profile.component').then(m => m.EditProfileComponent)
+          },
+          {
+            path: 'nastavnik/predmeti/:id/termini',
+            loadComponent: () => import('./pages/public/termin/termin.component').then(m => m.TerminComponent)
           }
         ],
       },

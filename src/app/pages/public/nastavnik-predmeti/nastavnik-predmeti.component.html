@@ -5,6 +5,7 @@
     {{ predmet.naziv }} (šifra: {{ predmet.brojPredavanja }})
     <a [routerLink]="['/nastavnik/predmet', predmet.id, 'studenti']">Pregled studenata</a>
     <button [routerLink]="['/nastavnik/silabus', predmet.id]">Uredi silabus</button>
+    <button (click)="otvoriTermine(predmet.id)">Termini i Ishodi</button>
   </li>
 </ul>
 

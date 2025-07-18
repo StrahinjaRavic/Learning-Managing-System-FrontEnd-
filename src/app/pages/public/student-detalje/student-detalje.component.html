@@ -1,0 +1,8 @@
+<mat-card *ngIf="student">
+  <mat-card-title>{{ student.student.osoba.ime }} {{ student.student.osoba.prezime }}</mat-card-title>
+  <mat-card-content>
+    <p><strong>Broj indeksa:</strong> {{ student.brojIndeksa }}</p>
+    <p><strong>Godina upisa:</strong> {{ student.datumUpisa | date:'yyyy' }}</p>
+    <p><strong>JMBG:</strong> {{ student.student.osoba.jmbg }}</p>
+  </mat-card-content>
+</mat-card>
