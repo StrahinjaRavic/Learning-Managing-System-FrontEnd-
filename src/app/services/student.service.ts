@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Predmet } from '../Model/predmet';
 import { Student } from '../Model/student';
+import { StudentCreateDTO } from '../Model/DTO/StudentCreateDTO';
 
 @Injectable({ providedIn: 'root' })
 export class StudentService {
@@ -23,10 +24,14 @@ export class StudentService {
   }
 
   getActive(): Observable<Student[]> {
-    return this.http.get<Student[]>(`${this.API_URL}/active`);
+    return this.http.get<Student[]>(`${this.API_URL1}/active`);
   }
 
   getAll(): Observable<Student[]> {
-    return this.http.get<Student[]>(this.API_URL);
+    return this.http.get<Student[]>(this.API_URL1);
+  }
+
+  create(student: StudentCreateDTO): Observable<Student> {
+    return this.http.post<Student>(this.API_URL1, student);
   }
 }

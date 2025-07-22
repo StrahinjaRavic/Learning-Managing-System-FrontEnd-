@@ -84,13 +84,6 @@ export const appConfig: ApplicationConfig = {
               ),
           },
           {
-            path: 'upis-studenta',
-            loadComponent: () =>
-              import('./pages/public/osoblje/components/upis-form/upis-form/upis-form.component').then(
-                (m) => m.UpisFormComponent
-              ),
-          },
-          {
             path: 'forum',
             loadComponent: () => import('./pages/public/forum/forum.component').then(m => m.ForumComponent),
           },
@@ -113,7 +106,7 @@ export const appConfig: ApplicationConfig = {
           },
           {
             path: 'admin/dodavanje',
-            loadComponent: () => import('./pages/sluzba/dodavanje-osobe/dodavanje-osobe.component').then(m => m.DodavanjeOsobeComponent)
+            loadComponent: () => import('./pages/admin/dodavanje-osobe/dodavanje-osobe.component').then(m => m.DodavanjeOsobeComponent)
           },
           {
             path: 'admin/korisnici',
@@ -124,19 +117,14 @@ export const appConfig: ApplicationConfig = {
             loadComponent: () => import('./pages/admin/administracija-sifarnika/administracija-sifarnika.component').then(m => m.AdministracijaSifarnikaComponent)
           },
           {
-            path: '**',
-            loadComponent: () => import('./pages/public/not-found/not-found.component').then(m => m.NotFoundComponent)
-}
-
-            canActivate: [roleGuard],
-            data: {roles: ['ROLE_STUDENT']}
+            path: 'admin/pregled-gresaka',
+            loadComponent: () => import('./pages/admin/pregled-gresaka/pregled-gresaka.component').then(m => m.PregledGresakaComponent)
           },
-
           {
             path: 'nastavnik-predmeti',
             loadComponent: () => import('./pages/public/nastavnik-predmeti/nastavnik-predmeti.component').then(m => m.NastavnikPredmetiComponent)
           },
-           {
+          {
             path: 'nastavnik/silabus/:predmetId',
             loadComponent: () => import('./pages/public/silabus-edit/silabus-edit.component').then(m => m.SilabusEditComponent)
           },
@@ -149,10 +137,25 @@ export const appConfig: ApplicationConfig = {
             loadComponent: () => import('./pages/public/student-pretraga/student-pretraga.component').then(m => m.StudentPretragaComponent)
           },
           {
-            path: 'prijava-ispita',
-            loadComponent: () => import('./pages/public/prijava-ispita/prijava-ispita.component').then(m => m.PrijavaIspitaComponent)
+            path: 'kreiranje-studenta',
+            loadComponent: () => import('./pages/sluzba/dodavanje-studenta/dodavanje-studenta.component').then(m => m.DodavanjeStudentaComponent)
+          },
+          {
+            path: 'upis-studenta',
+            loadComponent: () => import('./pages/sluzba/upis-studenta/upis-studenta.component').then(m => m.UpisStudentaComponent)
+          },
+          {
+            path: 'potvrda-o-studiranju',
+            loadComponent: () => import('./pages/sluzba/izdavanje-potvrde-studiranja/izdavanje-potvrde-studiranja.component').then(m => m.IzdavanjePotvrdeStudiranjaComponent)
+          },
+          {
+            path: 'potvrda-o-polozenim-predmetima',
+            loadComponent: () => import('./pages/sluzba/izdavanje-potvrde-ispiti/izdavanje-potvrde-ispiti.component').then(m => m.IzdavanjePotvrdeIspitiComponent)
+          },
+          {
+            path: '**',
+            loadComponent: () => import('./pages/public/not-found/not-found.component').then(m => m.NotFoundComponent)
           }
-
         ],
       },
     ]),

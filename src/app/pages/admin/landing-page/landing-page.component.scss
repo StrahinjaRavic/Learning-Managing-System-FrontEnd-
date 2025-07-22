@@ -16,6 +16,10 @@
   text-align: center;
   min-width: 150px;
   min-height: 160px;
+
+  &:hover{
+    background-color: #e4e4e4;
+  }
 }
 
 .stat-card mat-icon {
@@ -43,4 +47,12 @@
 .welcome-card {
   padding: 20px;
   margin-bottom: 20px;
+}
+
+.neobrisano {
+  background-color: #fbeaea;
+
+  &:hover{
+    background-color: #ffe0e0;
+  }
 }

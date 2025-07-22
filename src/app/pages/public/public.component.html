@@ -18,6 +18,7 @@
       <a mat-list-item routerLink="/admin/studijski-programi" *ngIf="userRoles?.includes('ROLE_ADMIN')">Studijski Programi</a>
       <a mat-list-item routerLink="/admin/sifarnici" *ngIf="userRoles?.includes('ROLE_ADMIN')">Sifarnici</a>
       <a mat-list-item routerLink="/admin/dodavanje" *ngIf="userRoles?.includes('ROLE_ADMIN')">Dodavanje Osoblja</a>
+      <a mat-list-item routerLink="/admin/pregled-gresaka" *ngIf="userRoles?.includes('ROLE_ADMIN')">Pregled Grešaka</a>
 
       <a mat-list-item routerLink="/upis-studenta" *ngIf="userRoles?.includes('ROLE_SLUZBA')">Upis</a>
     </mat-nav-list>
