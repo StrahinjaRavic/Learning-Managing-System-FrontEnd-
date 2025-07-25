@@ -1,0 +1,22 @@
+.title{
+    text-align: center;
+    flex-grow: 1;
+}
+.titleBar{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+.akcije{
+  display: flex;
+  justify-content: flex-end;
+}
+
+mat-row:nth-child(odd) {
+  background-color: #e4e4e4; 
+}

@@ -1,11 +1,11 @@
-<h2 mat-dialog-title>{{data.title}}</h2>
+<h2 mat-dialog-title>{{data.titles}}</h2>
 
   <mat-dialog-content style="max-height: 70vh; overflow-y: auto;">
     <form [formGroup]="form" (ngSubmit)="save()">
 
       <mat-form-field appearance="fill" style="width: 100%;">
-        <mat-label> Naziv </mat-label>
-        <input matInput formControlName="naziv" />
+        <mat-label> Naslov </mat-label>
+        <input matInput formControlName="naslov" />
       </mat-form-field>
 
       <mat-form-field appearance="fill" style="width: 100%;">

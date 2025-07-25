@@ -153,6 +153,18 @@ export const appConfig: ApplicationConfig = {
             loadComponent: () => import('./pages/sluzba/izdavanje-potvrde-ispiti/izdavanje-potvrde-ispiti.component').then(m => m.IzdavanjePotvrdeIspitiComponent)
           },
           {
+            path: 'pregled-programa',
+            loadComponent: () => import('./pages/sluzba/pregled-programa/pregled-programa.component').then(m => m.PregledProgramaComponent)
+          },
+          {
+            path: 'kreiranje-rasporeda/:godinaStudijaId',
+            loadComponent: () => import('./pages/sluzba/kreiranje-rasporeda/kreiranje-rasporeda.component').then(m => m.KreiranjeRasporedaComponent)
+          },
+          {
+            path: 'opsta-obavestenja',
+            loadComponent: () => import('./pages/sluzba/opsta-obavestenja/opsta-obavestenja.component').then(m => m.OpstaObavestenjaComponent)
+          },
+          {
             path: '**',
             loadComponent: () => import('./pages/public/not-found/not-found.component').then(m => m.NotFoundComponent)
           }

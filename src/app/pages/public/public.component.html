@@ -21,6 +21,26 @@
       <a mat-list-item routerLink="/admin/pregled-gresaka" *ngIf="userRoles?.includes('ROLE_ADMIN')">Pregled Grešaka</a>
 
       <a mat-list-item routerLink="/upis-studenta" *ngIf="userRoles?.includes('ROLE_SLUZBA')">Upis</a>
+      <a mat-list-item routerLink="/kreiranje-studenta" *ngIf="userRoles?.includes('ROLE_SLUZBA')">Dodavanje studenta</a>
+
+      <a mat-list-item (click)="showPotvrde = !showPotvrde" *ngIf="userRoles?.includes('ROLE_SLUZBA')">
+        <div class="flex-center">
+          <mat-icon>{{ showPotvrde ? 'expand_more' : 'expand_less' }}</mat-icon>
+          Potvrde
+        </div>
+      </a>
+      <div *ngIf="showPotvrde" style="margin-left: 20px;" >
+        <a mat-list-item routerLink="/potvrda-o-studiranju" style="font-size: 0.9rem;" *ngIf="userRoles?.includes('ROLE_SLUZBA')">
+          <mat-icon>description</mat-icon>
+          <span>Potvrda o studiranju</span>
+        </a>
+        <a mat-list-item routerLink="/potvrda-o-polozenim-predmetima" style="font-size: 0.9rem;" *ngIf="userRoles?.includes('ROLE_SLUZBA')">
+          <mat-icon>assignment</mat-icon>
+          <span>Potvrda o položenim ispitima</span>
+        </a>
+      </div>
+
+
     </mat-nav-list>
   </mat-sidenav>
 

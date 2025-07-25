@@ -14,6 +14,10 @@ export class ObavestenjeService {
     return this.http.get<Obavestenje[]>(`${this.apiUrl}/forum/${forumId}`);
   }
 
+  getByForumNaziv(forumNaziv: String): Observable<Obavestenje[]> {
+    return this.http.get<Obavestenje[]>(`${this.apiUrl}/forum/naziv/${forumNaziv}`);
+  }
+
   create(obavestenje: ObavestenjeSaveDTO): Observable<Obavestenje> {
     return this.http.post<Obavestenje>(this.apiUrl, obavestenje);
   }
@@ -26,5 +30,7 @@ export class ObavestenjeService {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
-  
+  restore(id: number): Observable<void> {
+      return this.http.post<void>(`${this.apiUrl}/restore/${id}`, {});
+    }
 }

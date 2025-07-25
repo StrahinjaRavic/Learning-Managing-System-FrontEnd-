@@ -1,0 +1,60 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.header {
+  margin-bottom: 30px;
+}
+
+.obavestenja-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  max-width: 800px;
+}
+
+.obavestenje-card {
+  width: 100%;
+  padding: 16px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.right-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.date {
+  font-size: 14px;
+  color: gray;
+}
+
+.tekst {
+  margin-top: 10px;
+  font-size: 16px;
+}
+.delete-button{
+  color: rgb(233, 106, 106);
+}
+
+.edit-button-wrapper {
+  position: absolute;
+  bottom: 5px;
+  right: 15px;
+}

@@ -22,6 +22,7 @@ import { filter } from 'rxjs/operators';
 export class PublicComponent {
   @ViewChild('sidenav') sidenav!: MatSidenav;
   userRoles: string [] = [];
+  showPotvrde: boolean = false;
 
   constructor(public auth: AuthService, private router: Router) {
     this.router.events
@@ -35,9 +36,7 @@ export class PublicComponent {
 
   ngOnInit(): void {
     this.auth.userRole$.subscribe(roles => {
-      console.log('roles from userRole$:', roles);
       this.userRoles = roles;
-      console.log('User role:', this.auth.getUserRoles());
     });
   }
 
