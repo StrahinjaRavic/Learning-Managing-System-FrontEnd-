@@ -1,0 +1,10 @@
+<div *ngFor="let polaganje of polaganja">
+    <p>
+      📘 Predmet: {{ polaganje.evaluacijaZnanja.realizacijaPredmeta.predmet.naziv }}<br>
+      📅 Datum evaluacije: {{ polaganje.datum }}
+    </p>
+  <button (click)="prijavi(polaganje.id)">Prijavi</button>
+  <p *ngIf="prijavaStatus[polaganje.id]">{{ prijavaStatus[polaganje.id] }}</p>
+
+  <hr />
+</div>

@@ -1,0 +1,11 @@
+<h2>Unos ocene za prijavu #{{ prijavaId }}</h2>
+
+<form [formGroup]="ocenaForm" (ngSubmit)="onSubmit()">
+  <mat-form-field appearance="fill" style="width: 100%;">
+    <mat-label>Broj bodova</mat-label>
+    <input matInput type="number" formControlName="brojBodova" />
+    <mat-error *ngIf="ocenaForm.get('brojBodova')?.invalid">Unesite broj bodova između 0 i 100</mat-error>
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" type="submit" [disabled]="ocenaForm.invalid">Unesi</button>
+</form>

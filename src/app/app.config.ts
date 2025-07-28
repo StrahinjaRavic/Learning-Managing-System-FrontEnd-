@@ -99,13 +99,6 @@ export const appConfig: ApplicationConfig = {
             loadComponent: () => import('./pages/public/forum/obavestenja/obavestenja.component').then(m => m.ObavestenjaComponent),
           },
           {
-            path: 'prijava-ispita',
-            loadComponent: () => import('./pages/public/prijava-ispita/prijava-ispita.component').then(m => m.PrijavaIspitaComponent),
-            canActivate: [roleGuard],
-            data: {roles: ['ROLE_STUDENT']}
-          },
-
-          {
             path: 'nastavnik-predmeti',
             loadComponent: () => import('./pages/public/nastavnik-predmeti/nastavnik-predmeti.component').then(m => m.NastavnikPredmetiComponent)
           },
@@ -122,10 +115,6 @@ export const appConfig: ApplicationConfig = {
             loadComponent: () => import('./pages/public/student-pretraga/student-pretraga.component').then(m => m.StudentPretragaComponent)
           },
           {
-            path: 'prijava-ispita',
-            loadComponent: () => import('./pages/public/prijava-ispita/prijava-ispita.component').then(m => m.PrijavaIspitaComponent)
-          },
-          {
             path: 'student-detalji/:id',
             loadComponent: () => import('./pages/public/student-detalje/student-detalje.component').then(m => m.StudentDetaljiComponent)
           },
@@ -136,6 +125,14 @@ export const appConfig: ApplicationConfig = {
           {
             path: 'nastavnik/predmeti/:id/termini',
             loadComponent: () => import('./pages/public/termin/termin.component').then(m => m.TerminComponent)
+          },
+          {
+            path: 'prijava',
+            loadComponent: () => import('./pages/public/prijava-polaganja/prijava-polaganja.component').then(m => m.PrijavaPolaganjaComponent)
+          },
+          {
+            path: 'unesi-ocenu/:id',
+            loadComponent: () => import('./pages/public/unesi-ocenu/unesi-ocenu.component').then(m => m.UnesiOcenuComponent)
           }
         ],
       },
