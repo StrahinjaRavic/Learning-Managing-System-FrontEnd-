@@ -37,7 +37,6 @@ export class LoginComponent {
     this.authService.login({ username, password }).subscribe({
       next: (token) => {
         console.log('Uspešna prijava, token:', token);
-        // npr. preusmeri korisnika, npr:
         this.router.navigate(['/admin']);
         this.form.reset();
       },

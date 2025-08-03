@@ -24,4 +24,12 @@ export class RealizacijaPredmetaService {
   getRealizacijaByGodinaStudijaId(godinaStudijaid: number): Observable<RealizacijaPredmeta[]> {
     return this.http.get<RealizacijaPredmeta[]>(`${this.baseUrl}/godinastudija/${godinaStudijaid}`);
   }
+
+  getRealizacijaByStudijskiProgramId(studijskiProgramId: number): Observable<RealizacijaPredmeta[]> {
+    return this.http.get<RealizacijaPredmeta[]>(`${this.baseUrl}/studijskiProgram/${studijskiProgramId}`);
+  }
+
+  getActive(): Observable<RealizacijaPredmeta[]>{
+    return this.http.get<RealizacijaPredmeta[]>(`${this.baseUrl}/active`);
+  }
 }

@@ -42,6 +42,13 @@ export const appConfig: ApplicationConfig = {
               ),
           },
           {
+            path: 'fakultet/katedra/:id',
+            loadComponent: () =>
+              import('./pages/public/katedra-studijski-programi/katedra-studijski-programi.component').then(
+                (m) => m.KatedraStudijskiProgramiComponent
+              ),
+          },
+          {
             path: 'smerovi',
             loadComponent: () =>
               import('./pages/public/smerovi/smerovi.component').then(
@@ -163,6 +170,18 @@ export const appConfig: ApplicationConfig = {
           {
             path: 'opsta-obavestenja',
             loadComponent: () => import('./pages/sluzba/opsta-obavestenja/opsta-obavestenja.component').then(m => m.OpstaObavestenjaComponent)
+          },
+          {
+            path: 'pregled-rokova',
+            loadComponent: () => import('./pages/sluzba/kreiranje-roka/kreiranje-roka.component').then(m => m.KreiranjeRokaComponent)
+          },
+          {
+            path: 'pregled-roka/:id',
+            loadComponent: () => import('./pages/sluzba/pregled-roka/pregled-roka.component').then(m => m.PregledRokaComponent)
+          },
+          {
+            path: 'edit-profil',
+            loadComponent: () => import('./pages/public/profil-edit/profil-edit.component').then(m => m.ProfilEditComponent)
           },
           {
             path: '**',

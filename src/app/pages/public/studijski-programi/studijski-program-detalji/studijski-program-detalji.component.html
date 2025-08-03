@@ -2,7 +2,7 @@
   <mat-card class="mat-elevation-z4 program-detail-card">
     <mat-card-header>
       <mat-card-title>
-        🎓 {{ program.naziv }}
+        {{ program.naziv }}
       </mat-card-title>
       <mat-card-subtitle>
         Katedra: {{ program.katedra.naziv }}
@@ -18,22 +18,44 @@
           {{ program.katedra.sefKatedre.osoba.prezime }}
         </p>
 
-        <h3><mat-icon class="icon">calendar_today</mat-icon> Godine studija</h3>
+        <div class="program-opis">
+        <span *ngIf="opis; else nemaOpisa">{{ opis }}</span>
+        <ng-template #nemaOpisa><em>Nema opisa.</em></ng-template>
+        </div>
+
+        <h3><mat-icon class="icon">menu_book</mat-icon>Predmeti</h3>
         <mat-divider></mat-divider>
 
-        <div *ngFor="let godina of program.godineStudija" class="godina-blok">
-          <h4>Godina: {{ godina.godina }}</h4>
-
-          <ul *ngIf="godina.realizacijePredmeta?.length">
-            <li *ngFor="let r of godina.realizacijePredmeta">
-              <mat-icon class="icon">book</mat-icon>
-              <strong>{{ r.predmet.naziv }}</strong> – ESPB: {{ r.predmet.espb }}
-            </li>
-          </ul>
-
-          <mat-divider></mat-divider>
-        </div>
       </div>
     </mat-card-content>
+
+    <div *ngIf="realizacijePredmeta?.length; else nemaPredmeta" class="lista-predmeta">
+      <mat-list>
+        <div>
+          <div *ngFor="let r of realizacijePredmeta; let i = index" (click)="toggleDetalji(i)" class="predmet-item">
+            <div class="predmet-naziv">
+              <mat-icon class="arrow-icon" [ngClass]="{'rotated': otvoreniIndex === i}">expand_more</mat-icon>
+              {{ r.predmet.naziv }}
+            </div>
+
+            <div *ngIf="otvoreniIndex === i" class="predmet-detalji">
+              <p><strong>ESPB:</strong> {{ r.predmet.espb }}</p>
+              <p><strong>Predavanja:</strong> {{ r.predmet.brojPredavanja }}</p>
+              <p><strong>Vežbe:</strong> {{ r.predmet.brojVezbi }}</p>
+              <p><strong>Semestar:</strong> {{ r.predmet.brojSemestara }}</p>
+              <p *ngIf="r.predmet.drugiObliciNastave"><strong>Drugi oblici nastave:</strong> {{ r.predmet.drugiObliciNastave }}</p>
+              <p *ngIf="r.predmet.istrazivackiRad"><strong>Istraživački rad:</strong> {{ r.predmet.istrazivackiRad }}</p>
+              <p *ngIf="r.predmet.ostaliCasovi"><strong>Ostali časovi:</strong> {{ r.predmet.ostaliCasovi }}</p>
+            </div>
+          </div>
+        </div>
+      </mat-list>
+    </div>
+
+    <ng-template #nemaPredmeta>
+      <p><em>Nema predmeta.</em></p>
+    </ng-template>
+
+
   </mat-card>
 </ng-container>

@@ -1,24 +1,51 @@
-<div class="container min-h-screen py-6">
-  <h1 style="display: flex; flex-direction: column; align-items: center;" class="mb-4 text-2xl font-bold text-center text-white">Fakulteti</h1>
+<div class="container">
+  <h1 class="title">Fakulteti</h1>
 
-  <div *ngIf="fakulteti.length > 0; else nemaFakulteta" class="grid grid-cols-1 gap-4">
-    <mat-card style="display: flex; flex-direction: column; align-items: center;" *ngFor="let fakultet of fakulteti" class="bg-gray-800 text-white rounded-xl shadow-md">
-      <mat-card-header>
-        <mat-card-title class="text-xl font-semibold">
-          {{ fakultet.naziv }}
-        </mat-card-title>
-        <mat-card-subtitle class="text-gray-400">
-          {{ fakultet.univerzitet.naziv }}
-        </mat-card-subtitle>
-      </mat-card-header>
+  <div *ngIf="fakulteti.length > 0; else nemaFakulteta" class="fakultet-list">
+    <mat-card *ngFor="let fakultet of fakulteti" class="fakultet-card">
+      <div class="fakultet-naziv">
+        {{ fakultet.naziv }}
+      </div>
 
-      <mat-card-content>
-        <p><strong>Dekan:</strong> {{ fakultet.dekan.osoba.ime }} {{ fakultet.dekan.osoba.prezime }}</p>
-      </mat-card-content>
+      <div class="fakultet-adresa" *ngIf="fakultet.adresa">
+        {{ fakultet.adresa.ulica }} {{ fakultet.adresa.broj }},
+        {{ fakultet.adresa.mesto?.naziv }},
+        {{ fakultet.adresa.mesto?.drzava?.naziv }}
+      </div>
+
+      <div class="dekan-info">
+        <strong>Dekan:</strong> {{ fakultet.dekan.osoba.ime }} {{ fakultet.dekan.osoba.prezime }}
+      </div>
+
+      <div class="fakultet-opis">
+        <span *ngIf="fakultet.opis; else nemaOpisa">{{ fakultet.opis }}</span>
+        <ng-template #nemaOpisa><em>Nema opisa.</em></ng-template>
+      </div>
+
+      <div *ngIf="fakultet.katedre && fakultet.katedre.length > 0; else nemaKatedri">
+        <h3 class="katedre-title">Katedre:</h3>
+        <ul class="katedre-list">
+          <li *ngFor="let katedra of fakultet.katedre || []">
+            <button type="button" (click)="redirect(katedra)">
+              {{ katedra.naziv }}
+            </button>
+          </li>
+        </ul>
+      </div>
+
+      <ng-template #nemaKatedri>
+        <p class="no-katedre">Nema dostupnih katedri.</p>
+      </ng-template>
+
+      <div class="fakultet-kontakt" *ngIf="fakultet.kontakt; else nemaKontakta">
+        <div class="kontakt-tekst">{{ fakultet.kontakt }}</div>
+      </div>
+      <ng-template #nemaKontakta><em style="text-align: center; color: #555;">Nema dostupnih kontakt informacija.</em></ng-template>
+
     </mat-card>
   </div>
 
   <ng-template #nemaFakulteta>
-    <p class="text-center text-gray-400 text-lg mt-8">Trenutno nema dostupnih fakulteta za prikaz.</p>
+    <p class="no-fakulteti">Trenutno nema dostupnih fakulteta za prikaz.</p>
   </ng-template>
 </div>

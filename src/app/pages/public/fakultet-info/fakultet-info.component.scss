@@ -1,0 +1,123 @@
+.container {
+  min-height: 100vh;
+
+  padding: 24px;
+
+  .title {
+    margin-bottom: 16px;
+    font-size: 32px;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .fakultet-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .fakultet-card {
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    padding: 24px;
+    width: 40%;
+    margin: 0 auto;
+  }
+
+  .fakultet-naziv {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    text-align: center;
+  }
+
+  .dekan-info {
+    font-size: 16px;
+    color: #515253;
+    text-align: center;
+    margin-bottom: 16px;
+  }
+
+  .katedre-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    margin-left: 20px;
+  }
+
+  .katedre-list {
+    list-style-type: disc;
+    padding-left: 24px;
+    color: #4b4b4d;
+    margin-left: 20px;
+    li {
+      margin-bottom: 4px;
+    }
+  }
+
+  .no-katedre {
+    font-style: italic;
+    color: #9ca3af;
+  }
+
+  .no-fakulteti {
+    text-align: center;
+    color: #9ca3af;
+    font-size: 18px;
+    margin-top: 32px;
+  }
+}
+
+.katedre-list button {
+  color: #4b4b4d;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  font-size: inherit;
+  font-family: inherit;
+}
+
+.katedre-list button:hover {
+  color: #357ABD;
+}
+
+.fakultet-opis {
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  background-color: #e6e6e6;
+  border-left: 4px solid #3f51b5;
+  border-radius: 6px;
+  font-style: italic;
+  font-size: 0.95rem;
+  color: #333;
+
+  em {
+    color: #888;
+    font-style: normal;
+    font-weight: 500;
+  }
+}
+
+.fakultet-adresa {
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+  color: #555;
+  text-align: center;
+
+  strong {
+    color: #222;
+  }
+}
+
+.kontakt-tekst {
+  white-space: pre-line;
+  margin-top: 0.3rem;
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  color: #555;
+  text-align: center;
+
+  strong {
+    color: #222;
+  }
+}

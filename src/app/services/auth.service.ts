@@ -116,8 +116,7 @@ export class AuthService {
     const payload = this.decodeToken();
     if (!payload) return null;
 
-    const userId = payload.sub;
-    console.log(userId)
+    const userId = payload.userId;
     return typeof userId === 'number' ? userId : parseInt(userId, 10);
   }
 

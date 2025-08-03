@@ -1,0 +1,33 @@
+
+<h2 mat-dialog-title>{{data.title}}</h2>
+
+<mat-dialog-content style="max-height: 70vh; overflow-y: auto;">
+  <form [formGroup]="form" (ngSubmit)="save()">
+
+    <mat-form-field appearance="fill" style="width: 100%;">
+        <mat-label>Predmet</mat-label>
+        <mat-select formControlName="realizacijapredmetaId">
+          <mat-option *ngFor="let predmet of predmeti" [value]="predmet.id">{{ predmet.predmet.naziv }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+    <mat-form-field appearance="fill" style="width: 100%;">
+  <mat-label>Datum</mat-label>
+  <input
+    matInput
+    [matDatepicker]="krajPicker"
+    formControlName="datum"
+    [min]="minDate"
+    [max]="maxDate"
+  />
+  <mat-datepicker-toggle matSuffix [for]="krajPicker"></mat-datepicker-toggle>
+  <mat-datepicker #krajPicker></mat-datepicker>
+</mat-form-field>
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cancel()">Otkaži</button>
+  <button mat-flat-button color="primary" (click)="save()" [disabled]="form.invalid">Sačuvaj</button>
+</mat-dialog-actions>

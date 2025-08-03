@@ -39,6 +39,10 @@ export class KatedraService {
     delete(id: number): Observable<void> {
       return this.http.delete<void>(`${this.API_URL}/${id}`);
     }
+
+    getByFakultetId(id: number): Observable<Katedra[]> {
+      return this.http.get<Katedra[]>(`${this.API_URL}/fakultet/${id}`);
+    }
   
     restore(id: number): Observable<void> {
       return this.http.post<void>(`${this.API_URL}/restore/${id}`, {});

@@ -21,7 +21,7 @@ export class OpstaObavestenjaComponent {
 
   userRoles: string [] = [];
   obavestenja: Obavestenje[] = [];
-  constructor(public auth: AuthService, private obavestenjeService: ObavestenjeService, private forumService: ForumService, private dialog: MatDialog){}
+  constructor(public auth: AuthService, private obavestenjeService: ObavestenjeService, private dialog: MatDialog){}
 
   ngOnInit(): void {
     this.loadData();
@@ -56,7 +56,8 @@ export class OpstaObavestenjaComponent {
       width: '800px',
       data: {obavestenje: {
         naslov: '',
-        tekstObavestenja: ''
+        tekstObavestenja: '',
+        forum_id: 1
       },
         titles: 'Kreiraj Obavestenje',
       }
@@ -64,8 +65,6 @@ export class OpstaObavestenjaComponent {
 
     dialogRef.afterClosed().subscribe((result: ObavestenjeSaveDTO | undefined) => {
           if (result) {
-            result.forum_id = 1;
-            result.ulogovaniKorisnik_id = 1;
             this.obavestenjeService.create(result).subscribe({
               next: updated => { 
                 this.obavestenja.push(updated)

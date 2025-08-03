@@ -8,7 +8,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { Obavestenje } from '../../../../Model/obavestenje';
-import { ObavestenjeSaveDTO } from '../../../../Model/DTO/obavestenje-save-dto.model';
 import { AuthService } from '../../../../services/auth.service';
 
 @Component({
@@ -39,8 +38,8 @@ export class ObavestenjeEditComponent{
         naslov: this.form.value.naslov,
         tekstObavjestenja: this.form.value.tekst,
         vremePostavljanja: new Date().toISOString(),
-        forum_id: this.data.obavestenje.forum.id,
-        ulogovaniKorisnik_id: this.data.obavestenje.korisnik.id
+        forum_id: this.data.obavestenje.forum_id,
+        ulogovaniKorisnik_id: this.authService.getLoggedInUserId()!
       };
       this.dialogRef.close(updatedObavestenje);
     }
