@@ -12,7 +12,6 @@ import { Student } from '../../../../../../Model/student';
 import { StudentNaGodini } from '../../../../../../Model/studentnagodini';
 
 import { UpisService } from '../../../../../../services/upis.service';
-import { MockUpisService } from '../../../../../../services/Mock/mock-upis.service';
 
 @Component({
   selector: 'app-upis-studenta',
@@ -29,7 +28,6 @@ import { MockUpisService } from '../../../../../../services/Mock/mock-upis.servi
   templateUrl: './upis-form.component.html',
   styleUrls: ['./upis-form.component.scss'],
   providers: [
-    { provide: UpisService, useClass: MockUpisService }
   ],
 })
 

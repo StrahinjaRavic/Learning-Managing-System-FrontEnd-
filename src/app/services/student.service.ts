@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Predmet } from '../Model/predmet';
 import { Student } from '../Model/student';
+import { IstorijaStudiranjaDTO } from '../Model/DTO/istorijastudiranjaDTO';
 
 @Injectable({ providedIn: 'root' })
 export class StudentService {
@@ -29,4 +30,7 @@ export class StudentService {
   getAll(): Observable<Student[]> {
     return this.http.get<Student[]>(this.API_URL);
   }
+  getIstorijaStudiranja(studentId: number): Observable<IstorijaStudiranjaDTO> {
+  return this.http.get<IstorijaStudiranjaDTO>(`http://localhost:8080/api/students/${studentId}/istorija`);
+}
 }

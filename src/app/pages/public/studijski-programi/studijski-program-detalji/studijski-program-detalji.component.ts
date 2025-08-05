@@ -27,6 +27,7 @@ export class StudijskiProgramDetaljiComponent implements OnInit {
     if (id) {
       this.programService.getById(id).subscribe((data) => {
         this.program = data;
+        console.log(data)
       });
     }
   }
