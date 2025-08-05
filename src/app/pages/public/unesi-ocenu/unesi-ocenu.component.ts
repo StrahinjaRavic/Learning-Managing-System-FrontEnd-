@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { PrijavaPolaganja } from '../../../Model/prijavapolaganja';
 
 @Component({
   selector: 'app-unesi-ocenu',
@@ -14,8 +15,9 @@ import { MatButtonModule } from '@angular/material/button';
   templateUrl: './unesi-ocenu.component.html'
 })
 export class UnesiOcenuComponent implements OnInit {
-  ocenaForm!: FormGroup;
-  prijavaId!: number;
+  studentId!: number;
+  prijave: PrijavaPolaganja[] = [];
+  forme: { [prijavaId: number]: FormGroup } = {};
 
   constructor(
     private fb: FormBuilder,
@@ -25,29 +27,37 @@ export class UnesiOcenuComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.prijavaId = Number(this.route.snapshot.paramMap.get('id'));
+    this.studentId = Number(this.route.snapshot.paramMap.get('studentId'));
 
-    this.ocenaForm = this.fb.group({
-      brojBodova: [null, [Validators.required, Validators.min(0), Validators.max(100)]]
+    this.prijavaService.getPrijaveZaStudenta(this.studentId).subscribe({
+      next: data => {
+        this.prijave = data;
+        this.prijave.forEach(prijava => {
+          this.forme[prijava.id] = this.fb.group({
+            brojBodova: [null, [Validators.required, Validators.min(0), Validators.max(100)]]
+          });
+        });
+      },
+      error: err => {
+        console.error('Greška pri dohvatanju prijava:', err);
+      }
     });
   }
 
-  onSubmit(): void {
-    if (this.ocenaForm.invalid) return;
+  onSubmit(prijavaId: number): void {
+    const forma = this.forme[prijavaId];
+    if (!forma || forma.invalid) return;
 
-    const brojBodova = this.ocenaForm.value.brojBodova;
+    const brojBodova = forma.value.brojBodova;
 
-    this.prijavaService
-      .unesiOcenu(this.prijavaId, brojBodova)
-      .subscribe({
-        next: () => {
-          alert('Uspešno unet broj bodova!');
-          this.router.navigate(['/']); // ili na listu prijava, npr. /prijave
-        },
-        error: (err) => {
-          console.error(err);
-          alert('Došlo je do greške prilikom unosa bodova.');
-        }
-      });
+    this.prijavaService.unesiOcenu(prijavaId, brojBodova).subscribe({
+      next: () => {
+        alert(`Bodovi uspešno uneti za prijavu #${prijavaId}`);
+      },
+      error: err => {
+        console.error(err);
+        alert(`Greška pri unosu bodova za prijavu #${prijavaId}`);
+      }
+    });
   }
 }

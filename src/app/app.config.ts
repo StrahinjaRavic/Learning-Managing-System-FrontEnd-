@@ -131,7 +131,7 @@ export const appConfig: ApplicationConfig = {
             loadComponent: () => import('./pages/public/prijava-polaganja/prijava-polaganja.component').then(m => m.PrijavaPolaganjaComponent)
           },
           {
-            path: 'unesi-ocenu/:id',
+            path: 'unesi-ocenu/:studentId',
             loadComponent: () => import('./pages/public/unesi-ocenu/unesi-ocenu.component').then(m => m.UnesiOcenuComponent)
           }
         ],

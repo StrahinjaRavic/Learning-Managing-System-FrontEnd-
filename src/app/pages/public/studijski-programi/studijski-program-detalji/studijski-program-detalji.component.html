@@ -16,24 +16,23 @@
           <strong>Rukovodilac smera:</strong>
           {{ program.katedra.sefKatedre.osoba.ime }}
           {{ program.katedra.sefKatedre.osoba.prezime }}
+          
         </p>
 
-        <h3><mat-icon class="icon">calendar_today</mat-icon> Godine studija</h3>
+        <h3>
+          <mat-icon class="icon">calendar_today</mat-icon>
+          Godine studija
+        </h3>
         <mat-divider></mat-divider>
 
-        <div *ngFor="let godina of program.godineStudija" class="godina-blok">
-          <h4>Godina: {{ godina.godina }}</h4>
+  <ul>
+      <mat-icon class="icon">book</mat-icon>
+  </ul>
+  <mat-divider></mat-divider>
+</div>
 
-          <ul *ngIf="godina.realizacijePredmeta?.length">
-            <li *ngFor="let r of godina.realizacijePredmeta">
-              <mat-icon class="icon">book</mat-icon>
-              <strong>{{ r.predmet.naziv }}</strong> – ESPB: {{ r.predmet.espb }}
-            </li>
-          </ul>
 
-          <mat-divider></mat-divider>
-        </div>
-      </div>
+
     </mat-card-content>
   </mat-card>
 </ng-container>
