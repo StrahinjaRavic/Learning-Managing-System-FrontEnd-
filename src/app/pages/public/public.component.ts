@@ -6,29 +6,18 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatMenuModule } from '@angular/material/menu';
-<<<<<<< HEAD
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatListModule } from '@angular/material/list';
-import { MatButtonModule } from '@angular/material/button';
-import { MatSidenav } from '@angular/material/sidenav';
 import { filter } from 'rxjs/operators';
 
-@Component({
-  selector: 'app-navbar',
-  standalone: true,
-  imports: [CommonModule, RouterModule, MatToolbarModule, MatIconModule, MatToolbarModule, MatMenuModule, MatTooltipModule,MatSidenavModule,MatListModule,MatToolbarModule,MatIconModule,MatButtonModule,MatMenuModule],
-=======
 import { StudentPretragaComponent } from './student-pretraga/student-pretraga.component';
 import { StudentNaGodini } from '../../Model/studentnagodini';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, RouterModule, MatToolbarModule, MatIconModule, MatToolbarModule, MatMenuModule, MatTooltipModule,MatSidenavModule,MatListModule,MatToolbarModule,MatIconModule,MatButtonModule,MatMenuModule, StudentPretragaComponent],
->>>>>>> student-profesor-impl
+  imports: [CommonModule, RouterModule, MatToolbarModule, MatIconModule, MatToolbarModule, MatMenuModule, MatTooltipModule,MatSidenavModule,MatListModule,MatToolbarModule,MatIconModule,MatButtonModule,MatMenuModule, StudentPretragaComponent, MatSidenav],
   templateUrl: './public.component.html',
   styleUrls: ['./public.component.scss']
 })

@@ -124,12 +124,6 @@ export const appConfig: ApplicationConfig = {
             loadComponent: () => import('./pages/admin/administracija-sifarnika/administracija-sifarnika.component').then(m => m.AdministracijaSifarnikaComponent)
           },
           {
-            path: '**',
-            loadComponent: () => import('./pages/public/not-found/not-found.component').then(m => m.NotFoundComponent)
-},
-
-
-          {
 
             path: 'nastavnik-predmeti',
             loadComponent: () => import('./pages/public/nastavnik-predmeti/nastavnik-predmeti.component').then(m => m.NastavnikPredmetiComponent)
@@ -165,7 +159,10 @@ export const appConfig: ApplicationConfig = {
           {
             path: 'unesi-ocenu/:studentId',
             loadComponent: () => import('./pages/public/unesi-ocenu/unesi-ocenu.component').then(m => m.UnesiOcenuComponent)
-          }
+          },{
+            path: '**',
+            loadComponent: () => import('./pages/public/not-found/not-found.component').then(m => m.NotFoundComponent)
+}
 
         ],
       },

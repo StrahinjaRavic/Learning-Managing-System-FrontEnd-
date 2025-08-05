@@ -43,4 +43,4 @@ export class UlogovaniKorisnikService {
     restore(id: number): Observable<void> {
       return this.http.post<void>(`${this.API_URL}/restore/${id}`, {});
     }
-}
+  }

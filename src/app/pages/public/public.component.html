@@ -43,17 +43,11 @@
       <ng-container *ngIf="auth.isLoggedIn(); else guestLinks">
         <!-- Specifične funkcionalnosti po ulozi -->
         
-<<<<<<< HEAD
 
-          <a class="menu-button" mat-button routerLink="/fakultet">Fakulteti</a>
-          <a class="menu-button" mat-button routerLink="/studijski-programi">Studijski programi</a>
-
-=======
           <app-student-pretraga (studentSelected)="selectStudent($event)"></app-student-pretraga>
           <a class="menu-button" mat-button routerLink="/fakultet">Fakulteti</a>
           <a class="menu-button" mat-button routerLink="/studijski-programi">Studijski programi</a>
 
->>>>>>> student-profesor-impl
         <button mat-icon-button (click)="logout()" matTooltip="Odjava">
           <mat-icon>logout</mat-icon>
         </button>
