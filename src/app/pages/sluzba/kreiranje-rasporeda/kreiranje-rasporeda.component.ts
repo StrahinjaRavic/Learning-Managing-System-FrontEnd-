@@ -111,7 +111,7 @@ export class KreiranjeRasporedaComponent implements OnInit{
     }
 
     for(let termin of terminiZaBackend){
-      this.terminService.create(termin).subscribe({
+      this.terminService.createCreateDto(termin).subscribe({
         next: response => {
 
         },
