@@ -13,7 +13,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
-import { MatNativeDateModule } from '@angular/material/core'; // ako koristiš datepicker
+import { MatNativeDateModule } from '@angular/material/core'; 
 import { KreiranjeRokaEditComponent } from './kreiranje-roka-edit/kreiranje-roka-edit.component';
 import { MatDialog } from '@angular/material/dialog';
 import { RouterModule } from '@angular/router';
