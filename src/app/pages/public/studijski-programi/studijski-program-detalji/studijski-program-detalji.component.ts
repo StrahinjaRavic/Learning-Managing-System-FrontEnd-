@@ -44,6 +44,7 @@ export class StudijskiProgramDetaljiComponent implements OnInit {
             this.pronadjiOpis();
           }
         })
+        console.log(data)
       });
     }
 

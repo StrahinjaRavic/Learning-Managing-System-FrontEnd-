@@ -186,6 +186,29 @@ export const appConfig: ApplicationConfig = {
           {
             path: '**',
             loadComponent: () => import('./pages/public/not-found/not-found.component').then(m => m.NotFoundComponent)
+          },
+          {
+            path: 'student-detalji/:id',
+            loadComponent: () => import('./pages/public/student-detalje/student-detalje.component').then(m => m.StudentDetaljiComponent)
+          },
+          {
+            path: 'izmena-profila',
+            loadComponent: () => import('./pages/public/edit-profile/edit-profile.component').then(m => m.EditProfileComponent)
+          },
+          {
+            path: 'nastavnik/predmeti/:id/termini',
+            loadComponent: () => import('./pages/public/termin/termin.component').then(m => m.TerminComponent)
+          },
+          {
+            path: 'prijava',
+            loadComponent: () => import('./pages/public/prijava-polaganja/prijava-polaganja.component').then(m => m.PrijavaPolaganjaComponent)
+          },
+          {
+            path: 'unesi-ocenu/:studentId',
+            loadComponent: () => import('./pages/public/unesi-ocenu/unesi-ocenu.component').then(m => m.UnesiOcenuComponent)
+          },{
+            path: '**',
+            loadComponent: () => import('./pages/public/not-found/not-found.component').then(m => m.NotFoundComponent)
           }
         ],
       },

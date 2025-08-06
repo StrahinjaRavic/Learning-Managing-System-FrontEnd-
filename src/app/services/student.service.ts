@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Predmet } from '../Model/predmet';
 import { Student } from '../Model/student';
 import { StudentCreateDTO } from '../Model/DTO/StudentCreateDTO';
+import { IstorijaStudiranjaDTO } from '../Model/DTO/istorijastudiranjaDTO';
 
 @Injectable({ providedIn: 'root' })
 export class StudentService {
@@ -34,4 +35,7 @@ export class StudentService {
   create(student: StudentCreateDTO): Observable<Student> {
     return this.http.post<Student>(this.API_URL1, student);
   }
+  getIstorijaStudiranja(studentId: number): Observable<IstorijaStudiranjaDTO> {
+  return this.http.get<IstorijaStudiranjaDTO>(`http://localhost:8080/api/students/${studentId}/istorija`);
+}
 }

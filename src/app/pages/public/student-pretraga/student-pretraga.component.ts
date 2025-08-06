@@ -1,13 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { StudentNaGodini } from '../../../Model/studentnagodini';
-import { HttpClient } from '@angular/common/http';
+import { Component, EventEmitter, Output, OnInit } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
+import { debounceTime, switchMap } from 'rxjs/operators';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
+import { MatOptionModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatTableModule } from '@angular/material/table';
+
+import { StudentNaGodini } from '../../../Model/studentnagodini';
 import { StudentNaGodiniService } from '../../../services/student-na-godini.service';
 
 @Component({
@@ -18,37 +20,36 @@ import { StudentNaGodiniService } from '../../../services/student-na-godini.serv
   imports: [
     CommonModule,
     ReactiveFormsModule,
+    MatAutocompleteModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule,
-    MatTableModule
+    MatIconModule,
+    MatOptionModule,
+    MatButtonModule
   ]
 })
 export class StudentPretragaComponent implements OnInit {
-  form!: FormGroup;
-  rezultati: StudentNaGodini[] = [];
-  displayedColumns: string[] = ['ime', 'prezime', 'brojIndeksa', 'godinaUpisa'];
+  searchControl = new FormControl('');
+  suggestions: StudentNaGodini[] = [];
 
-  constructor(
-  private fb: FormBuilder,
-  private studentNaGodiniService: StudentNaGodiniService
-) {}
+  @Output() studentSelected = new EventEmitter<StudentNaGodini>();
+
+  constructor(private studentService: StudentNaGodiniService) {}
+
   ngOnInit(): void {
-    this.form = this.fb.group({
-      ime: [''],
-      prezime: [''],
-      brojIndeksa: [''],
-      godinaUpisa: ['']
-    });
+    this.searchControl.valueChanges
+      .pipe(
+        debounceTime(300),
+        switchMap(value => this.studentService.searchText(value ?? ''))
+      )
+      .subscribe((results) => {
+        this.suggestions = results;
+      });
   }
 
-  pretrazi(): void {
-  const { ime, prezime, brojIndeksa, godinaUpisa } = this.form.value;
-
-  this.studentNaGodiniService
-    .search(ime, prezime, brojIndeksa, godinaUpisa)
-    .subscribe(data => {
-      this.rezultati = data;
-    });
-}
+  selectStudent(student: StudentNaGodini): void {
+    this.studentSelected.emit(student);
+    this.searchControl.setValue(''); // resetuje input posle izbora
+    this.suggestions = []; // resetuje sugestije
+  }
 }

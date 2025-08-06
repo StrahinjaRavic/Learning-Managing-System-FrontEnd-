@@ -54,4 +54,17 @@ export class StudentNaGodiniService {
       restore(id: number): Observable<void> {
         return this.http.post<void>(`${this.API_URL}/restore/${id}`, {});
       }
+
+      searchText(query: string): Observable<StudentNaGodini[]> {
+        return this.http.post<StudentNaGodini[]>(`${this.API_URL}/search`, { query });
+      }
+
+      getStudentNaGodiniById(id: number): Observable<StudentNaGodini> {
+        return this.http.get<StudentNaGodini>(`${this.API_URL}/${id}`);
+      }
+
+      getStudentPregled(id: number): Observable<any> {
+        return this.http.get<any>(`${this.API_URL}/${id}/pregled`);
+      }
+
 }

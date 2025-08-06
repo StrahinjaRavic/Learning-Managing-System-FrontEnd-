@@ -72,6 +72,9 @@
         <button mat-icon-button [routerLink]="'/edit-profil'" class="profile-button">
           <img [src]="slikaUrl || 'default-avatar.png'" alt="Profile" class="profile-image"/>
         </button>
+          <app-student-pretraga (studentSelected)="selectStudent($event)"></app-student-pretraga>
+          <a class="menu-button" mat-button routerLink="/fakultet">Fakulteti</a>
+          <a class="menu-button" mat-button routerLink="/studijski-programi">Studijski programi</a>
 
         <button mat-icon-button (click)="logout()" matTooltip="Odjava">
           <mat-icon>logout</mat-icon>

@@ -16,6 +16,7 @@
           <strong>Rukovodilac smera:</strong>
           {{ program.katedra.sefKatedre.osoba.ime }}
           {{ program.katedra.sefKatedre.osoba.prezime }}
+          
         </p>
 
         <div class="program-opis">
@@ -27,6 +28,19 @@
         <mat-divider></mat-divider>
 
       </div>
+        <h3>
+          <mat-icon class="icon">calendar_today</mat-icon>
+          Godine studija
+        </h3>
+        <mat-divider></mat-divider>
+
+  <ul>
+      <mat-icon class="icon">book</mat-icon>
+  </ul>
+  <mat-divider></mat-divider>
+
+
+
     </mat-card-content>
 
     <div *ngIf="realizacijePredmeta?.length; else nemaPredmeta" class="lista-predmeta">

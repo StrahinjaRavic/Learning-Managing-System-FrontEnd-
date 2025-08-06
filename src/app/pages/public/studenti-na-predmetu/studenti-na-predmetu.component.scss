@@ -1,0 +1,39 @@
+.custom-table {
+  width: 100%;
+  background: #ffffff;
+  color: #fff;
+
+  th, td {
+    padding: 12px;
+    text-align: left;
+  }
+
+  th {
+    background-color: #ffffff;
+  }
+
+  tr:hover {
+    background-color: #a1a1a1;
+  }
+
+  button {
+    font-size: 13px;
+  }
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+.error-message {
+  color: red;
+  margin: 10px;
+}
+
+.no-data {
+  text-align: center;
+  padding: 20px;
+  color: #aaa;
+}

@@ -4,12 +4,14 @@ import { AuthService } from '../../../services/auth.service';
 import { Predmet } from '../../../Model/predmet';
 import { CommonModule, NgIf } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-nastavnik-predmeti',
   templateUrl: './nastavnik-predmeti.component.html',
   styleUrls: ['./nastavnik-predmeti.component.scss'],
-  imports: [CommonModule, RouterModule, NgIf]
+  standalone: true,
+  imports: [CommonModule, RouterModule, NgIf],
 })
 export class NastavnikPredmetiComponent implements OnInit {
   predmeti: Predmet[] = [];
@@ -17,32 +19,36 @@ export class NastavnikPredmetiComponent implements OnInit {
 
   constructor(
     private realizacijaPredmetaService: RealizacijaPredmetaService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
-  const username = this.authService.getUsernameFromToken();
-  if (!username) {
-    console.error('Nije pronađen username u tokenu');
-    return;
-  }
-
-  this.authService.getNastavnikIdByUsername(username).subscribe(id => {
-    if (id == null) {
-      console.error('Nastavnik sa datim username-om nije pronađen');
+    const username = this.authService.getUsernameFromToken();
+    if (!username) {
+      console.error('Nije pronađen username u tokenu');
       return;
     }
 
-    this.nastavnikId = id;
-    this.loadPredmeti(id);
-  });
-}
+    this.authService.getNastavnikIdByUsername(username).subscribe((id) => {
+      if (id == null) {
+        console.error('Nastavnik sa datim username-om nije pronađen');
+        return;
+      }
 
-loadPredmeti(nastavnikId: number): void {
-  this.realizacijaPredmetaService.getPredmetiByNastavnikId(nastavnikId)
-    .subscribe({
-      next: data => this.predmeti = data,
-      error: err => console.error('Greška pri učitavanju predmeta:', err)
+      this.nastavnikId = id;
+      this.loadPredmeti(id);
     });
-}
+  }
+
+  otvoriTermine(predmetId: number): void {
+    this.router.navigate(['/nastavnik/predmeti', predmetId, 'termini']);
+  }
+
+  loadPredmeti(nastavnikId: number): void {
+    this.realizacijaPredmetaService.getPredmetiByNastavnikId(nastavnikId).subscribe({
+      next: (data) => (this.predmeti = data),
+      error: (err) => console.error('Greška pri učitavanju predmeta:', err),
+    });
+  }
 }

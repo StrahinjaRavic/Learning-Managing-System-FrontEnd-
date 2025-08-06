@@ -1,4 +1,5 @@
 import { PohadjanjePredmeta } from "./pohadjanjepredmeta";
+import { RealizacijaPredmeta } from "./realizacijapredmeta";
 import { Rok } from "./rok";
 
 export interface EvaluacijaZnanja {
@@ -6,7 +7,7 @@ export interface EvaluacijaZnanja {
     naziv: string,
     brojBodova: number,
     datum: string,
-    pohadjanjepredmeta: PohadjanjePredmeta,
+    realizacijaPredmeta: RealizacijaPredmeta,
     rok: Rok,
     obrisano: boolean,
 }
