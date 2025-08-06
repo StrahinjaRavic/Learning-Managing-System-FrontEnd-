@@ -17,4 +17,9 @@ searchText(query: string): Observable<StudentNaGodini[]> {
 getStudentNaGodiniById(id: number): Observable<StudentNaGodini> {
   return this.http.get<StudentNaGodini>(`${this.baseUrl}/${id}`);
 }
+
+getStudentPregled(id: number): Observable<any> {
+  return this.http.get<any>(`${this.baseUrl}/${id}/pregled`);
+}
+
 }
