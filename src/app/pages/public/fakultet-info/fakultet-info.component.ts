@@ -69,11 +69,11 @@ export class FakultetInfoComponent implements OnInit {
           next: katedreLists => {
             this.fakulteti.forEach((f, i) => f.katedre = katedreLists[i]);
           },
-          error: err => console.error('Greška pri učitavanju katedri:', err)
+          
         });
       },
       error: err => {
-        console.error('Greška pri učitavanju fakulteta ili sifarnika:', err);
+        
       }
     });
   }

@@ -19,7 +19,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./studenti-na-predmetu.component.scss'],
   standalone: true,
   imports: [
-    NgIf, NgFor, MatTableModule, MatButtonModule, MatProgressSpinnerModule,
+    NgIf, MatTableModule, MatButtonModule, MatProgressSpinnerModule,
     MatIconModule, MatFormFieldModule, MatInputModule, MatCardModule, FormsModule
   ]
 })

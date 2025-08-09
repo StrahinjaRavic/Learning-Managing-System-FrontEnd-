@@ -12,6 +12,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule } from '@angular/forms'
+import { MatDialog } from '@angular/material/dialog';
+import { DodavanjeProgramaComponent } from './dodavanje-programa/dodavanje-programa.component';
+import { GodinaStudijaCreateDTO } from '../../../Model/DTO/GodinaStudijaCreateDTO';
 
 @Component({
   selector: 'app-pregled-programa',
@@ -24,7 +27,7 @@ export class PregledProgramaComponent implements OnInit{
   godineStudija: GodinaStudija[] = [];
   displayedColumns: string[] = ['godina', 'studijskiProgram','akcije'];
 
-  constructor(private godinaStudijaService: GodinaStudijaService,private router: Router){}
+  constructor(private godinaStudijaService: GodinaStudijaService,private router: Router,private dialog: MatDialog){}
 
   ngOnInit(): void {
     this.loadData();
@@ -43,6 +46,31 @@ export class PregledProgramaComponent implements OnInit{
 
   otvoriRaspored(godinaStudijaId: number) {
     this.router.navigate(['/kreiranje-rasporeda', godinaStudijaId]);
+  }
+
+  dodaj(): void {
+    const dialogRef = this.dialog.open(DodavanjeProgramaComponent, {
+      width: '500px',
+      data: {} 
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('Rezultat:', result);
+        const novi: GodinaStudijaCreateDTO = {
+          godina: result.godina,
+          studijskiProgram_id: result.studijskiProgram.id
+        }
+        console.log(novi)
+        this.godinaStudijaService.create(novi).subscribe({
+          next: created => {
+            this.godineStudija.push(created)
+            this.godineStudija = [...this.godineStudija];
+          }
+        })
+
+      }
+    });
   }
 
 }

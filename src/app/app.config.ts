@@ -124,6 +124,14 @@ export const appConfig: ApplicationConfig = {
             loadComponent: () => import('./pages/admin/administracija-sifarnika/administracija-sifarnika.component').then(m => m.AdministracijaSifarnikaComponent)
           },
           {
+            path: 'admin/nastavnici',
+            loadComponent: () => import('./pages/admin/pregled-nastavnika/pregled-nastavnika.component').then(m => m.PregledNastavnikaComponent)
+          },
+          {
+            path: 'admin/studenti',
+            loadComponent: () => import('./pages/admin/pregled-studenata/pregled-studenata.component').then(m => m.PregledStudenataComponent)
+          },
+          {
             path: 'admin/pregled-gresaka',
             loadComponent: () => import('./pages/admin/pregled-gresaka/pregled-gresaka.component').then(m => m.PregledGresakaComponent)
           },
@@ -184,10 +192,6 @@ export const appConfig: ApplicationConfig = {
             loadComponent: () => import('./pages/public/profil-edit/profil-edit.component').then(m => m.ProfilEditComponent)
           },
           {
-            path: '**',
-            loadComponent: () => import('./pages/public/not-found/not-found.component').then(m => m.NotFoundComponent)
-          },
-          {
             path: 'student-detalji/:id',
             loadComponent: () => import('./pages/public/student-detalje/student-detalje.component').then(m => m.StudentDetaljiComponent)
           },
@@ -206,7 +210,12 @@ export const appConfig: ApplicationConfig = {
           {
             path: 'unesi-ocenu/:studentId',
             loadComponent: () => import('./pages/public/unesi-ocenu/unesi-ocenu.component').then(m => m.UnesiOcenuComponent)
-          },{
+          },
+          {
+            path: 'unauthorized',
+            loadComponent: () => import('./pages/public/unauthorized/unauthorized.component').then(m => m.UnauthorizedComponent)
+          },
+          {
             path: '**',
             loadComponent: () => import('./pages/public/not-found/not-found.component').then(m => m.NotFoundComponent)
           }

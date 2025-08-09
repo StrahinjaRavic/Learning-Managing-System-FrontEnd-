@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { GodinaStudija } from '../Model/godinastudija';
+import { GodinaStudijaCreateDTO } from '../Model/DTO/GodinaStudijaCreateDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -28,7 +29,7 @@ export class GodinaStudijaService {
       return this.http.get<GodinaStudija>(`${this.API_URL}/${id}`);
     }
   
-    create(program: GodinaStudija): Observable<GodinaStudija> {
+    create(program: GodinaStudijaCreateDTO): Observable<GodinaStudija> {
       return this.http.post<GodinaStudija>(this.API_URL, program);
     }
   

@@ -12,17 +12,17 @@
       </mat-form-field>
 
     <mat-form-field appearance="fill" style="width: 100%;">
-  <mat-label>Datum</mat-label>
-  <input
-    matInput
-    [matDatepicker]="krajPicker"
-    formControlName="datum"
-    [min]="minDate"
-    [max]="maxDate"
-  />
-  <mat-datepicker-toggle matSuffix [for]="krajPicker"></mat-datepicker-toggle>
-  <mat-datepicker #krajPicker></mat-datepicker>
-</mat-form-field>
+      <mat-label>Datum</mat-label>
+      <input
+        matInput
+        [matDatepicker]="krajPicker"
+        formControlName="datum"
+        [min]="minDate"
+        [max]="maxDate"
+      />
+      <mat-datepicker-toggle matSuffix [for]="krajPicker"></mat-datepicker-toggle>
+      <mat-datepicker #krajPicker></mat-datepicker>
+    </mat-form-field>
 
   </form>
 </mat-dialog-content>

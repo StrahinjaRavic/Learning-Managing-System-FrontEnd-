@@ -96,8 +96,8 @@ export class KreiranjeRokaComponent implements OnInit{
     dialogRef.afterClosed().subscribe((result: Rok | undefined) => {
           if (result) {
             this.rokService.create(result).subscribe({
-              next: updated => { 
-                this.filteredRokovi.push(updated)
+              next: created => { 
+                this.filteredRokovi.push(created)
                 this.filteredRokovi = [...this.filteredRokovi];
               },
               error: err => {

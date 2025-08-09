@@ -12,11 +12,22 @@
     position: relative;
 }
 
+.buttonBar{
+  display: flex;
+  justify-content: center; /* center horizontally */
+  margin: 16px 0;
+}
+
 .akcije{
   display: flex;
   justify-content: flex-end;
 }
 
 mat-row:nth-child(odd) {
-  background-color: #e4e4e4; 
+  background-color: #dbdbdb; 
+}
+
+mat-card, mat-table{
+  background-color: transparent;
+  box-shadow: none !important;
 }

@@ -11,6 +11,9 @@ import { RealizacijaPredmeta } from '../../../../Model/realizacijapredmeta';
 import { RealizacijaPredmetaService } from '../../../../services/realizacija-predmeta.service';
 import { Sifarnik } from '../../../../Model/sifarnik';
 import { SifarnikService } from '../../../../services/sifarnik.service';
+import { SilabusService } from '../../../../services/silabus.service';
+import { Silabus } from '../../../../Model/silabus';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-studijski-program-detalji',
@@ -24,12 +27,14 @@ export class StudijskiProgramDetaljiComponent implements OnInit {
   realizacijePredmeta: RealizacijaPredmeta[] = [];
   otvoreniIndex: number | null = null;
   sifarnici: Sifarnik[] = [];
+  silabusi: Silabus[] = [];
 
   constructor(
     private route: ActivatedRoute,
     private programService: StudijskiProgramService,
     private realizacijaPredmetaService: RealizacijaPredmetaService,
-    private sifarnikService: SifarnikService
+    private sifarnikService: SifarnikService,
+    private silabusService: SilabusService
   ) {}
 
   ngOnInit(): void {
@@ -44,16 +49,30 @@ export class StudijskiProgramDetaljiComponent implements OnInit {
             this.pronadjiOpis();
           }
         })
-        console.log(data)
       });
     }
 
-    this.realizacijaPredmetaService.getRealizacijaByStudijskiProgramId(id).subscribe({
-      next: res => {
-        this.realizacijePredmeta = res
-      }
-    })
+    forkJoin({
+      silabusi: this.silabusService.getActive(),
+      realizacije: this.realizacijaPredmetaService.getRealizacijaByStudijskiProgramId(id)
+    }).subscribe(({ silabusi, realizacije }) => {
+      this.silabusi = silabusi;
+      this.realizacijePredmeta = realizacije;
+
+      this.poveziSilabuse();
+    });
   }
+
+  poveziSilabuse(): void {
+  this.realizacijePredmeta.forEach(realizacija => {
+    const matchedSilabus = this.silabusi.find(s =>
+      s.predmet?.id === realizacija.predmet?.id
+    );
+    if (matchedSilabus) {
+      (realizacija as any).silabus = matchedSilabus;
+    }
+  });
+}
 
   pronadjiOpis(): void {
     const opisSifarnik = this.sifarnici.find(sifarnik =>
@@ -65,11 +84,10 @@ export class StudijskiProgramDetaljiComponent implements OnInit {
   }
 
   toggleDetalji(index: number): void {
-    console.log('Klik na:', index);
-  if (this.otvoreniIndex === index) {
-    this.otvoreniIndex = null; // zatvara ako je već otvoren
-  } else {
-    this.otvoreniIndex = index;
+    if (this.otvoreniIndex === index) {
+      this.otvoreniIndex = null; 
+    } else {
+      this.otvoreniIndex = index;
+    }
   }
-}
 }

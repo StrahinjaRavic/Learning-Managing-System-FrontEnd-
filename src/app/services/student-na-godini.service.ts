@@ -38,6 +38,10 @@ export class StudentNaGodiniService {
       getById(id: number): Observable<StudentNaGodini> {
         return this.http.get<StudentNaGodini>(`${this.API_URL}/${id}`);
       }
+
+      getByStudentId(id: number): Observable<StudentNaGodini[]> {
+        return this.http.get<StudentNaGodini[]>(`${this.API_URL}/student/${id}`);
+      }
     
       create(nastavnik: StudentNaGodiniCreateDTO): Observable<StudentNaGodini> {
         return this.http.post<StudentNaGodini>(this.API_URL, nastavnik);

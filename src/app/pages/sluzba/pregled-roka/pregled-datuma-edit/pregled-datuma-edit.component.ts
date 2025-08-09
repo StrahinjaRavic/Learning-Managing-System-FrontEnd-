@@ -58,6 +58,7 @@ export class PregledDatumaEditComponent implements OnInit{
     this.loadData();
   }
 
+
   loadData(){
     this.realizacijaPredmetaService.getActive().subscribe({
       next: res => {

@@ -18,6 +18,9 @@ import { Rok } from '../../../Model/rok';
 import { RokService } from '../../../services/rok.service';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_NATIVE_DATE_FORMATS, NativeDateAdapter } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
+import { PolaganjeService } from '../../../services/polaganje.service';
+import { PolaganjeCreateDTO } from '../../../Model/DTO/PolaganjeCreateDTO';
+import { PregledDatumaCreateComponent } from './pregled-datuma-create/pregled-datuma-create.component';
 
 @Component({
   selector: 'app-pregled-roka',
@@ -42,7 +45,7 @@ export class PregledRokaComponent implements OnInit{
     obrisano: false
   };
   
-  constructor(private route: ActivatedRoute,private datumPredmetaService: DatumPredmetaService,private dialog: MatDialog,private rokService: RokService){}
+  constructor(private route: ActivatedRoute,private datumPredmetaService: DatumPredmetaService,private dialog: MatDialog,private rokService: RokService, private polaganjeService: PolaganjeService){}
 
   ngOnInit(): void {
     this.rokId = Number(this.route.snapshot.paramMap.get('id'));
@@ -66,7 +69,7 @@ export class PregledRokaComponent implements OnInit{
     })
   }
   dodaj(){
-    const dialogRef = this.dialog.open(PregledDatumaEditComponent, {
+    const dialogRef = this.dialog.open(PregledDatumaCreateComponent, {
       width: '700px',
       data: {
         datumPredmeta:{
@@ -79,13 +82,26 @@ export class PregledRokaComponent implements OnInit{
       },
     });
 
-    dialogRef.afterClosed().subscribe((result: DatumPredmeta | undefined) => {
+    dialogRef.afterClosed().subscribe((result: {datumPredmeta: DatumPredmeta , evaluacijaId: number}) => {
           if (result) {
-            console.log(result)
-            this.datumPredmetaService.create(result).subscribe({
-              next: updated => { 
-                this.filteredDatumiPredmeta.push(updated)
+            console.log(result.datumPredmeta)
+            this.datumPredmetaService.create(result.datumPredmeta).subscribe({
+              next: created => { 
+                this.filteredDatumiPredmeta.push(created)
                 this.filteredDatumiPredmeta = [...this.filteredDatumiPredmeta];
+
+                const novoPolaganje: PolaganjeCreateDTO= {
+                  evaluacijaZnanja_id:result.evaluacijaId,
+                  rok_id: this.rokId,
+                  datum: new Date(created.datum).toISOString()
+                }
+                console.log(novoPolaganje)
+
+                this.polaganjeService.create(novoPolaganje).subscribe({
+                  error: err => {
+                    console.error('Greška pri kreiranju:', err);
+                  }
+                })
               },
               error: err => {
                 console.error('Greška pri kreiranju:', err);
@@ -132,18 +148,18 @@ export class PregledRokaComponent implements OnInit{
   applyFilter(){
 
     this.filteredDatumiPredmeta = this.datumiPredmeta.filter(datum => {
-    const rokMatch = this.filter.rok ? datum.rok.naziv.toLowerCase().includes(this.filter.rok.toLowerCase()) : true;
-    const predmetMatch = this.filter.realizacija ? datum.realizacijaPredmeta.predmet.naziv.toLowerCase().includes(this.filter.realizacija.toLowerCase()) : true;
-    const obrisanoMatch = this.filter.obrisano || !datum.obrisano;
+      const rokMatch = this.filter.rok ? datum.rok.naziv.toLowerCase().includes(this.filter.rok.toLowerCase()) : true;
+      const predmetMatch = this.filter.realizacija ? datum.realizacijaPredmeta.predmet.naziv.toLowerCase().includes(this.filter.realizacija.toLowerCase()) : true;
+      const obrisanoMatch = this.filter.obrisano || !datum.obrisano;
 
-    let datumMatch = true;
-    if (this.filter.datum) {
-      const filterDate = new Date(this.filter.datum).setHours(0, 0, 0, 0);
-      const datumDate = new Date(datum.datum).setHours(0, 0, 0, 0);
-      datumMatch = datumDate == filterDate;
-    }
+      let datumMatch = true;
+      if (this.filter.datum) {
+        const filterDate = new Date(this.filter.datum).setHours(0, 0, 0, 0);
+        const datumDate = new Date(datum.datum).setHours(0, 0, 0, 0);
+        datumMatch = datumDate == filterDate;
+      }
 
-    return rokMatch && predmetMatch && datumMatch && obrisanoMatch;
-  });
+      return rokMatch && predmetMatch && datumMatch && obrisanoMatch;
+    });
   }
 }

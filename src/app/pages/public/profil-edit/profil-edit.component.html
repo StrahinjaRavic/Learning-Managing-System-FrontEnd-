@@ -39,7 +39,11 @@
               <button mat-icon-button type="button" (click)="showPassword = !showPassword" style="transform: scale(0.8); vertical-align: middle; margin-left: 4px;">
                     <mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
               </button>
-           </p>
+          </p>
+          <div *ngIf="userRoles?.includes('ROLE_NASTAVNIK') && nastavnik">
+            <p><strong>Biografija:</strong></p>
+            <p style="white-space: pre-line;">{{ nastavnik.biografija || 'Dodajte biografiju klikom na dugme "Izmeni informacije".' }}</p>
+          </div>
         </div>
 
         <div *ngIf="isEditing">
@@ -68,12 +72,20 @@
               <mat-icon>{{ showRepeatPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
             </button>
           </mat-form-field>
+
+          <div *ngIf="userRoles?.includes('ROLE_NASTAVNIK') && nastavnik">
+            <mat-form-field appearance="fill" style="width: 100%;">
+              <mat-label>Biografija</mat-label>
+              <textarea matInput rows="5" [(ngModel)]="nastavnik.biografija"></textarea>
+            </mat-form-field>
+          </div>
+          
         </div>
       </mat-card-content>
 
-      <mat-card-actions align="end">
+      <mat-card-actions align="end" style="justify-content: flex-end; display: flex; width: 100%;">
         <button mat-button (click)="toggleEdit()">
-        {{ isEditing ? 'Cancel' : 'Update Information' }}
+        {{ isEditing ? 'Cancel' : 'Izmeni informacije' }}
         </button>
         <button mat-flat-button color="primary" *ngIf="isEditing" (click)="saveUpdatedInfo()">Save</button>
       </mat-card-actions>

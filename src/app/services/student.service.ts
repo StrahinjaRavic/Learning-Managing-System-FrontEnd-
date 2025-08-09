@@ -35,6 +35,15 @@ export class StudentService {
   create(student: StudentCreateDTO): Observable<Student> {
     return this.http.post<Student>(this.API_URL1, student);
   }
+
+  delete(id: number): Observable<void> {
+      return this.http.delete<void>(`${this.API_URL1}/${id}`);
+  }
+
+  restore(id: number): Observable<void> {
+      return this.http.post<void>(`${this.API_URL1}/restore/${id}`, {});
+    }
+
   getIstorijaStudiranja(studentId: number): Observable<IstorijaStudiranjaDTO> {
   return this.http.get<IstorijaStudiranjaDTO>(`http://localhost:8080/api/students/${studentId}/istorija`);
 }

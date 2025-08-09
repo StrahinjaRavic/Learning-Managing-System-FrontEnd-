@@ -12,7 +12,7 @@
     </div>
   </mat-card>
 
-  <mat-card class="stat-card">
+  <mat-card class="stat-card" [routerLink]="'/admin/studenti'">
     <mat-icon>school</mat-icon>
     <div>
       <h2>{{ studenti }}</h2>
@@ -20,7 +20,7 @@
     </div>
   </mat-card>
 
-  <mat-card class="stat-card">
+  <mat-card class="stat-card" [routerLink]="'/admin/nastavnici'">
     <mat-icon>group</mat-icon>
     <div>
       <h2>{{ nastavnici }}</h2>

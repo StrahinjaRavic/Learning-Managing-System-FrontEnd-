@@ -24,6 +24,8 @@ import { PravoPristupa } from '../../../Model/pravopristupa';
 import { PravoPristupaService } from '../../../services/pravo-pristupa.service';
 import { DodeljenoPravoPristupaService } from '../../../services/dodeljeno-pravo-pristupa.service';
 import { DodeljenoPravoPristupaCreateDTO } from '../../../Model/DTO/DodeljenoPravoPristupaCreateDTO';
+import { NastavnikCreateDTO } from '../../../Model/DTO/NastavnikCreateDTO';
+import { NastavnikService } from '../../../services/nastavnik.service';
 
 @Component({
   selector: 'app-dodavanje-osobe',
@@ -40,6 +42,7 @@ export class DodavanjeOsobeComponent {
   private adresaService = inject(AdresaService)
   private osobaService = inject(OsobaService)
   private pravoService = inject(PravoPristupaService)
+  private nastavnikService = inject(NastavnikService)
   private ulogovaniKorisnikService = inject(UlogovaniKorisnikService)
   private dodeljenoPravoService = inject(DodeljenoPravoPristupaService)
   private dialog = inject(MatDialog)
@@ -135,7 +138,20 @@ export class DodavanjeOsobeComponent {
                     email: null,
                     osoba_id: createdOsoba.id
                   };
-                  console.log('Pravim nalog za osobu:', createdOsoba.id);
+                  //kreiranje nastavnika ako je odabran tip naloga nastavnik
+                  if(this.form.get('tipNaloga')?.value == this.role_nastavnik_id){
+                    const nastavnik: NastavnikCreateDTO = {
+                      biografija: "",
+                      osoba_id: createdOsoba.id
+                    }
+
+                    this.nastavnikService.create(nastavnik).subscribe({
+                      next: res => {
+                        console.log("uspesno kreiran nastavnik")
+                      }
+                    })
+                  }
+
                   // kreiranje naloga za osobu
                   this.ulogovaniKorisnikService.create(nalog).subscribe({
                     next: nalog => {
@@ -146,13 +162,10 @@ export class DodavanjeOsobeComponent {
                         }
                       });
                         console.log('tipNaloga raw value:', this.form.get('tipNaloga')?.value);
-                        console.log('typeof tipNaloga:', typeof this.form.get('tipNaloga')?.value);
                       const dodeljeno: DodeljenoPravoPristupaCreateDTO = {
                         ulogovaniKorisnik_id: nalog.id,
                         pravoPristupa_id: Number(this.form.get('tipNaloga')?.value)
                       };
-                      console.log(this.form.get("tipNaloga"))
-                      console.log("DODELJENO PRAVO ID:"+ dodeljeno.pravoPristupa_id)
                       // dodavanje prava pristupa kreiranom nalogu
                       this.dodeljenoPravoService.create(dodeljeno).subscribe({
                         next: response => {

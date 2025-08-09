@@ -47,10 +47,10 @@ export class PublicComponent {
     const url = `http://localhost:8080/api/photos/photo/${userId}`;
     this.http.get(url, { responseType: 'blob' }).subscribe({
       next: (blob) => {
-        this.slikaUrl = URL.createObjectURL(blob);
+        if(blob && blob.size > 0){this.slikaUrl = URL.createObjectURL(blob);}else{this.slikaUrl = 'default-avatar.png'}
       },
       error: (err) => {
-        console.warn('No profile image found or failed to load.', err);
+        return
       }
     });
   }

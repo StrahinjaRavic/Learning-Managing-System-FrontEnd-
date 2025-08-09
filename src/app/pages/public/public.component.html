@@ -21,8 +21,12 @@
       <a mat-list-item routerLink="/admin/dodavanje" *ngIf="userRoles?.includes('ROLE_ADMIN')">Dodavanje Osoblja</a>
       <a mat-list-item routerLink="/admin/pregled-gresaka" *ngIf="userRoles?.includes('ROLE_ADMIN')">Pregled Grešaka</a>
 
+      <a mat-list-item routerLink="/nastavnik-predmeti" *ngIf="userRoles?.includes('ROLE_NASTAVNIK')">Moji Predmeti</a>
+      <a mat-list-item routerLink="/forum" *ngIf="userRoles?.includes('ROLE_NASTAVNIK')">Forumi</a>
+
       <a mat-list-item routerLink="/upis-studenta" *ngIf="userRoles?.includes('ROLE_SLUZBA')">Upis</a>
       <a mat-list-item routerLink="/kreiranje-studenta" *ngIf="userRoles?.includes('ROLE_SLUZBA')">Dodavanje studenta</a>
+      <a mat-list-item routerLink="/pregled-programa" *ngIf="userRoles?.includes('ROLE_SLUZBA')">Pregled Studijskih Programa</a>
       <a mat-list-item routerLink="/pregled-rokova" *ngIf="userRoles?.includes('ROLE_SLUZBA')">Pregled Rokova</a>
 
       <a mat-list-item (click)="showPotvrde = !showPotvrde" *ngIf="userRoles?.includes('ROLE_SLUZBA')">
@@ -60,21 +64,23 @@
       </span>
     </div>
 
+        <div class="student">
+          <app-student-pretraga (studentSelected)="selectStudent($event)" *ngIf="userRoles?.includes('ROLE_NASTAVNIK')"></app-student-pretraga>
+        </div>
+
     <!-- Desna strana -->
     <div class="right-section" style="display: flex; align-items: center; gap: 1.5rem;">
       <!-- Ako je korisnik ulogovan -->
       <ng-container *ngIf="auth.isLoggedIn(); else guestLinks">
         <!-- Specifične funkcionalnosti po ulozi -->
-
+        
         <a class="menu-button" mat-button routerLink="/fakultet">Fakulteti</a>
         <a class="menu-button" mat-button routerLink="/studijski-programi">Studijski programi</a>
           
         <button mat-icon-button [routerLink]="'/edit-profil'" class="profile-button">
           <img [src]="slikaUrl || 'default-avatar.png'" alt="Profile" class="profile-image"/>
         </button>
-          <app-student-pretraga (studentSelected)="selectStudent($event)"></app-student-pretraga>
-          <a class="menu-button" mat-button routerLink="/fakultet">Fakulteti</a>
-          <a class="menu-button" mat-button routerLink="/studijski-programi">Studijski programi</a>
+          
 
         <button mat-icon-button (click)="logout()" matTooltip="Odjava">
           <mat-icon>logout</mat-icon>

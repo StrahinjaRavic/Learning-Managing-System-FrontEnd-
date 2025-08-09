@@ -28,18 +28,6 @@
         <mat-divider></mat-divider>
 
       </div>
-        <h3>
-          <mat-icon class="icon">calendar_today</mat-icon>
-          Godine studija
-        </h3>
-        <mat-divider></mat-divider>
-
-  <ul>
-      <mat-icon class="icon">book</mat-icon>
-  </ul>
-  <mat-divider></mat-divider>
-
-
 
     </mat-card-content>
 
@@ -60,6 +48,10 @@
               <p *ngIf="r.predmet.drugiObliciNastave"><strong>Drugi oblici nastave:</strong> {{ r.predmet.drugiObliciNastave }}</p>
               <p *ngIf="r.predmet.istrazivackiRad"><strong>Istraživački rad:</strong> {{ r.predmet.istrazivackiRad }}</p>
               <p *ngIf="r.predmet.ostaliCasovi"><strong>Ostali časovi:</strong> {{ r.predmet.ostaliCasovi }}</p>
+              <div class="program-opis">
+                <span *ngIf="r.silabus?.opis; else nemaOpisa">{{ r.silabus?.opis }}</span>
+                <ng-template #nemaOpisa><em>Nema silabusa za ovaj predmet.</em></ng-template>
+              </div>
             </div>
           </div>
         </div>

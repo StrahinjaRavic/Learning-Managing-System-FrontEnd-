@@ -1,0 +1,16 @@
+.full-width {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.form-container {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.button-group {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
