@@ -1,0 +1,21 @@
+<h2>Zadaci za evaluaciju: {{ evaluacija.naziv }}</h2>
+
+<ul>
+  <li *ngFor="let z of zadaci">
+    <strong>{{ z.pitanje }}</strong> — {{ z.tacanOdgovor }}
+  </li>
+</ul>
+
+<form [formGroup]="forma" (ngSubmit)="dodaj()">
+  <mat-form-field>
+    <mat-label>Pitanje</mat-label>
+    <input matInput formControlName="pitanje">
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Tačan odgovor</mat-label>
+    <input matInput formControlName="tacanOdgovor">
+  </mat-form-field>
+
+  <button mat-raised-button type="submit" color="primary">Sačuvaj</button>
+</form>

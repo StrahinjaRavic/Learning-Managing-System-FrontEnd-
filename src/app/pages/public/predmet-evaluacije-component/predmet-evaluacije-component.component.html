@@ -1,0 +1,40 @@
+<div *ngIf="evaluacije">
+  <h2>Evaluacije za predmet: {{ predmetId }}</h2>
+
+  <!-- Izbor evaluacije -->
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Izaberi evaluaciju</mat-label>
+    <mat-select [(ngModel)]="selektovanaEvaluacijaId" (selectionChange)="ucitajZadatke()">
+      <mat-option *ngFor="let eval of evaluacije" [value]="eval.id">
+        {{ eval.naziv }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <!-- Prikaz postojećih zadataka -->
+  <div *ngIf="zadaci.length > 0">
+    <h3>Zadaci za evaluaciju: {{ selektovanaEvaluacija?.naziv }}</h3>
+    <ul>
+      <li *ngFor="let z of zadaci">
+        <strong>{{ z.pitanje }}</strong> — {{ z.odgovori[0].odgovor }}
+      </li>
+    </ul>
+  </div>
+
+  <!-- Forma za dodavanje novog zadatka -->
+  <form [formGroup]="forma" (ngSubmit)="sacuvajZadatak()" *ngIf="selektovanaEvaluacijaId">
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Pitanje</mat-label>
+      <input matInput formControlName="pitanje" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Tačan odgovor</mat-label>
+      <input matInput formControlName="odgovori" />
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="submit" [disabled]="forma.invalid">
+      Sačuvaj zadatak
+    </button>
+  </form>
+</div>

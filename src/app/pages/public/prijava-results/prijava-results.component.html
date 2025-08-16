@@ -1,0 +1,21 @@
+<div>
+  <label>XML sadržaj:</label>
+  <textarea [(ngModel)]="xmlContent" rows="10"></textarea>
+
+<label>Izaberite XML fajl:</label>
+<input type="file" (change)="uploadFile($event)" accept=".xml" />
+
+  <button (click)="upload()">Upload</button>
+
+  <div *ngIf="successCount !== 0">
+    Uspešno obrađeno: {{successCount}}
+  </div>
+  <div *ngIf="uploadErrors.length > 0">
+    <p>Greške:</p>
+    <ul>
+      <li *ngFor="let e of uploadErrors">{{e}}</li>
+    </ul>
+  </div>
+
+  <button (click)="downloadPdf()">Preuzmi PDF</button>
+</div>

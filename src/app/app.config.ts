@@ -159,7 +159,17 @@ export const appConfig: ApplicationConfig = {
           {
             path: 'unesi-ocenu/:studentId',
             loadComponent: () => import('./pages/public/unesi-ocenu/unesi-ocenu.component').then(m => m.UnesiOcenuComponent)
-          },{
+          },
+          {
+  path: 'predmeti/:id/evaluacije',
+  loadComponent: () => import('./pages/public/predmet-evaluacije-component/predmet-evaluacije-component.component').then(m => m.PredmetEvaluacijeComponent)
+},{
+  path: 'nastavnik/prijave/:id/rezultati',
+  loadComponent: () =>
+    import('./pages/public/prijava-results/prijava-results.component')
+      .then(m => m.PrijavaResultsComponent)
+},
+          {
             path: '**',
             loadComponent: () => import('./pages/public/not-found/not-found.component').then(m => m.NotFoundComponent)
 }
