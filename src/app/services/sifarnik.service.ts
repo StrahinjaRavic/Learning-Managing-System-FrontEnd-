@@ -12,7 +12,7 @@ private readonly API_URL = 'http://localhost:8080/api/sifarniks';
 
   constructor(private http: HttpClient) { }
 
-  getAll(): Observable<Sifarnik[]> {
+    getAll(): Observable<Sifarnik[]> {
       return this.http.get<Sifarnik[]>(this.API_URL);
     }
   

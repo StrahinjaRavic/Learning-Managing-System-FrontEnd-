@@ -15,6 +15,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule } from '@angular/forms';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
+import { title } from 'process';
 
 @Component({
   selector: 'app-administracija-sifarnika',
@@ -96,8 +97,11 @@ export class AdministracijaSifarnikaComponent implements OnInit{
     const dialogRef = this.dialog.open(SifarnikEditComponent, {
       width: '800px',
       data: {
-        naziv: '',
-        tekst: ''
+        sifarnik:{
+          naziv: '',
+          tekst: ''
+        },
+        title: 'Kreiraj Sifarnik'
       }
     });
   
@@ -109,7 +113,7 @@ export class AdministracijaSifarnikaComponent implements OnInit{
             this.sifarnici = [...this.sifarnici];
           },
           error: err => {
-            console.error('Greška pri ažuriranju:', err);
+            console.error('Greška pri kreiranju:', err);
           }
         });
       }
@@ -119,7 +123,10 @@ export class AdministracijaSifarnikaComponent implements OnInit{
   izmeni(sifarnik: Sifarnik){
     const dialogRef = this.dialog.open(SifarnikEditComponent, {
       width: '800px',
-      data: {...sifarnik}
+      data: {
+        sifarnik:{...sifarnik},
+        title: 'Izmeni Sifarnik'
+      }
     });
   
     dialogRef.afterClosed().subscribe((result: Sifarnik | undefined) => {

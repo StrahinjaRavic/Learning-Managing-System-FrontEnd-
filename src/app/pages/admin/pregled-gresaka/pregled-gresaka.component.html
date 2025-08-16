@@ -1,0 +1,46 @@
+<mat-card class="mat-elevation-z4 transparent">
+  <div class="titleBar">
+    <mat-menu #filterMenu="matMenu" class="filter-menu">
+      <ng-template matMenuContent>
+        <div style="padding: 16px; max-height: 500px; overflow-y: auto; overflow-x: hidden; width: 100%; box-sizing: border-box;" (click)="$event.stopPropagation()">
+          <mat-form-field appearance="fill" style="width: 100%;">
+            <mat-label>Exception Type</mat-label>
+            <input matInput [(ngModel)]="filter.exceptionType" (input)="applyFilter()" />
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" style="width: 100%;">
+            <mat-label>Poruka</mat-label>
+            <input matInput [(ngModel)]="filter.poruka" (input)="applyFilter()" />
+          </mat-form-field>
+          
+        </div>
+      </ng-template>
+    </mat-menu>
+
+    <button mat-icon-button [matMenuTriggerFor]="filterMenu" [matMenuTriggerRestoreFocus]="false" class="searchButton">
+      <mat-icon>search</mat-icon>
+    </button>
+
+    <mat-card-title style="margin-right: auto;">Greške sistema</mat-card-title>
+  </div>
+
+  <div class="log-container">
+    <mat-card *ngFor="let log of logovi" class="log-card mat-elevation-z2" [ngClass]="{'obrisano': log.obrisano, 'neobrisano': !log.obrisano}">
+      <div class="log-header">
+        <div class="log-title">{{ log.exceptionType }}</div>
+        <div class="log-time">{{ log.vreme | date: 'short' }}</div>
+
+        <button *ngIf="!log.obrisano" mat-icon-button color="warn" (click)="obrisi(log)" style="margin-left: auto;">
+          <mat-icon>delete</mat-icon>
+        </button>
+
+        <button *ngIf="log.obrisano" mat-icon-button color="accent" (click)="vrati(log)" style="margin-left: auto;">
+          <mat-icon>restore</mat-icon>
+        </button>
+      </div>
+      <div class="log-body">
+        <strong>Poruka:</strong> {{ log.poruka }}
+      </div>
+    </mat-card>
+  </div>
+</mat-card>

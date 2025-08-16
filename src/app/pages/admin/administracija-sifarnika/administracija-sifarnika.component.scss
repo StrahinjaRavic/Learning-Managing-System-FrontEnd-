@@ -30,9 +30,14 @@
 }
 
 .sifarnik-header {
+  margin-bottom: 0.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.sifarnik-title{
+  font-weight: 500;
 }
 
 .button-group {
@@ -76,4 +81,13 @@
   &:hover {
     background-color: #004B87;
   }
+}
+
+.transparent{
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+.icon{
+  color: #065cac;
 }

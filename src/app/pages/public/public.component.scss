@@ -75,3 +75,28 @@
 .sidenav {
   width: 250px;
 }
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.profile-image {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profile-button {
+  padding: 0;
+  border: none;
+  background: transparent;
+}
+
+.student {
+  margin-left: 200px;
+  height: 56px;
+  width: 500px;
+}

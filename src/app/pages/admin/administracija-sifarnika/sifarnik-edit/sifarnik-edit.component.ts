@@ -22,19 +22,19 @@ export class SifarnikEditComponent {
 
   constructor(
     private dialogRef: MatDialogRef<SifarnikEditComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Sifarnik,
+    @Inject(MAT_DIALOG_DATA) public data: { sifarnik: Sifarnik; title: string },
     private fb: FormBuilder
   ) {
     this.form = this.fb.group({
-      naziv: [data.naziv ?? null, Validators.required],
-      tekst: [data.tekst ?? null, Validators.required],
+      naziv: [data.sifarnik.naziv ?? null, Validators.required],
+      tekst: [data.sifarnik.tekst ?? null, Validators.required],
     });
   }
 
   save() {
     if (this.form.valid) {
       const updatedSifarnik: Sifarnik = {
-        ...this.data,
+        ...this.data.sifarnik,
         naziv: this.form.value.naziv,
         tekst: this.form.value.tekst,
       };

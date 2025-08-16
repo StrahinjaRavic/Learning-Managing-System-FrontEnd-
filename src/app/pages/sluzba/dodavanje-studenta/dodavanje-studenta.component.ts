@@ -18,28 +18,30 @@ import { OsobaService } from '../../../services/osoba.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { UlogovaniKorisnikService } from '../../../services/ulogovani-korisnik.service';
-import { AccountDialogComponent } from './account-dialog/account-dialog.component';
 import { MatRadioModule } from '@angular/material/radio';
 import { PravoPristupa } from '../../../Model/pravopristupa';
 import { PravoPristupaService } from '../../../services/pravo-pristupa.service';
 import { DodeljenoPravoPristupaService } from '../../../services/dodeljeno-pravo-pristupa.service';
 import { DodeljenoPravoPristupaCreateDTO } from '../../../Model/DTO/DodeljenoPravoPristupaCreateDTO';
-
+import { AccountDialogComponent } from '../../admin/dodavanje-osobe/account-dialog/account-dialog.component';
+import { StudentService } from '../../../services/student.service';
+import { StudentCreateDTO } from '../../../Model/DTO/StudentCreateDTO';
 @Component({
   selector: 'app-dodavanje-osobe',
   standalone: true,
-  templateUrl: './dodavanje-osobe.component.html',
-  styleUrls: ['./dodavanje-osobe.component.scss'],
+  templateUrl: './dodavanje-studenta.component.html',
+  styleUrls: ['./dodavanje-studenta.component.scss'],
   imports: [CommonModule,ReactiveFormsModule,MatCardModule,MatFormFieldModule,MatInputModule,MatSelectModule,MatButtonModule,MatAutocompleteModule,MatCheckboxModule,MatRadioModule]
-
 })
-export class DodavanjeOsobeComponent {
+export class DodavanjeStudentaComponent {
+
   private fb = inject(FormBuilder);
   mestoControl = new FormControl('', Validators.required);
   private mestoService = inject(MestoService);
   private adresaService = inject(AdresaService)
   private osobaService = inject(OsobaService)
   private pravoService = inject(PravoPristupaService)
+  private studentService = inject(StudentService)
   private ulogovaniKorisnikService = inject(UlogovaniKorisnikService)
   private dodeljenoPravoService = inject(DodeljenoPravoPristupaService)
   private dialog = inject(MatDialog)
@@ -47,15 +49,13 @@ export class DodavanjeOsobeComponent {
   mesta: Mesto[] = [];
   filteredMesta: Mesto[] = [];
   prava: PravoPristupa[] = [];
-  role_nastavnik_id: number | null = null;
-  role_admin_id: number | null = null;
+  role_student_id: number | null = null;
 
   form = this.fb.group({
     jmbg: ['', [Validators.required, Validators.pattern(/^\d{13}$/)]],
     ime: ['', Validators.required],
     prezime: ['', Validators.required],
     napraviNalog: [false],
-    tipNaloga: [1],
     adresa: this.fb.group({
       ulica: ['', Validators.required],
       broj: ['', Validators.required],
@@ -73,11 +73,9 @@ export class DodavanjeOsobeComponent {
       next: prava => {
         this.prava = prava;
 
-        const nastavnik = prava.find(p => p.naziv === 'ROLE_NASTAVNIK');
-        const admin = prava.find(p => p.naziv === 'ROLE_ADMIN');
+        const student = prava.find(p => p.naziv === 'ROLE_STUDENT');
   
-        this.role_nastavnik_id = nastavnik?.id ?? null;
-        this.role_admin_id = admin?.id ?? null;
+        this.role_student_id = student?.id ?? null;
       },
       error: err => console.error('Greška pri učitavanju prava pristupa:', err)
     });
@@ -122,7 +120,7 @@ export class DodavanjeOsobeComponent {
             this.osobaService.create(osobaData).subscribe({
               next: createdOsoba => {
                 console.log('Uspešno kreirana osoba:', createdOsoba);
-                // provera da li korisnik zeli da nalog bude napravljen
+                // provera da li se pravi nalog
                 const napraviNalog = this.form.get('napraviNalog')?.value;
                 if (napraviNalog) {
 
@@ -135,7 +133,20 @@ export class DodavanjeOsobeComponent {
                     email: null,
                     osoba_id: createdOsoba.id
                   };
-                  console.log('Pravim nalog za osobu:', createdOsoba.id);
+
+                  const student:StudentCreateDTO = {
+                    osoba_id : createdOsoba.id
+                  }
+                  // kreiranje studenta
+                  this.studentService.create(student).subscribe({
+                        next: response => {
+
+                          },
+                          error: err => {
+                            console.error('Greška pri dodeljivanju prava pristupa:', err);
+                          }
+                        });
+
                   // kreiranje naloga za osobu
                   this.ulogovaniKorisnikService.create(nalog).subscribe({
                     next: nalog => {
@@ -145,19 +156,13 @@ export class DodavanjeOsobeComponent {
                           password: nalog.lozinka
                         }
                       });
-                        console.log('tipNaloga raw value:', this.form.get('tipNaloga')?.value);
-                        console.log('typeof tipNaloga:', typeof this.form.get('tipNaloga')?.value);
                       const dodeljeno: DodeljenoPravoPristupaCreateDTO = {
                         ulogovaniKorisnik_id: nalog.id,
-                        pravoPristupa_id: Number(this.form.get('tipNaloga')?.value)
+                        pravoPristupa_id: Number(this.role_student_id)
                       };
-                      console.log(this.form.get("tipNaloga"))
-                      console.log("DODELJENO PRAVO ID:"+ dodeljeno.pravoPristupa_id)
                       // dodavanje prava pristupa kreiranom nalogu
                       this.dodeljenoPravoService.create(dodeljeno).subscribe({
                         next: response => {
-
-                          console.log('Pravo uspešno dodeljeno:', response);
 
                           },
                           error: err => {
