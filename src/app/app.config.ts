@@ -91,6 +91,14 @@ export const appConfig: ApplicationConfig = {
               ),
           },
           {
+            path: 'upis-studenta',
+            loadComponent: () =>
+              import('./pages/public/osoblje/components/upis-form/upis-form/upis-form.component').then(
+                (m) => m.UpisFormComponent
+              ),
+          },
+          {
+
             path: 'forum',
             loadComponent: () => import('./pages/public/forum/forum.component').then(m => m.ForumComponent),
           },
@@ -208,6 +216,23 @@ export const appConfig: ApplicationConfig = {
             loadComponent: () => import('./pages/public/prijava-polaganja/prijava-polaganja.component').then(m => m.PrijavaPolaganjaComponent)
           },
           {
+            path: 'sluzba/kancelarisjki-materijal',
+            loadComponent: () => import('./pages/sluzba/kancelarijski-materijal/kancelarijski-materijal.component').then(m => m.KancelarijskiMaterijalComponent)
+          },
+          {
+            path: 'sluzba/udzbenik',
+            loadComponent: () => import('./pages/sluzba/udzbenik/udzbenik.component').then(m => m.UdzbenikComponent)
+          },
+          {
+            path: 'unesi-ocenu/:studentId',
+            loadComponent: () => import('./pages/public/unesi-ocenu/unesi-ocenu.component').then(m => m.UnesiOcenuComponent)
+          },
+          {
+            path: '**',
+            loadComponent: () => import('./pages/public/not-found/not-found.component').then(m => m.NotFoundComponent)
+          },
+          {
+
             path: 'unesi-ocenu/:studentId',
             loadComponent: () => import('./pages/public/unesi-ocenu/unesi-ocenu.component').then(m => m.UnesiOcenuComponent)
           },
