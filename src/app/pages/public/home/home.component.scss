@@ -1,0 +1,24 @@
+.info-card {
+  max-width: 800px;
+  margin: 3rem auto;
+  padding: 2rem;
+  border-radius: 12px;
+  line-height: 1.6;
+
+  h2 {
+    margin-bottom: 1rem;
+  }
+
+  h3 {
+    margin-top: 2rem;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+
+    li::before {
+      content: '📌 ';
+    }
+  }
+}

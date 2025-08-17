@@ -1,0 +1,32 @@
+<div class="form-container">
+  <h2>Upis studenta na školsku godinu</h2>
+
+  <form [formGroup]="forma" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="fill" class="form-field">
+      <mat-label>Student</mat-label>
+      <mat-select formControlName="studentId" required>
+        <mat-option *ngFor="let s of studenti" [value]="s.id">
+          {{ s.osoba.ime }} {{ s.osoba.prezime }} (ID: {{ s.id }})
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="form-field">
+      <mat-label>Godina studija</mat-label>
+      <mat-select formControlName="godinaStudijaId" required>
+        <mat-option *ngFor="let g of godine" [value]="g.id">
+          {{ g.godina }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="form-field">
+      <mat-label>Datum upisa</mat-label>
+      <input matInput type="date" formControlName="datumUpisa" required />
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="submit" [disabled]="forma.invalid">
+      Upiši studenta
+    </button>
+  </form>
+</div>

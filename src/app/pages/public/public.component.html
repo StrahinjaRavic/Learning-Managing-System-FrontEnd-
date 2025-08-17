@@ -1,0 +1,67 @@
+<mat-sidenav-container class="sidenav-container" autosize>
+
+  <mat-sidenav #sidenav mode="over" class="sidenav" [fixedInViewport]="true">
+    <mat-nav-list>
+      <span class="app-title" routerLink="/" style="cursor: pointer; font-weight: bold; font-size: 1.2rem;margin-left: 50px;">
+        <mat-icon>school</mat-icon> Univerzitet
+      </span>
+      
+      <a mat-list-item routerLink="/fakultet">Fakulteti</a>
+      <a mat-list-item routerLink="/studijski-programi">Studijski programi</a>
+
+      <a mat-list-item routerLink="/student-predmeti" *ngIf="userRoles?.includes('ROLE_STUDENT')">Moji Predmeti</a>
+      <a mat-list-item routerLink="/istorija-studiranja" *ngIf="userRoles?.includes('ROLE_STUDENT')">Istorija studiranja</a>
+      <a mat-list-item routerLink="/forum" *ngIf="userRoles?.includes('ROLE_STUDENT')">Forumi</a>
+      <a mat-list-item routerLink="/prijava-ispita" *ngIf="userRoles?.includes('ROLE_STUDENT')">Prijava ispita</a>
+
+      <a mat-list-item routerLink="/admin/korisnici" *ngIf="userRoles?.includes('ROLE_ADMIN')">Registrovani Korisnici</a>
+      <a mat-list-item routerLink="/admin/studijski-programi" *ngIf="userRoles?.includes('ROLE_ADMIN')">Studijski Programi</a>
+      <a mat-list-item routerLink="/admin/sifarnici" *ngIf="userRoles?.includes('ROLE_ADMIN')">Sifarnici</a>
+      <a mat-list-item routerLink="/admin/dodavanje" *ngIf="userRoles?.includes('ROLE_ADMIN')">Dodavanje Osoblja</a>
+
+      <a mat-list-item routerLink="/upis-studenta" *ngIf="userRoles?.includes('ROLE_SLUZBA')">Upis</a>
+    </mat-nav-list>
+  </mat-sidenav>
+
+<nav class="navbar">
+  <mat-toolbar color="primary" class="toolbar" style="display: flex; justify-content: space-between;">
+    <!-- Leva strana -->
+    <div class="left-section" style="display: flex; align-items: center; gap: 1rem;">
+
+        <button style="color: black;" *ngIf="auth.isLoggedIn()" mat-icon-button (click)="sidenav.toggle()" aria-label="Menu" >
+          <mat-icon >menu</mat-icon>
+        </button>
+
+      <span class="app-title" routerLink="/" style="cursor: pointer; font-weight: bold; font-size: 1.2rem;">
+        <mat-icon>school</mat-icon> Univerzitet
+      </span>
+    </div>
+
+    <!-- Desna strana -->
+    <div class="right-section" style="display: flex; align-items: center; gap: 1.5rem;">
+      <!-- Ako je korisnik ulogovan -->
+      <ng-container *ngIf="auth.isLoggedIn(); else guestLinks">
+        <!-- Specifične funkcionalnosti po ulozi -->
+        
+
+          <app-student-pretraga (studentSelected)="selectStudent($event)"></app-student-pretraga>
+          <a class="menu-button" mat-button routerLink="/fakultet">Fakulteti</a>
+          <a class="menu-button" mat-button routerLink="/studijski-programi">Studijski programi</a>
+
+        <button mat-icon-button (click)="logout()" matTooltip="Odjava">
+          <mat-icon>logout</mat-icon>
+        </button>
+      </ng-container>
+
+      <!-- Ako nije ulogovan -->
+      <ng-template #guestLinks>
+        <a class="menu-button" mat-button routerLink="/fakultet">Fakulteti</a>
+        <a class="menu-button" mat-button routerLink="/studijski-programi">Studijski programi</a>
+        <a class="menu-button" mat-button routerLink="/login">Prijava</a>
+      </ng-template>
+    </div>
+  </mat-toolbar>
+</nav>
+
+<router-outlet></router-outlet>
+</mat-sidenav-container>

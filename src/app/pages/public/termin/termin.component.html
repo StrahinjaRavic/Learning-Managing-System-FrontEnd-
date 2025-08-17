@@ -1,0 +1,11 @@
+<h2>Termini predmeta</h2>
+<div *ngFor="let termin of termini">
+  <p><strong>ID:</strong> {{ termin.id }}</p>
+  <p><strong>Datum:</strong> {{ termin.datum }}</p>
+  <p><strong>Vreme početka:</strong> {{ formatTime(termin.vremePocetka) }}</p>
+  <p><strong>Vreme kraja:</strong> {{ formatTime(termin.vremeKraja) }}</p>
+  <label>Ishod:</label>
+  <input [(ngModel)]="termin.ishod" placeholder="Unesite ishod" />
+  <button (click)="sacuvaj(termin)">Sačuvaj</button>
+  <hr />
+</div>

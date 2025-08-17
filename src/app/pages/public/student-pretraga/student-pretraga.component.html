@@ -1,0 +1,13 @@
+<mat-form-field appearance="outline" class="student-search">
+  <input
+    matInput
+    placeholder="Pretraga studenta"
+    [formControl]="searchControl"
+    [matAutocomplete]="auto"
+  />
+  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectStudent($event.option.value)">
+    <mat-option *ngFor="let s of suggestions" [value]="s">
+      {{ s.student.osoba.ime }} {{ s.student.osoba.prezime }} - {{ s.brojIndeksa }}
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>

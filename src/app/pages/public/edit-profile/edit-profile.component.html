@@ -1,0 +1,30 @@
+<h2>Izmeni profil</h2>
+
+<form [formGroup]="form" (ngSubmit)="sacuvaj()">
+  <mat-form-field appearance="fill" class="w-100">
+    <mat-label>Korisničko ime</mat-label>
+    <input matInput formControlName="korisnickoIme" />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="w-100">
+    <mat-label>Lozinka</mat-label>
+    <input matInput type="password" formControlName="lozinka" />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="w-100">
+    <mat-label>Email</mat-label>
+    <input matInput formControlName="email" />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="w-100">
+    <mat-label>Ime</mat-label>
+    <input matInput formControlName="ime" formGroupName="osoba" />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="w-100">
+    <mat-label>Prezime</mat-label>
+    <input matInput formControlName="prezime" formGroupName="osoba" />
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" type="submit">Sačuvaj</button>
+</form>

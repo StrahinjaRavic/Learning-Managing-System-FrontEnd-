@@ -1,0 +1,268 @@
+{
+  "fakultet": [
+    {
+      "id": "1",
+      "naziv": "Fakultet tehničkih nauka",
+      "univerzitet": {
+        "naziv": "Univerzitet u Novom Sadu"
+      },
+      "dekan": {
+        "osoba": {
+          "ime": "Petar",
+          "prezime": "Petrović"
+        }
+      }
+    },
+    {
+      "id": "2",
+      "naziv": "Fakultet organizacionih nauka",
+      "univerzitet": {
+        "naziv": "Univerzitet u Beogradu"
+      },
+      "dekan": {
+        "osoba": {
+          "ime": "Ana",
+          "prezime": "Anić"
+        }
+      }
+    }
+  ],
+  "studijskiProgrami": [
+    {
+      "id": "1",
+      "naziv": "Softversko inženjerstvo",
+      "katedra": {
+        "naziv": "Računarske nauke"
+      },
+      "godineStudija": [
+        {
+          "godina": "1",
+          "realizacijePredmeta": [
+            {
+              "id": 1,
+              "predmet": {
+                "id": 101,
+                "naziv": "Uvod u programiranje",
+                "espb": 6,
+                "silabus": [
+                  {
+                    "opis": "Uvod u programiranje..."
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "godina": "2",
+          "realizacijePredmeta": [
+            {
+              "id": 2,
+              "predmet": {
+                "id": 102,
+                "naziv": "Strukture podataka",
+                "espb": 6,
+                "silabus": [
+                  {
+                    "opis": "Uvod u nesto drugo..."
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "naziv": "Informacione Tehnologije",
+      "katedra": {
+        "naziv": "nesto"
+      },
+      "godineStudija": [
+        {
+          "godina": "1",
+          "realizacijePredmeta": [
+            {
+              "id": 3,
+              "predmet": {
+                "id": 103,
+                "naziv": "Osnove baza podataka",
+                "espb": 6,
+                "silabus": [
+                  {
+                    "opis": "Uvod u programiranje..."
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "ulogovanikorisnik": [
+    {
+  "id": "1",
+  "username": "student001",
+  "password": "studentpass",
+  "email": "student001@example.com",
+  "osoba": {
+    "ime": "Marko",
+    "prezime": "Marković",
+    "jmbg": "1234567890123",
+    "datumRodjenja": "2000-01-01",
+    "student": {
+      "id": 1
+    }
+  },
+  "studentNaGodini": [
+    {
+      "id": 11,
+      "godinaStudija": 1,
+      "pohadjanjaPredmeta": [
+        {
+          "id": 111,
+          "realizacijaPredmeta": {
+            "id": 1,
+            "predmet": {
+              "id": 101,
+              "naziv": "Uvod u programiranje",
+              "espb": 6,
+              "silabus": [
+                {
+                  "opis": "Uvod u programiranje..."
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": 112,
+          "realizacijaPredmeta": {
+            "id": 2,
+            "predmet": {
+              "id": 102,
+              "naziv": "Strukture podataka",
+              "espb": 6,
+              "silabus": [
+                {
+                  "opis": "Uvod u nesto drugo..."
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "obavestenja": [],
+  "forumHasKorisnik": [],
+  "dodeljenaPravaPristupa": [
+    {
+      "id": 1,
+      "pravoPristupa": {
+        "id": 1,
+        "naziv": "STUDENT"
+      }
+    }
+  ],
+  "obrisano": false
+}
+,
+    {
+      "id": "3",
+      "username": "student002",
+      "password": "studentpass1",
+      "email": "student002@example.com",
+      "osoba": {
+        "ime": "Neko",
+        "prezime": "Nekovic",
+        "jmbg": "1234567890123",
+        "datumRodjenja": "2000-01-01"
+      },
+      "studentNaGodini": [
+        {
+          "id": 11,
+          "godinaStudija": 1,
+          "pohadjanjaPredmeta": [
+            {
+              "id": 111,
+              "realizacijaPredmeta": {
+                "id": 1,
+                "predmet": {
+                  "id": 101,
+                  "naziv": "Uvod u Engleski",
+                  "espb": 6,
+                  "silabus": [
+                    {
+                      "opis": "Uvod u engleski..."
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "id": 112,
+              "realizacijaPredmeta": {
+                "id": 2,
+                "predmet": {
+                  "id": 102,
+                  "naziv": "BLABLALBA",
+                  "espb": 6,
+                  "silabus": [
+                    {
+                      "opis": "Uvod u BLABLALBA..."
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "obavestenja": [],
+      "forumHasKorisnik": [],
+      "dodeljenaPravaPristupa": [
+        {
+          "id": 1,
+          "pravoPristupa": {
+            "id": 1,
+            "naziv": "STUDENT"
+          }
+        }
+      ],
+      "obrisano": false
+    },
+    {
+      "id": "2",
+      "username": "nastavnik001",
+      "password": "nastavnikpass",
+      "email": "nastavnik001@example.com",
+      "osoba": {
+        "ime": "Jelena",
+        "prezime": "Jovanović",
+        "jmbg": "9876543210987",
+        "datumRodjenja": "1985-05-20"
+      },
+      "obavestenja": [],
+      "forumHasKorisnik": [],
+      "dodeljenaPravaPristupa": [
+        {
+          "id": 2,
+          "pravoPristupa": {
+            "id": 2,
+            "naziv": "NASTAVNIK"
+          }
+        }
+      ],
+      "obrisano": false
+    },
+    {
+      "id": "2448",
+      "username": "Neznam",
+      "email": "mail@gmail.com",
+      "password": "nestonestonesto"
+    }
+  ]
+}

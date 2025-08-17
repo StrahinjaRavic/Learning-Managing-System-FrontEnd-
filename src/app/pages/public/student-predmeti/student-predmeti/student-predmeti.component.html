@@ -1,0 +1,12 @@
+<div *ngIf="loading">Učitavanje...</div>
+<div *ngIf="error">{{ error }}</div>
+
+<ng-container *ngIf="!loading && !error">
+  <mat-card *ngFor="let predmet of predmeti" class="mb-4">
+    <mat-card-title>{{ predmet.naziv }}</mat-card-title>
+    <mat-card-content>
+      <p>ESPB: {{ predmet.espb }}</p>
+      <p>Opis: {{ predmet.naziv }}</p>
+    </mat-card-content>
+  </mat-card>
+</ng-container>

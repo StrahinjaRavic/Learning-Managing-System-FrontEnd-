@@ -1,0 +1,86 @@
+
+<mat-card class="mat-elevation-z4">
+<input type="file" #xmlInput accept=".xml" (change)="onXMLImport($event)" hidden>
+  <div class="titleBar">
+
+    <mat-menu #filterMenu="matMenu" class="filter-menu">
+      <ng-template matMenuContent>
+        <div style="padding: 16px; max-height: 500px; overflow-y: auto; overflow-x: hidden; width: 100%; box-sizing: border-box;" (click)="$event.stopPropagation()">
+          <mat-form-field appearance="fill" style="width: 100%;">
+            <mat-label>Naziv</mat-label>
+            <input matInput [(ngModel)]="filter.naziv" (input)="applyFilter()" />
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" style="width: 100%;">
+            <mat-label>Tekst</mat-label>
+            <input matInput [(ngModel)]="filter.tekst" (input)="applyFilter()" />
+          </mat-form-field>
+
+          <mat-checkbox [(ngModel)]="filter.obrisano" (change)="applyFilter()">Prikaži obrisane</mat-checkbox>
+        </div>
+      </ng-template>
+    </mat-menu>
+
+    <button mat-icon-button [matMenuTriggerFor]="filterMenu" [matMenuTriggerRestoreFocus]="false" class="searchButton">
+      <mat-icon>search</mat-icon>
+    </button>
+
+    <div style="width: 40px;"></div>
+    <mat-card-title class="title">Administracija Šifarnika</mat-card-title>
+
+    <button mat-icon-button [matMenuTriggerFor]="menu" class="dropDown">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="generatePDF()">
+        <mat-icon>picture_as_pdf</mat-icon>
+        <span>Preuzmi PDF</span>
+      </button>
+
+      <button mat-menu-item (click)="generateXML()">
+        <mat-icon>code</mat-icon>
+        <span>Preuzmi XML</span>
+      </button>
+
+      <button mat-menu-item (click)="xmlInput.click()">
+        <mat-icon>upload</mat-icon>
+        <span>Uvezi XML</span>
+      </button>
+      
+    </mat-menu>
+  </div>
+
+  <div class="buttonBar">
+    <button mat-flat-button color="primary" (click)="dodaj()">Dodaj Šifarnik</button>
+  </div>
+
+  <div class="sifarnik-card-container">
+  <mat-card *ngFor="let sifarnik of sifarnici" class="sifarnik-card mat-elevation-z2">
+    <div class="sifarnik-header">
+      <div class="sifarnik-title">{{ sifarnik.naziv }}</div>
+      <div class="button-group">
+        <button mat-icon-button color="primary" (click)="izmeni(sifarnik)">
+          <mat-icon>edit</mat-icon>
+        </button>
+
+        <button *ngIf="!sifarnik.obrisano" mat-icon-button color="warn" (click)="obrisi(sifarnik)">
+          <mat-icon>delete</mat-icon>
+        </button>
+
+        <button *ngIf="sifarnik.obrisano" mat-icon-button color="accent" (click)="vrati(sifarnik)">
+          <mat-icon>restore</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <div class="sifarnik-body">
+      {{ sifarnik.tekst }}
+    </div>
+
+    <div class="deleted-indicator" *ngIf="sifarnik.obrisano">
+      <mat-icon color="warn" style="font-size: 16px;">delete_forever</mat-icon>
+    </div>
+  </mat-card>
+</div>
+</mat-card>

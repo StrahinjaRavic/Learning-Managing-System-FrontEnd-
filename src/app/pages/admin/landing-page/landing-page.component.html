@@ -1,0 +1,36 @@
+
+<mat-card class="welcome-card">
+  <h1>Dobrodošao, Admin</h1>
+</mat-card>
+
+<div class="dashboard-grid">
+  <mat-card class="stat-card">
+    <mat-icon>account_circle</mat-icon>
+    <div>
+      <h2>{{ korisnici }}</h2>
+      <p>Svi Korisnici</p>
+    </div>
+  </mat-card>
+
+  <mat-card class="stat-card">
+    <mat-icon>school</mat-icon>
+    <div>
+      <h2>{{ studenti }}</h2>
+      <p>Studenti</p>
+    </div>
+  </mat-card>
+
+  <mat-card class="stat-card">
+    <mat-icon>group</mat-icon>
+    <div>
+      <h2>{{ nastavnici }}</h2>
+      <p>Nastavnici</p>
+    </div>
+  </mat-card>
+</div>
+
+<div class="quick-actions">
+  <button mat-raised-button color="primary" routerLink="/admin/korisnici">Manage Users</button>
+  <button mat-raised-button color="accent" routerLink="/admin/sifarnici">Edit Sifarnici</button>
+  <button mat-raised-button color="warn" routerLink="/admin/dodavanje">Add Staff</button>
+</div>

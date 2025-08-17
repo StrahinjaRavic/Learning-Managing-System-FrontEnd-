@@ -1,0 +1,43 @@
+.forum-list-card {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 1rem;
+
+  mat-card-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #065cac;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .empty-info {
+    text-align: center;
+    color: #777;
+    margin-top: 1rem;
+    font-style: italic;
+  }
+
+  a.mat-list-item {
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: #e3f2fd;
+    }
+
+    span {
+      font-weight: 500;
+    }
+
+    mat-icon {
+      margin-right: 1rem;
+    }
+  }
+
+  .icon {
+    color: #065cac;
+  }
+}
