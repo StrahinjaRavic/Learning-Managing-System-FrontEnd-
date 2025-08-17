@@ -6,10 +6,7 @@
         <mat-icon>school</mat-icon> Univerzitet
       </span>
       
-<<<<<<< HEAD
-=======
       <a mat-list-item routerLink="/opsta-obavestenja">Obavestenja</a>
->>>>>>> main
       <a mat-list-item routerLink="/fakultet">Fakulteti</a>
       <a mat-list-item routerLink="/studijski-programi">Studijski programi</a>
 
@@ -19,13 +16,6 @@
       <a mat-list-item routerLink="/prijava-ispita" *ngIf="userRoles?.includes('ROLE_STUDENT')">Prijava ispita</a>
 
       <a mat-list-item routerLink="/admin/korisnici" *ngIf="userRoles?.includes('ROLE_ADMIN')">Registrovani Korisnici</a>
-<<<<<<< HEAD
-      <a mat-list-item routerLink="/admin/studijski-programi" *ngIf="userRoles?.includes('ROLE_ADMIN')">Studijski Programi</a>
-      <a mat-list-item routerLink="/admin/sifarnici" *ngIf="userRoles?.includes('ROLE_ADMIN')">Sifarnici</a>
-      <a mat-list-item routerLink="/admin/dodavanje" *ngIf="userRoles?.includes('ROLE_ADMIN')">Dodavanje Osoblja</a>
-
-      <a mat-list-item routerLink="/upis-studenta" *ngIf="userRoles?.includes('ROLE_SLUZBA')">Upis</a>
-=======
       <a mat-list-item routerLink="/admin/studijski-programi" *ngIf="userRoles?.includes('ROLE_ADMIN')">Admin. Studijskih Programa</a>
       <a mat-list-item routerLink="/admin/sifarnici" *ngIf="userRoles?.includes('ROLE_ADMIN')">Sifarnici</a>
       <a mat-list-item routerLink="/admin/dodavanje" *ngIf="userRoles?.includes('ROLE_ADMIN')">Dodavanje Osoblja</a>
@@ -57,7 +47,6 @@
       </div>
 
 
->>>>>>> main
     </mat-nav-list>
   </mat-sidenav>
 
@@ -75,25 +64,16 @@
       </span>
     </div>
 
-<<<<<<< HEAD
-=======
         <div class="student">
           <app-student-pretraga (studentSelected)="selectStudent($event)" *ngIf="userRoles?.includes('ROLE_NASTAVNIK')"></app-student-pretraga>
         </div>
 
->>>>>>> main
     <!-- Desna strana -->
     <div class="right-section" style="display: flex; align-items: center; gap: 1.5rem;">
       <!-- Ako je korisnik ulogovan -->
       <ng-container *ngIf="auth.isLoggedIn(); else guestLinks">
         <!-- Specifične funkcionalnosti po ulozi -->
         
-<<<<<<< HEAD
-
-          <app-student-pretraga (studentSelected)="selectStudent($event)"></app-student-pretraga>
-          <a class="menu-button" mat-button routerLink="/fakultet">Fakulteti</a>
-          <a class="menu-button" mat-button routerLink="/studijski-programi">Studijski programi</a>
-=======
         <a class="menu-button" mat-button routerLink="/fakultet">Fakulteti</a>
         <a class="menu-button" mat-button routerLink="/studijski-programi">Studijski programi</a>
           
@@ -101,7 +81,6 @@
           <img [src]="slikaUrl || 'default-avatar.png'" alt="Profile" class="profile-image"/>
         </button>
           
->>>>>>> main
 
         <button mat-icon-button (click)="logout()" matTooltip="Odjava">
           <mat-icon>logout</mat-icon>

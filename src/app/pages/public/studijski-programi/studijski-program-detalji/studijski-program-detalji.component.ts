@@ -7,8 +7,6 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
-<<<<<<< HEAD
-=======
 import { RealizacijaPredmeta } from '../../../../Model/realizacijapredmeta';
 import { RealizacijaPredmetaService } from '../../../../services/realizacija-predmeta.service';
 import { Sifarnik } from '../../../../Model/sifarnik';
@@ -16,26 +14,15 @@ import { SifarnikService } from '../../../../services/sifarnik.service';
 import { SilabusService } from '../../../../services/silabus.service';
 import { Silabus } from '../../../../Model/silabus';
 import { forkJoin } from 'rxjs';
->>>>>>> main
 
 @Component({
   selector: 'app-studijski-program-detalji',
   templateUrl: './studijski-program-detalji.component.html',
-<<<<<<< HEAD
-  standalone: true,
-=======
   styleUrls: ['./studijski-program-detalji.component.scss'],
->>>>>>> main
   imports: [MatCardModule,MatDividerModule, CommonModule, MatListModule, MatIconModule],
 })
 export class StudijskiProgramDetaljiComponent implements OnInit {
   program!: StudijskiProgram;
-<<<<<<< HEAD
-
-  constructor(
-    private route: ActivatedRoute,
-    private programService: StudijskiProgramService
-=======
   opis!: String;
   realizacijePredmeta: RealizacijaPredmeta[] = [];
   otvoreniIndex: number | null = null;
@@ -48,7 +35,6 @@ export class StudijskiProgramDetaljiComponent implements OnInit {
     private realizacijaPredmetaService: RealizacijaPredmetaService,
     private sifarnikService: SifarnikService,
     private silabusService: SilabusService
->>>>>>> main
   ) {}
 
   ngOnInit(): void {
@@ -56,11 +42,6 @@ export class StudijskiProgramDetaljiComponent implements OnInit {
     if (id) {
       this.programService.getById(id).subscribe((data) => {
         this.program = data;
-<<<<<<< HEAD
-        console.log(data)
-      });
-    }
-=======
 
         this.sifarnikService.getActive().subscribe({
           next: res => {
@@ -108,6 +89,5 @@ export class StudijskiProgramDetaljiComponent implements OnInit {
     } else {
       this.otvoreniIndex = index;
     }
->>>>>>> main
   }
 }

@@ -3,40 +3,18 @@ import { CommonModule } from '@angular/common';
 import { FakultetService } from '../../../services/fakultet.service';
 import { Fakultet } from '../../../Model/fakultet';
 import { MatCardModule } from '@angular/material/card';
-<<<<<<< HEAD
-=======
 import { KatedraService } from '../../../services/katedra.service';
 import { forkJoin } from 'rxjs';
 import { Katedra } from '../../../Model/katedra';
 import { NavigationEnd, Router } from '@angular/router';
 import { SifarnikService } from '../../../services/sifarnik.service';
 import { Sifarnik } from '../../../Model/sifarnik';
->>>>>>> main
 
 @Component({
   selector: 'app-fakultet-info',
   standalone: true,
   imports: [CommonModule, MatCardModule],
   templateUrl: './fakultet-info.component.html',
-<<<<<<< HEAD
-})
-export class FakultetInfoComponent implements OnInit {
-  fakulteti: Fakultet[] = [];
-
-  constructor(private fakultetService: FakultetService) {}
-
-  ngOnInit(): void {
-  this.fakultetService.getActive().subscribe({
-    next: res => {
-      console.log('Dobijeni fakulteti:', res);
-      this.fakulteti = res;
-    },
-    error: err => {
-      console.error('Greška pri učitavanju fakulteta:', err);
-    }
-  });
-}
-=======
   styleUrl: './fakultet-info.component.scss'
 })
 export class FakultetInfoComponent implements OnInit {
@@ -99,5 +77,4 @@ export class FakultetInfoComponent implements OnInit {
       }
     });
   }
->>>>>>> main
 }

@@ -19,10 +19,7 @@ export class LoginComponent {
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
   private router = inject(Router);
-<<<<<<< HEAD
-=======
   userRoles: string [] = [];
->>>>>>> main
 
   form = this.fb.group({
     username: ['', [Validators.required]],
@@ -41,11 +38,6 @@ export class LoginComponent {
     this.authService.login({ username, password }).subscribe({
       next: (token) => {
         console.log('Uspešna prijava, token:', token);
-<<<<<<< HEAD
-        // npr. preusmeri korisnika, npr:
-        this.router.navigate(['/admin']);
-        this.form.reset();
-=======
         this.form.reset();
 
         this.authService.userRole$.subscribe(roles => {
@@ -69,7 +61,6 @@ export class LoginComponent {
           }
           
         });
->>>>>>> main
       },
       error: (err) => {
         console.error('Greška pri prijavi', err);
