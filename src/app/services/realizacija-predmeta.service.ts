@@ -13,6 +13,10 @@ export class RealizacijaPredmetaService {
 
   constructor(private http: HttpClient) {}
 
+  getById(id: number): Observable<RealizacijaPredmeta> {
+    return this.http.get<RealizacijaPredmeta>(`${this.baseUrl}/${id}`);
+  }
+
   getPredmetiByNastavnikId(nastavnikId: number): Observable<Predmet[]> {
     return this.http.get<Predmet[]>(`${this.baseUrl}/nastavnik/${nastavnikId}`);
   }

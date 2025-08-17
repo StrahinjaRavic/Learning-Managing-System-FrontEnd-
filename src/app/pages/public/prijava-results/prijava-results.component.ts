@@ -12,7 +12,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
   selector: 'app-prijava-results',
   templateUrl: './prijava-results.component.html',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatButtonModule, MatInputModule, MatFormFieldModule],
+  imports: [CommonModule, FormsModule, MatButtonModule, MatInputModule, MatFormFieldModule,MatInputModule],
 })
 export class PrijavaResultsComponent {
   xmlContent: string = '';

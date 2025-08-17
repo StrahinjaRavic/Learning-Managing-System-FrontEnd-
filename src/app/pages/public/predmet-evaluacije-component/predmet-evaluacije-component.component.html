@@ -1,8 +1,7 @@
-<div *ngIf="evaluacije">
-  <h2>Evaluacije za predmet: {{ predmetId }}</h2>
+<div *ngIf="evaluacije" class="content">
+  <h2 *ngIf="realizacija" style="text-align: center;">Evaluacije za predmet: {{ realizacija.predmet.naziv }}</h2>
 
-  <!-- Izbor evaluacije -->
-  <mat-form-field appearance="fill" class="full-width">
+  <mat-form-field appearance="outline" class="full-width">
     <mat-label>Izaberi evaluaciju</mat-label>
     <mat-select [(ngModel)]="selektovanaEvaluacijaId" (selectionChange)="ucitajZadatke()">
       <mat-option *ngFor="let eval of evaluacije" [value]="eval.id">
@@ -11,30 +10,27 @@
     </mat-select>
   </mat-form-field>
 
-  <!-- Prikaz postojećih zadataka -->
-  <div *ngIf="zadaci.length > 0">
-    <h3>Zadaci za evaluaciju: {{ selektovanaEvaluacija?.naziv }}</h3>
-    <ul>
-      <li *ngFor="let z of zadaci">
-        <strong>{{ z.pitanje }}</strong> — {{ z.odgovori[0].odgovor }}
-      </li>
-    </ul>
+  <button mat-flat-button color="primary" (click)="otvoriDodavanjeZadatka()" [disabled]="!selektovanaEvaluacijaId">Dodaj zadatak</button>
+  
+  <div *ngIf="zadaci.length > 0" class="zadaci-box">
+    <h3 style="text-align:center; margin-bottom: 8px;">Zadaci za evaluaciju: {{ selektovanaEvaluacija.naziv }}</h3>
+
+    <mat-card *ngFor="let z of zadaci" class="zadaci">
+      <div style="font-weight: 600; margin-bottom: 8px;">{{ z.pitanje }}</div>
+
+      <div *ngIf="z.odgovori?.length > 0" class="odgovori">
+        <div *ngFor="let o of z.odgovori" class="odgovor">
+          
+          <mat-icon *ngIf="o.tacan" color="primary">check_circle</mat-icon>
+          <mat-icon *ngIf="!o.tacan" color="warn">cancel</mat-icon>
+          
+          <span style="flex: 1;">{{ o.odgovor }}</span>
+        </div>
+      </div>
+
+      <div *ngIf="!z.odgovori?.length" style="font-style: italic; color: gray; margin-left: 16px;">
+        Nema odgovora.
+      </div>
+    </mat-card>
   </div>
-
-  <!-- Forma za dodavanje novog zadatka -->
-  <form [formGroup]="forma" (ngSubmit)="sacuvajZadatak()" *ngIf="selektovanaEvaluacijaId">
-    <mat-form-field appearance="fill" class="full-width">
-      <mat-label>Pitanje</mat-label>
-      <input matInput formControlName="pitanje" />
-    </mat-form-field>
-
-    <mat-form-field appearance="fill" class="full-width">
-      <mat-label>Tačan odgovor</mat-label>
-      <input matInput formControlName="odgovori" />
-    </mat-form-field>
-
-    <button mat-raised-button color="primary" type="submit" [disabled]="forma.invalid">
-      Sačuvaj zadatak
-    </button>
-  </form>
 </div>
