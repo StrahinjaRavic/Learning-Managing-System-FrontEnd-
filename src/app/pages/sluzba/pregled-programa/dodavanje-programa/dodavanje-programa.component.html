@@ -1,0 +1,36 @@
+<h2 mat-dialog-title>Dodaj Godinu Studija</h2>
+
+<form [formGroup]="form" (ngSubmit)="submit()" class="form-container">
+
+  <!-- Godina input -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Godina</mat-label>
+    <input matInput placeholder="npr. 2024/2025" formControlName="godina" required />
+    <mat-error *ngIf="form.get('godina')?.hasError('pattern')">
+      Format mora biti: GGGG/GGGG (npr. 2024/2025)
+    </mat-error>
+    <mat-error *ngIf="form.get('godina')?.hasError('required')">
+      Godina je obavezna
+    </mat-error>
+  </mat-form-field>
+
+  <!-- Studijski program -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Studijski program</mat-label>
+    <mat-select formControlName="studijskiProgram" required>
+      <mat-option *ngFor="let program of studijskiProgrami" [value]="program">
+        {{ program.naziv }}
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="form.get('studijskiProgram')?.hasError('required')">
+      Studijski program je obavezan
+    </mat-error>
+  </mat-form-field>
+
+  <div class="button-group">
+    <button mat-button (click)="cancel()">Otkaži</button>
+    <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid">
+      Sačuvaj
+    </button>
+  </div>
+</form>

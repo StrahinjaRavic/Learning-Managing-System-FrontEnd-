@@ -6,7 +6,8 @@ export interface GodinaStudija {
   id: number;
   godina: string;
   studijskiProgram: StudijskiProgram;
-  studentNaGodini: StudentNaGodini;
+  studijskiProgram_id?: number;
+  studentNaGodini: StudentNaGodini[];
   realizacijePredmeta: RealizacijaPredmeta[];
   obrisano: boolean;
 }

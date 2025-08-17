@@ -1,0 +1,31 @@
+<mat-card class="mat-elevation-z4">
+    <div class="titleBar">
+      <mat-card-title class="title">Pregled Studijskih Programa</mat-card-title>
+    </div>
+    <div class="buttonBar">
+      <button mat-flat-button color="primary" (click)="dodaj()">Dodaj</button>
+    </div>
+
+  <mat-table [dataSource]="godineStudija" class="mat-elevation-z1">
+
+    <ng-container matColumnDef="godina">
+      <mat-header-cell *matHeaderCellDef> Godina </mat-header-cell>
+      <mat-cell *matCellDef="let godina"> {{ godina.godina }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="studijskiProgram">
+      <mat-header-cell *matHeaderCellDef> Studijski Program </mat-header-cell>
+      <mat-cell *matCellDef="let godina"> {{ godina.studijskiProgram.naziv }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="akcije">
+      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-cell *matCellDef="let godina" class="akcije"> 
+        <button mat-flat-button color="primary" (click)="otvoriRaspored(godina.id)">Pregledaj Raspored</button> 
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+</mat-card>

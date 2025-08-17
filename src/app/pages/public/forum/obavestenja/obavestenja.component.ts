@@ -48,7 +48,11 @@ export class ObavestenjaComponent implements OnInit {
     this.forumId = Number(this.route.snapshot.paramMap.get('id'));
     this.ucitajObavestenja();
     const roles = this.authService.getUserRoles();
+<<<<<<< HEAD
     this.isNastavnik = roles.includes('ROLE_PROFESOR');
+=======
+    this.isNastavnik = roles.includes('ROLE_NASTAVNIK');
+>>>>>>> main
   }
 
   ucitajObavestenja(): void {

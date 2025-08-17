@@ -16,10 +16,15 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class ForumComponent implements OnInit {
   forumi: Forum[] = [];
+<<<<<<< HEAD
+=======
+  userId!: number;
+>>>>>>> main
 
   constructor(private forumService: ForumService, private authService: AuthService) {}
 
   ngOnInit(): void {
+<<<<<<< HEAD
     const username = this.authService.getUsernameFromToken();
     if (!username) {
       console.error('Nije pronađen username u tokenu.');
@@ -35,5 +40,13 @@ export class ForumComponent implements OnInit {
       },
       error: err => console.error('Greška prilikom dobijanja ID korisnika:', err)
     });
+=======
+    this.userId = this.authService.getLoggedInUserId()!;
+
+    this.forumService.getMojiForumi(this.userId).subscribe({
+          next: res => this.forumi = res,
+          error: err => console.error('Greška prilikom učitavanja foruma:', err)
+        });
+>>>>>>> main
   }
 }

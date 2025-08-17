@@ -42,4 +42,8 @@ export class StudijskiProgramService {
   restore(id: number): Observable<void> {
     return this.http.post<void>(`${this.API_URL}/restore/${id}`, {});
   }
+
+  getByKatedraId(id: number): Observable<StudijskiProgram[]> {
+    return this.http.get<StudijskiProgram[]>(`${this.API_URL}/katedra/${id}`);
+  }
 }

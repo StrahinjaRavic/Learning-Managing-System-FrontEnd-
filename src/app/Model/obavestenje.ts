@@ -7,6 +7,8 @@ export interface Obavestenje {
     tekstObavjestenja: string,
     vremePostavljanja: string,
     korisnik: UlogovaniKorisnik,
+    ulogovaniKorisnik_id?: number,
     forum: Forum,
+    forum_id: number,
     obrisano: boolean,
 }

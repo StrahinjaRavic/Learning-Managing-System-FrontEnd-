@@ -39,15 +39,11 @@ export class AuthService {
 
   getToken(): string | null {
 
-  if (typeof window !== 'undefined' && window.localStorage) {
-    return localStorage.getItem('authToken');
+    if (typeof window !== 'undefined' && window.localStorage) {// sprečava SSR crash
+      return localStorage.getItem('authToken');
+    }
+    return null;
   }
-  return null;
-
-  if (typeof window === 'undefined') return null; // sprečava SSR crash
-  return localStorage.getItem('authToken');
-
-}
 
   getUserRolesFromToken(): string[] {
   const token = this.getToken();
@@ -120,8 +116,7 @@ export class AuthService {
     const payload = this.decodeToken();
     if (!payload) return null;
 
-    const userId = payload.sub;
-    console.log(userId)
+    const userId = payload.userId;
     return typeof userId === 'number' ? userId : parseInt(userId, 10);
   }
 

@@ -1,0 +1,52 @@
+.raspored-wrapper {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.vreme {
+  font-weight: bold;
+  background-color: #f2f2f2;
+}
+
+.dropdown {
+  width: 100%;
+  min-width: 150px;
+}
+
+tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.remove-button{
+  width: 24px;
+  height: 24px;
+  line-height:24px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.remove-icon{
+  color: red;
+  line-height: 24px;
+}
+
+.sacuvaj-button{
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}

@@ -10,7 +10,7 @@
       <mat-form-field appearance="fill" style="width: 100%;">
         <mat-label>Katedra</mat-label>
         <mat-select formControlName="katedraId">
-          <mat-option *ngFor="let katedra of katedre" [value]="katedra.id">{{ katedra.naziv }}</mat-option>
+          <mat-option *ngFor="let katedra of katedre" [value]="katedra.id">{{ katedra.naziv }} ( {{katedra.fakultet.naziv}} )</mat-option>
         </mat-select>
       </mat-form-field>
     </form>

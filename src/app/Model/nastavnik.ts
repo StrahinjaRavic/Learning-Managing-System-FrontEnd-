@@ -7,7 +7,7 @@ export interface Nastavnik {
     id: number,
     biografija: string,
     osoba: Osoba,
-    fakultet: Fakultet,
+    osoba_id?: Number,
     katedre: Katedra[],
     nastavnikHasZvanje: NastavnikHasZvanje[],
     obrisano: boolean,

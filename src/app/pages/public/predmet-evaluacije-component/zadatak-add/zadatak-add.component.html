@@ -1,0 +1,40 @@
+<h2 mat-dialog-title style="text-align:center; margin-bottom: 16px;">
+  Dodaj novi zadatak
+</h2>
+
+<mat-dialog-content style="max-height: 70vh; overflow-y: auto; padding: 16px;">
+  <form [formGroup]="forma" style="display:flex; flex-direction:column; gap:16px;">
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Pitanje</mat-label>
+      <input matInput formControlName="pitanje" placeholder="Unesite pitanje">
+    </mat-form-field>
+
+    <div formArrayName="odgovori" style="display:flex; flex-direction:column; gap:12px;">
+      <div *ngFor="let ctrl of odgovoriControls; let i = index" [formGroupName]="i" style="display:flex; align-items:center; gap:8px;">
+        
+        <mat-checkbox formControlName="tacan" style="margin-bottom:20px;"></mat-checkbox>
+        
+        <mat-form-field appearance="outline" style="flex:1;margin:0;">
+          <mat-label>Odgovor {{ i + 1 }}</mat-label>
+          <input matInput formControlName="odgovor" placeholder="Unesite odgovor">
+        </mat-form-field>
+
+        <button mat-icon-button color="warn" type="button" (click)="ukloniOdgovor(i)" *ngIf="odgovoriControls.length > 1">
+          <mat-icon>delete</mat-icon>
+        </button>
+
+      </div>
+    </div>
+
+    <button mat-stroked-button type="button" (click)="dodajOdgovor()" color="primary" style="align-self:flex-start;">
+      <mat-icon style="vertical-align:middle;">add</mat-icon> Dodaj još odgovora
+    </button>
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="otkazi()">Otkazi</button>
+  <button mat-flat-button color="primary" type="button" (click)="sacuvaj()" [disabled]="forma.invalid">Sačuvaj</button>
+</mat-dialog-actions>

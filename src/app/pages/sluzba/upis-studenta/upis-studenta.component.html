@@ -1,0 +1,49 @@
+<div style="display: flex; justify-content: center; margin-top: 40px;">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" style="width: 100%; max-width: 500px;">
+
+    <div style="display: flex; justify-content: center; margin-top: 10px; margin-bottom: 20px;">
+        <button mat-flat-button color="accent" type="button" (click)="goToKreiranjeStudenta()">
+            Kreiraj novog studenta
+        </button>
+    </div>
+
+    <mat-card style="margin-top: 50px; margin-bottom: 50px;">
+        <mat-card-title class="form-title">Upis Studenta</mat-card-title>
+        <mat-card-content class="mat-card-content">
+            <div>
+            
+                <mat-form-field appearance="outline" style="width: 100%;">
+                    <mat-label>Student</mat-label>
+
+                    <input matInput [formControl]="studentControl" [matAutocomplete]="studentAuto" placeholder="Pretraži Studente"/>
+
+                    <mat-autocomplete #studentAuto="matAutocomplete" (optionSelected)="onOsobaSelected($event.option.value)">
+                        <mat-option *ngFor="let m of filteredStudenti" [value]="m">
+                        {{ m.osoba.ime }}
+                        {{ m.osoba.prezime }}
+                        {{ m.osoba.jmbg }}
+                        </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+
+                
+                <mat-form-field appearance="outline" style="width: 100%;">
+                    <mat-label>Godina studija</mat-label>
+
+                    <input matInput [formControl]="godinaControl" [matAutocomplete]="godinaAuto" placeholder="Pretraži Godinu studija"/>
+
+                    <mat-autocomplete #godinaAuto="matAutocomplete" (optionSelected)="onGodinaSelected($event.option.value)">
+                        <mat-option *ngFor="let m of filteredGodineStudija" [value]="m">
+                        {{ m.studijskiProgram.naziv }} - {{ m.godina }}
+                        </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+
+            </div>
+            <div style="text-align: center;">
+                <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid || !form.get('student')?.value || !form.get('godinaStudija')?.value" >Upisi Osobu</button>
+            </div>
+        </mat-card-content>
+    </mat-card>
+  </form>
+</div>

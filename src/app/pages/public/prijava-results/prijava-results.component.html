@@ -1,0 +1,45 @@
+<div style="display: flex; flex-direction: column; align-items: center; gap: 16px; width: 100%; max-width: 600px; margin: 0 auto;">
+
+  
+  <div style="width: 100%; text-align: center; margin-top: 20px;">
+
+    <label style="font-weight: bold;font-size: 30px;">Unos polozenih ispita</label>
+
+    <div style="margin-top: 20px;margin-bottom: 20px;">
+      <input type="file" #fileInput (change)="uploadFile($event)" accept=".xml" hidden/>
+      <button mat-flat-button color="primary" (click)="fileInput.click()">
+        Choose File
+      </button>
+    </div>
+
+    <div style="width: 100%; text-align: center;">
+    <mat-label style="font-weight: bold; font-size: 16px; display: block; margin-bottom: 8px;">XML sadržaj:</mat-label>
+    <mat-form-field appearance="outline" style="width: 100%;">
+      <textarea matInput [(ngModel)]="xmlContent"
+                placeholder="Unesite XML ovde.."
+                style="height: 600px; overflow: auto; padding: 8px; font-family: monospace; font-size: 14px; resize: none; border-radius: 4px;">
+      </textarea>
+    </mat-form-field>
+  </div>
+  </div>
+
+  <div>
+    <button mat-flat-button color="accent" (click)="upload()">Upload</button>
+  </div>
+
+  <div *ngIf="successCount !== 0">
+    Uspešno obrađeno: {{successCount}}
+  </div>
+
+  <div *ngIf="uploadErrors.length > 0">
+    <p>Greške:</p>
+    <ul>
+      <li *ngFor="let e of uploadErrors">{{e}}</li>
+    </ul>
+  </div>
+
+  <div>
+    <button mat-flat-button (click)="downloadPdf()">Preuzmi PDF</button>
+  </div>
+
+</div>

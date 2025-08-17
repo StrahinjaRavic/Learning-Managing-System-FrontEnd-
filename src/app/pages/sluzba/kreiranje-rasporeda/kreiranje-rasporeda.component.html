@@ -1,0 +1,49 @@
+<div class="raspored-wrapper">
+  <div class="date-pickers">
+    <mat-form-field appearance="fill">
+      <mat-label>Datum početka</mat-label>
+      <input matInput [matDatepicker]="pickerOd" [(ngModel)]="datumOd">
+      <mat-datepicker-toggle matSuffix [for]="pickerOd"></mat-datepicker-toggle>
+      <mat-datepicker #pickerOd></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Datum kraja</mat-label>
+      <input matInput [matDatepicker]="pickerDo" [(ngModel)]="datumDo">
+      <mat-datepicker-toggle matSuffix [for]="pickerDo"></mat-datepicker-toggle>
+      <mat-datepicker #pickerDo></mat-datepicker>
+    </mat-form-field>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>Vreme / Dan</th>
+        <th *ngFor="let dan of dani">{{ dan }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let slot of vremenskiSlotovi; let rowIndex = index">
+        <td class="vreme">{{ slot.start }} - {{ slot.end }}</td>
+        <td *ngFor="let dan of dani; let colIndex = index">
+          <div style="display: flex; align-items: center;">
+          <mat-form-field appearance="fill" class="dropdown" style="margin-right: 4px; width: 100%;">
+            <mat-select [(ngModel)]="raspored[dan][slot.start + '-' + slot.end]">
+              <mat-option *ngFor="let rp of realizacijePredmeta" [value]="rp.id">
+                {{ rp.predmet?.naziv }} ({{ rp.nastavnik?.osoba.ime }} {{ rp.nastavnik?.osoba.prezime }})
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <button mat-icon-button color="warn" (click)="raspored[dan][slot.start + '-' + slot.end] = null" class="remove-button">
+            <mat-icon class="remove-icon">clear</mat-icon>
+          </button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="sacuvaj-button">
+    <button mat-raised-button color="primary" (click)="posaljiRaspored()">Sačuvaj raspored</button>
+  </div>
+</div>

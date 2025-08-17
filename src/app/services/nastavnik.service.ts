@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Nastavnik } from '../Model/nastavnik';
+import { NastavnikCreateDTO } from '../Model/DTO/NastavnikCreateDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -27,8 +28,12 @@ export class NastavnikService {
     getById(id: number): Observable<Nastavnik> {
       return this.http.get<Nastavnik>(`${this.API_URL}/${id}`);
     }
+
+    getByOsobaId(id: number): Observable<Nastavnik> {
+      return this.http.get<Nastavnik>(`${this.API_URL}/osoba/${id}`);
+    }
   
-    create(nastavnik: Nastavnik): Observable<Nastavnik> {
+    create(nastavnik: NastavnikCreateDTO): Observable<Nastavnik> {
       return this.http.post<Nastavnik>(this.API_URL, nastavnik);
     }
   

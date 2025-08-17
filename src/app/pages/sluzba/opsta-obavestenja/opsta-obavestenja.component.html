@@ -1,0 +1,34 @@
+<div class="container">
+  <div class="header" *ngIf="userRoles?.includes('ROLE_SLUZBA')">
+    <button mat-raised-button color="primary" (click)="dodaj()">Kreiraj obaveštenje</button>
+  </div>
+
+  <div class="obavestenja-list">
+    <mat-card class="obavestenje-card" *ngFor="let o of obavestenja">
+      <div class="card-header">
+        <div class="title">{{ o.naslov }}</div>
+        <div class="right-section">
+          <div class="date">{{ o.vremePostavljanja | date:'dd.MM.yyyy HH:mm' }}</div>
+          <div *ngIf="userRoles?.includes('ROLE_SLUZBA')">
+            <button mat-icon-button color="warn" *ngIf="!o.obrisano" (click)="obrisi(o.id)">
+                <mat-icon class="delete-button">delete</mat-icon>
+            </button>
+            <button mat-icon-button color="primary" *ngIf="o.obrisano" (click)="vrati(o.id)" >
+                <mat-icon>restore</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="tekst">
+        {{ o.tekstObavjestenja }}
+      </div>
+
+      <div class="edit-button-wrapper" *ngIf="userRoles?.includes('ROLE_SLUZBA')">
+        <button mat-icon-button color="accent" (click)="izmeni(o)">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </div>
+
+    </mat-card>
+  </div>
+</div>

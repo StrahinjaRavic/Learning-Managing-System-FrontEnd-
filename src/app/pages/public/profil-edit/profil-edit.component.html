@@ -1,0 +1,93 @@
+<div class="profile-container" *ngIf="isBrowser">
+    <div class="profile-image-wrapper">
+        <img
+        [src]="imageUrl || 'default-avatar.png'"
+        alt="Profile Image"
+        class="profile-image"
+        />
+        <button class="edit-button" (click)="fileInput.click()">✎</button>
+        <input #fileInput type="file" (change)="fileChangeEvent($event)" hidden />
+    </div>
+
+    <div class="cropper-container" *ngIf="imageChangedEvent">
+      <image-cropper
+      [imageChangedEvent]="imageChangedEvent"
+      [maintainAspectRatio]="true"
+      [aspectRatio]="1 / 1"
+      format="png"
+      (imageCropped)="imageCropped($event)"
+      [resizeToWidth]="256"
+      [cropperStaticWidth]="300"
+      [cropperStaticHeight]="300"
+      ></image-cropper>
+
+      <div class="upload-btn-wrapper">
+        <button (click)="upload()" [disabled]="!croppedImage">Upload</button>
+      </div>
+    </div>
+    <mat-card class="user-info-card" *ngIf="ulogovaniKorisnik">
+      <mat-card-title style="text-align: center; width: 100%;margin-top: 12px;">Podaci o nalogu</mat-card-title>
+      <mat-card-content>
+
+        <div *ngIf="!isEditing">
+          <p style="margin-bottom: 25px;"><strong>Korisnicko Ime:</strong> {{ ulogovaniKorisnik.korisnickoIme }}</p>
+          <p><strong>Email:</strong> {{ ulogovaniKorisnik.email }}</p>
+          <p><strong>Sifra:</strong> 
+              <span>
+                  {{ showPassword ? ulogovaniKorisnik.lozinka : '••••••••' }}
+              </span>
+              <button mat-icon-button type="button" (click)="showPassword = !showPassword" style="transform: scale(0.8); vertical-align: middle; margin-left: 4px;">
+                    <mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+              </button>
+          </p>
+          <div *ngIf="userRoles?.includes('ROLE_NASTAVNIK') && nastavnik">
+            <p><strong>Biografija:</strong></p>
+            <p style="white-space: pre-line;">{{ nastavnik.biografija || 'Dodajte biografiju klikom na dugme "Izmeni informacije".' }}</p>
+          </div>
+        </div>
+
+        <div *ngIf="isEditing">
+          <mat-form-field appearance="fill" style="width: 100%;">
+              <mat-label>Username</mat-label>
+              <input matInput [(ngModel)]="ulogovaniKorisnik.korisnickoIme">
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" style="width: 100%;">
+              <mat-label>Email</mat-label>
+              <input matInput [(ngModel)]="ulogovaniKorisnik.email">
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" style="width: 100%;">
+            <mat-label>New Password</mat-label>
+            <input matInput [type]="showNewPassword ? 'text' : 'password'" [(ngModel)]="newPassword">
+            <button mat-icon-button matSuffix (click)="showNewPassword = !showNewPassword" type="button">
+              <mat-icon>{{ showNewPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+            </button>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" style="width: 100%;">
+            <mat-label>Repeat Password</mat-label>
+            <input matInput [type]="showRepeatPassword ? 'text' : 'password'" [(ngModel)]="repeatPassword">
+            <button mat-icon-button matSuffix (click)="showRepeatPassword = !showRepeatPassword" type="button">
+              <mat-icon>{{ showRepeatPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+            </button>
+          </mat-form-field>
+
+          <div *ngIf="userRoles?.includes('ROLE_NASTAVNIK') && nastavnik">
+            <mat-form-field appearance="fill" style="width: 100%;">
+              <mat-label>Biografija</mat-label>
+              <textarea matInput rows="5" [(ngModel)]="nastavnik.biografija"></textarea>
+            </mat-form-field>
+          </div>
+          
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions align="end" style="justify-content: flex-end; display: flex; width: 100%;">
+        <button mat-button (click)="toggleEdit()">
+        {{ isEditing ? 'Cancel' : 'Izmeni informacije' }}
+        </button>
+        <button mat-flat-button color="primary" *ngIf="isEditing" (click)="saveUpdatedInfo()">Save</button>
+      </mat-card-actions>
+    </mat-card>
+</div>

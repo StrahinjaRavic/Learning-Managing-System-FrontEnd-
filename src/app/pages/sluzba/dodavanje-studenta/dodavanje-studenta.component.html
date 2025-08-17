@@ -1,0 +1,60 @@
+<div style="display: flex; justify-content: center; margin-top: 40px;">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" style="width: 100%; max-width: 500px;">
+    <mat-card class="mat-elevation-z4">
+        <mat-card-title class="form-title">Osoba</mat-card-title>
+        <mat-card-content class="mat-card-content">
+
+
+            <mat-form-field appearance="outline">
+            <mat-label>Ime</mat-label>
+            <input matInput formControlName="ime" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+            <mat-label>Prezime</mat-label>
+            <input matInput formControlName="prezime" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+            <mat-label>JMBG</mat-label>
+            <input matInput formControlName="jmbg" />
+            </mat-form-field>
+
+            <mat-checkbox *ngIf="role_student_id !== null" formControlName="napraviNalog" style="margin-top: 16px;">Napravi nalog</mat-checkbox>
+
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card style="margin-top: 50px; margin-bottom: 50px;">
+        <mat-card-title class="form-title">Adresa</mat-card-title>
+        <mat-card-content [formGroupName]="'adresa'" class="mat-card-content">
+            <div>
+                <mat-form-field appearance="outline" style="width: 100%;">
+                    <mat-label>Ulica</mat-label>
+                    <input matInput formControlName="ulica" />
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" style="width: 100%;">
+                    <mat-label>Broj</mat-label>
+                    <input matInput formControlName="broj" />
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" style="width: 100%;">
+                    <mat-label>Mesto</mat-label>
+
+                    <input matInput [formControl]="mestoControl" [matAutocomplete]="auto" placeholder="Pretraži mesto"/>
+
+                    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onMestoSelected($event.option.value)">
+                        <mat-option *ngFor="let m of filteredMesta" [value]="m.naziv">
+                        {{ m.naziv }}
+                        </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+            </div>
+            <div style="text-align: center;">
+                <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid" >Kreiraj Osobu</button>
+            </div>
+        </mat-card-content>
+    </mat-card>
+  </form>
+</div>
