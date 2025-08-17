@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { PrijavaResultsService } from '../../../services/evaluacija-results.service';
 import { PrijavaResultsUploadDTO } from '../../../Model/DTO/PrijavaResultsUploadDTO';
 import { ActivatedRoute } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { PrijavaResultsService } from '../../../services/evaluacija-results.service';
 
 @Component({
   selector: 'app-prijava-results',
