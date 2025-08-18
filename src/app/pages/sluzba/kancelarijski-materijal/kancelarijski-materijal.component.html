@@ -1,0 +1,34 @@
+<div>
+  <h3>Nova porudžbina</h3>
+  <input matInput [(ngModel)]="noviMaterijal.naziv" placeholder="Naziv">
+  <input type="number" [(ngModel)]="noviMaterijal.kolicina" placeholder="Količina">
+  <input [(ngModel)]="noviMaterijal.opis" placeholder="Opis">
+  <input [(ngModel)]="noviMaterijal.datumNarudzbine" placeholder="Datum (YYYY-MM-DD)">
+  <input [(ngModel)]="noviMaterijal.radnik" placeholder="Radnik">
+  <select [(ngModel)]="noviMaterijal.status">
+    <option value="uToku">uToku</option>
+    <option value="odobreno">odobreno</option>
+    <option value="isporuceno">isporučeno</option>
+  </select>
+  <button (click)="dodajMaterijal()">Dodaj</button>
+</div>
+
+<hr>
+
+<button (click)="prikaziIstoriju = !prikaziIstoriju">
+  {{ prikaziIstoriju ? 'Sakrij istoriju porudžbina' : 'Prikaži istoriju porudžbina' }}
+</button>
+
+<!-- Istorija porudžbina se prikazuje samo ako je prikaziIstoriju = true -->
+<div *ngIf="prikaziIstoriju">
+  <h3>Istorija porudžbina</h3>
+  <ul>
+    <li *ngFor="let m of materijali">
+      <b>{{ m.naziv }}</b> ({{ m.kolicina }}) - {{ m.opis }} <br>
+      Datum: {{ m.datumNarudzbine }}, Radnik: {{ m.radnik }}, Status: {{ m.status }}
+      <br>
+      <button (click)="obrisiMaterijal(m.id)">Obriši</button>
+      <button (click)="podesiZaIzmenu(m)">Izmeni</button>
+    </li>
+  </ul>
+</div>
