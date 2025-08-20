@@ -46,6 +46,7 @@ export class PrijavaIspitaComponent implements OnInit {
   }
 
   prijaviIspit() {
+    console.log("rgaeetsrfghfrghes")
     const predmetId = this.form.value.predmet;
     const rokId = this.aktivniRok?.id;
 

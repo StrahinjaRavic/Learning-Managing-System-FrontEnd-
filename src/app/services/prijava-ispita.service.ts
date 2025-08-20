@@ -10,11 +10,12 @@ export class PrijavaIspitaService {
 
   constructor(private http: HttpClient) {}
 
-  prijaviIspit(pohadjanjePredmetaId: number, rokId: number): Observable<any> {
-    return this.http.post(`${this.baseUrl}/prijava`, {
-      pohadjanjePredmetaId,
-      rokId,
-    });
+  getDostupnaPolaganja(studentId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/prijavapolaganjas/dostupna/${studentId}`);
+  }
+
+  prijaviIspit(studentId: number, polaganjeId: number): Observable<any> {
+    return this.http.post(`${this.baseUrl}/prijavapolaganjas/student/${studentId}/prijava/${polaganjeId}`, {});
   }
 
   getAktivniRok(): Observable<any> {

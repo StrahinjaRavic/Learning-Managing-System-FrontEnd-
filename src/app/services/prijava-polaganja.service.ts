@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Predmet } from '../Model/predmet';
 import { PrijavaPolaganja } from '../Model/prijavapolaganja';
 import { Observable } from 'rxjs';
+import { Polaganje } from '../Model/polaganje';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,7 @@ export class PrijavaPolaganjaService {
   }
 
   getDostupnaPolaganja(studentId: number): Observable<any[]> {
-  return this.http.get<any[]>(`${this.apiUrl}/prijavapolaganjas/dostupna/${studentId}`);
+  return this.http.get<Polaganje[]>(`${this.apiUrl}/prijavapolaganjas/dostupna/${studentId}`);
 }
 
 unesiOcenu(prijavaId: number, brojBodova: number): Observable<PrijavaPolaganja> {
@@ -35,6 +36,11 @@ unesiOcenu(prijavaId: number, brojBodova: number): Observable<PrijavaPolaganja> 
   getPrijaveZaStudenta(studentId: number): Observable<PrijavaPolaganja[]> {
   return this.http.get<PrijavaPolaganja[]>(`${this.apiUrl}/prijavapolaganjas/student/${studentId}`);
 }
+
+getAktivnePrijaveZaStudenta(studentId: number): Observable<PrijavaPolaganja[]> {
+  return this.http.get<PrijavaPolaganja[]>(`${this.apiUrl}/prijavapolaganjas/student/${studentId}/aktivne`);
+}
+
 
 
 }
