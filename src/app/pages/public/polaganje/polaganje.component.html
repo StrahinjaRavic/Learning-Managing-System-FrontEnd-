@@ -1,0 +1,116 @@
+<ng-container *ngIf="!testVecUradjen; else vecUradjen">
+  <div *ngIf="polaganje" class="polaganje-container">
+    <!-- Naslov evaluacije -->
+    <mat-card class="mat-elevation-z4 title">
+      <mat-card-header>
+        <mat-card-title>
+          {{ polaganje.evaluacijaZnanja.realizacijaPredmeta.predmet.naziv }} - 
+          {{ polaganje.evaluacijaZnanja.naziv }}
+        </mat-card-title>
+        <mat-card-subtitle>
+          Datum: {{ polaganje.datum | date:'short' }}
+        </mat-card-subtitle>
+      </mat-card-header>
+    </mat-card>
+
+    <!-- Zadaci -->
+    <div *ngIf="zadaci.length > 0; else noZadaci" class="zadaci-container">
+      <form>
+        <mat-card *ngFor="let z of zadaci; let i = index" 
+          class="zadaci-card mat-elevation-z2"
+          [ngClass]="{
+            'tacno': z.rezultat === true,
+            'netacno': z.rezultat === false
+          }">
+
+          <mat-card-content>
+            <p class="pitanje"><b>{{ i+1 }}.</b> {{ z.pitanje }}</p>
+
+            <!-- Ako je samo jedan tačan -->
+            <ng-container *ngIf="!z.visestrukiOdgovori; else viseTacnih">
+              <mat-radio-group class="odgovori-group" [name]="'pitanje'+i" [(ngModel)]="z.selektovani" [ngModelOptions]="{standalone: true}">
+                <mat-radio-button 
+                  *ngFor="let odg of z.odgovori" 
+                  [value]="odg.id"
+                  class="odgovor-option"
+                  [disabled]="predato">
+                  {{ odg.odgovor }}
+                </mat-radio-button>
+              </mat-radio-group>
+            </ng-container>
+
+            <!-- Ako je više tačnih -->
+            <ng-template #viseTacnih>
+              <div class="odgovori-group">
+                <mat-checkbox 
+                  *ngFor="let odg of z.odgovori" 
+                  [(ngModel)]="odg.selektovan" 
+                  [ngModelOptions]="{standalone: true}"
+                  class="odgovor-option"
+                  [disabled]="predato">
+                  {{ odg.odgovor }}
+                </mat-checkbox>
+              </div>
+            </ng-template>
+
+            <!-- Prikaz tačnih odgovora posle predaje -->
+            <div *ngIf="predato" class="resenje">
+        <p *ngIf="z.rezultat" class="tacno-text"> <mat-icon style="color: green;">check_circle</mat-icon>  Tačno!</p>
+        <p *ngIf="!z.rezultat" class="netacno-text"> <mat-icon style="color: red;">cancel</mat-icon> Netačno.</p>
+        <div *ngIf="!z.rezultat">
+          <p><b>Tačni odgovori:</b></p>
+          <ul>
+              <li *ngFor="let odg of z.odgovori" [ngClass]="{'netacan-odgovor': !odg.tacan}">
+              {{ odg.odgovor }}
+              </li>
+          </ul>
+        </div>
+      </div>
+          </mat-card-content>
+        </mat-card>
+
+        <!-- Dugme Predaj -->
+        
+      </form>
+
+      <div class="rezultat-container" *ngIf="predato">
+        <mat-card class="rezultat-card mat-elevation-z2">
+          <mat-card-content>
+            <p><b>Rezultat:</b> {{ ukupnoTacnih }}/{{ zadaci.length }} tačnih odgovora</p>
+            <p><b>Osvojeni bodovi:</b> {{ bodovi }} / 30</p>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <div class="predaj-container" *ngIf="!predato">
+          <button mat-raised-button color="primary" type="button" (click)="predaj()" [disabled]="predato">
+            Predaj
+          </button>
+      </div>
+      <div class="predaj-container" *ngIf="predato">
+          <button mat-flat-button color="primary" type="button">
+            Dalje
+          </button>
+      </div>
+    </div>
+
+    <!-- Ako nema zadataka -->
+    <ng-template #noZadaci>
+      <mat-card class="mat-elevation-z2 no-zadaci">
+        <mat-card-content>
+          <p>Nema zadataka za ovu evaluaciju.</p>
+        </mat-card-content>
+      </mat-card>
+    </ng-template>
+  </div>
+</ng-container>
+
+<ng-template #vecUradjen>
+  <mat-card class="mat-elevation-z2 no-zadaci title">
+    <mat-card-content>
+      <p><b>Ovaj test je već urađen.</b></p>
+      <p>Broj osvojenih bodova: {{ prijavaPolaganja.brojBodova }}</p>
+      <p>Datum polaganja: {{ polaganje.datum | date:'short' }}</p>
+    </mat-card-content>
+  </mat-card>
+</ng-template>

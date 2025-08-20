@@ -236,6 +236,10 @@ export const appConfig: ApplicationConfig = {
             loadComponent: () => import('./pages/public/prijava-results/prijava-results.component').then(m => m.PrijavaResultsComponent)
           },
           {
+            path: 'polaganje/:id',
+            loadComponent: () => import('./pages/public/polaganje/polaganje.component').then(m => m.PolaganjeComponent)
+          },
+          {
             path: 'unauthorized',
             loadComponent: () => import('./pages/public/unauthorized/unauthorized.component').then(m => m.UnauthorizedComponent)
           },

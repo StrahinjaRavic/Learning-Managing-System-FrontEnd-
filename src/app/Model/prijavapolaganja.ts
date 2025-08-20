@@ -5,5 +5,7 @@ export interface PrijavaPolaganja {
   id: number;
   brojBodova?: number;
   pohadjanjePredmeta: PohadjanjePredmeta;
+  pohadjanjePredmeta_id?: number
+  polaganje_id?: number
   polaganje: Polaganje;
 }
