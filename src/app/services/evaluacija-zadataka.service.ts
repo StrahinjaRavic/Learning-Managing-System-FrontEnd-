@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Odgovor } from '../Model/odgovor';
 
 @Injectable()
 export class EvaluacijaZadatakaService {
@@ -14,15 +15,15 @@ export class EvaluacijaZadatakaService {
 
   dodajZadatakZaEvaluaciju(zadatak: {
     pitanje: string;
-    odgovori: string[];
+    odgovori: Odgovor[];
     evaluacijaId: number;
   }): Observable<any> {
     return this.http.post(`${this.baseUrl}/${zadatak.evaluacijaId}/zadaci`, zadatak);
   }
 
   getZadaciZaEvaluaciju(evaluacijaId: number): Observable<any[]> {
-  return this.http.get<any[]>(`http://localhost:8080/api/zadataks/evaluacija/${evaluacijaId}`);
-}
+    return this.http.get<any[]>(`http://localhost:8080/api/zadataks/evaluacija/${evaluacijaId}`);
+  }
 
 getEvaluacija(evaluacijaId: number): Observable<any> {
   return this.http.get<any>(`${this.baseUrl}/${evaluacijaId}`);

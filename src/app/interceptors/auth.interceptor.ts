@@ -1,21 +1,36 @@
+import { HttpRequest, HttpHandlerFn, HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { Router } from '@angular/router';
 import { inject } from '@angular/core';
-import {
-  HttpInterceptorFn,
-  HttpRequest,
-  HttpHandlerFn
-} from '@angular/common/http';
 
 export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: HttpHandlerFn) => {
-  const token = localStorage.getItem('authToken'); // ili sessionStorage, u zavisnosti gde ga čuvaš
+  const router = inject(Router);
+  const token = localStorage.getItem('authToken');
+  const authReq = token
+    ? req.clone({ setHeaders: { Authorization: `Bearer ${token}` } })
+    : req;
 
-  if (token) {
-    const authReq = req.clone({
-      setHeaders: {
-        Authorization: `Bearer ${token}`
+  return next(authReq).pipe(
+    catchError(err => {
+      if (err.status === 401) {
+        const rawError = err.error?.message || err.error || '';
+        const errorMsg = typeof rawError === 'string' ? rawError : JSON.stringify(rawError);
+
+        if (
+          errorMsg.includes('Invalid JWT signature') ||
+          errorMsg.includes('expired')
+        ) {
+          localStorage.removeItem('authToken');
+          router.navigate(['/login']); 
+        }else if(
+          errorMsg.includes('Unauthorized') ||
+          err.status === 401
+        ){
+          router.navigate(['/unauthorized']);
+        }
       }
-    });
-    return next(authReq);
-  }
-
-  return next(req);
+      return throwError(() => err);
+    })
+  );
 };

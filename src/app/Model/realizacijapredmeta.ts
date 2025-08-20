@@ -1,4 +1,5 @@
 import { Predmet } from "./predmet";
+import { Silabus } from "./silabus";
 
 export interface RealizacijaPredmeta {
   id: number;
@@ -6,4 +7,5 @@ export interface RealizacijaPredmeta {
   predmet: Predmet;
   pohadjanjaPredmetaIds: number[];
   obrisano: boolean;
+  silabus?: Silabus
 }

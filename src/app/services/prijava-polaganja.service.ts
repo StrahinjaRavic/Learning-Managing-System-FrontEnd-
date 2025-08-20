@@ -42,6 +42,12 @@ getAktivnePrijaveZaStudenta(studentId: number): Observable<PrijavaPolaganja[]> {
 }
 
 
+  getById(id: number): Observable<PrijavaPolaganja> {
+    return this.http.get<PrijavaPolaganja>(`${this.apiUrl}/prijavapolaganjas/${id}`);
+  }
 
+  update(id: number, prijava: PrijavaPolaganja): Observable<PrijavaPolaganja> {
+    return this.http.put<PrijavaPolaganja>(`${this.apiUrl}/prijavapolaganjas/ocena/${id}`, prijava);
+  }
 }
   

@@ -1,6 +1,7 @@
 import { Katedra } from "./katedra";
 import { Nastavnik } from "./nastavnik";
 import { Univerzitet } from "./univerzitet";
+import { Adresa } from "./adresa";
 
 export interface Fakultet {
     id: number,
@@ -9,4 +10,7 @@ export interface Fakultet {
     dekan: Nastavnik,
     katedre: Katedra[],
     obrisano: boolean,
+    opis?: string;
+    kontakt?: string;
+    adresa: Adresa
 }

@@ -1,5 +1,6 @@
 import { Component,ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 import { Router, RouterModule,NavigationEnd } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -24,22 +25,39 @@ import { MatButtonModule } from '@angular/material/button';
 export class PublicComponent {
   @ViewChild('sidenav') sidenav!: MatSidenav;
   userRoles: string [] = [];
+  showPotvrde: boolean = false;
+  slikaUrl: string | null = null;
 
-  constructor(public auth: AuthService, private router: Router) {
+  constructor(public auth: AuthService, private router: Router,private http: HttpClient) {
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe(() => {
         if (this.sidenav && this.sidenav.opened) {
           this.sidenav.close();
         }
-      });
+    });
+
+    const userId = this.auth.getLoggedInUserId();
+    if (userId != null) {
+      this.loadProfilePhoto(userId);
+    }
+  }
+
+  loadProfilePhoto(userId: number): void {
+    const url = `http://localhost:8080/api/photos/photo/${userId}`;
+    this.http.get(url, { responseType: 'blob' }).subscribe({
+      next: (blob) => {
+        if(blob && blob.size > 0){this.slikaUrl = URL.createObjectURL(blob);}else{this.slikaUrl = 'default-avatar.png'}
+      },
+      error: (err) => {
+        return
+      }
+    });
   }
 
   ngOnInit(): void {
     this.auth.userRole$.subscribe(roles => {
-      console.log('roles from userRole$:', roles);
       this.userRoles = roles;
-      console.log('User role:', this.auth.getUserRoles());
     });
   }
 

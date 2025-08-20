@@ -82,15 +82,15 @@
       <mat-cell *matCellDef="let korisnik">
 
         <button mat-icon-button color="primary" (click)="izmeni(korisnik)">
-          <mat-icon>edit</mat-icon>
+          <mat-icon class="icon">edit</mat-icon>
         </button>
 
         <button mat-icon-button color="warn" (click)="obrisi(korisnik)">
-          <mat-icon>delete</mat-icon>
+          <mat-icon class="icon">delete</mat-icon>
         </button>
 
         <button mat-icon-button color="accent" (click)="vrati(korisnik)" *ngIf="korisnik.obrisano">
-      <mat-icon>restore</mat-icon>
+      <mat-icon class="icon">restore</mat-icon>
         </button>
 
       </mat-cell>

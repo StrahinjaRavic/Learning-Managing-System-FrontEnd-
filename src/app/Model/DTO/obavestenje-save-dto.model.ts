@@ -3,7 +3,7 @@ export interface ObavestenjeSaveDTO {
   naslov: string;
   tekstObavjestenja: string;
   vremePostavljanja: string;
-  ulogovaniKorisnik_id: number;
-  forum_id: number;
+  ulogovaniKorisnik_id?: number;
+  forum_id?: number;
   obrisano: boolean;
 }

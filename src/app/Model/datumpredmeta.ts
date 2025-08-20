@@ -4,8 +4,9 @@ import { Rok } from "./rok";
 export interface DatumPredmeta {
     id: number,
     rok: Rok,
-    ulica: string,
-    realizacijapredmeta: RealizacijaPredmeta,
+    rok_id?: number,
+    realizacijaPredmeta: RealizacijaPredmeta,
+    realizacijaPredmeta_id?: number,
     datum: Date,
     obrisano: boolean,
 }

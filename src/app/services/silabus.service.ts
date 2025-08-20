@@ -42,4 +42,8 @@ export class SilabusService {
       return this.http.post<Silabus>(this.apiUrl, dto);
     }
   }
+
+  getActive(): Observable<Silabus[]> {
+    return this.http.get<Silabus[]>(`${this.apiUrl}/active`);
+  }
 }

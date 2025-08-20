@@ -4,7 +4,7 @@
 </mat-card>
 
 <div class="dashboard-grid">
-  <mat-card class="stat-card">
+  <mat-card class="stat-card" [routerLink]="'/admin/korisnici'">
     <mat-icon>account_circle</mat-icon>
     <div>
       <h2>{{ korisnici }}</h2>
@@ -12,7 +12,7 @@
     </div>
   </mat-card>
 
-  <mat-card class="stat-card">
+  <mat-card class="stat-card" [routerLink]="'/admin/studenti'">
     <mat-icon>school</mat-icon>
     <div>
       <h2>{{ studenti }}</h2>
@@ -20,17 +20,24 @@
     </div>
   </mat-card>
 
-  <mat-card class="stat-card">
+  <mat-card class="stat-card" [routerLink]="'/admin/nastavnici'">
     <mat-icon>group</mat-icon>
     <div>
       <h2>{{ nastavnici }}</h2>
       <p>Nastavnici</p>
     </div>
   </mat-card>
+
+  <mat-card  class="stat-card" [ngClass]="{ 'neobrisano': sviLogovi.length > 0 }" [routerLink]="'/admin/pregled-gresaka'">
+    <mat-icon>warning</mat-icon>
+    <div>
+      <h2>{{ logovi }}</h2>
+      <p>Aktivne Greske</p>
+    </div>
+  </mat-card>
 </div>
 
 <div class="quick-actions">
-  <button mat-raised-button color="primary" routerLink="/admin/korisnici">Manage Users</button>
-  <button mat-raised-button color="accent" routerLink="/admin/sifarnici">Edit Sifarnici</button>
-  <button mat-raised-button color="warn" routerLink="/admin/dodavanje">Add Staff</button>
+  <button mat-raised-button color="accent" routerLink="/admin/sifarnici">Pregled Sifarnika</button>
+  <button mat-raised-button color="warn" routerLink="/admin/dodavanje">Dodaj osoblje</button>
 </div>
