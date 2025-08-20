@@ -36,6 +36,13 @@ unesiOcenu(prijavaId: number, brojBodova: number): Observable<PrijavaPolaganja> 
   return this.http.get<PrijavaPolaganja[]>(`${this.apiUrl}/prijavapolaganjas/student/${studentId}`);
 }
 
+  getById(id: number): Observable<PrijavaPolaganja> {
+    return this.http.get<PrijavaPolaganja>(`${this.apiUrl}/prijavapolaganjas/${id}`);
+  }
+
+  update(id: number, prijava: PrijavaPolaganja): Observable<PrijavaPolaganja> {
+    return this.http.put<PrijavaPolaganja>(`${this.apiUrl}/prijavapolaganjas/ocena/${id}`, prijava);
+  }
 
 }
   

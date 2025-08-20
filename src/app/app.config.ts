@@ -152,6 +152,22 @@ export const appConfig: ApplicationConfig = {
             loadComponent: () => import('./pages/public/student-pretraga/student-pretraga.component').then(m => m.StudentPretragaComponent)
           },
           {
+            path: 'udzbenici',
+            loadComponent: () => import('./pages/public/pregled-udzbenika/pregled-udzbenika.component').then(m => m.PregledUdzbenikaComponent)
+          },
+          {
+            path: 'kancelarijski-materijal',
+            loadComponent: () => import('./pages/sluzba/kancelarijski-materijal/kancelarijski-materijal.component').then(m => m.KancelarijskiMaterijalComponent)
+          },
+          {
+            path: 'udzbenici/:id',
+            loadComponent: () => import('./pages/public/citanje-knjige/citanje-knjige.component').then(m => m.CitanjeKnjigeComponent)
+          },
+          {
+            path: 'sluzba/udzbenici',
+            loadComponent: () => import('./pages/sluzba/udzbenik/udzbenik.component').then(m => m.UdzbenikComponent)
+          },
+          {
             path: 'kreiranje-studenta',
             loadComponent: () => import('./pages/sluzba/dodavanje-studenta/dodavanje-studenta.component').then(m => m.DodavanjeStudentaComponent)
           },
@@ -218,6 +234,10 @@ export const appConfig: ApplicationConfig = {
           {
             path: 'nastavnik/prijave/:id/rezultati',
             loadComponent: () => import('./pages/public/prijava-results/prijava-results.component').then(m => m.PrijavaResultsComponent)
+          },
+          {
+            path: 'polaganje/:id',
+            loadComponent: () => import('./pages/public/polaganje/polaganje.component').then(m => m.PolaganjeComponent)
           },
           {
             path: 'unauthorized',

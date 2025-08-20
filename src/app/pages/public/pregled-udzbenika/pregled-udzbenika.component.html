@@ -1,0 +1,91 @@
+<mat-card class="mat-elevation-z4">
+  <div class="titleBar">
+
+    <mat-menu #filterMenu="matMenu" class="filter-menu">
+      <ng-template matMenuContent>
+        <div style="padding: 16px; max-height: 500px; overflow-y: auto; overflow-x: hidden; width: 100%; box-sizing: border-box;" (click)="$event.stopPropagation()">
+          <mat-form-field appearance="fill" style="width: 100%;">
+            <mat-label>Naziv</mat-label>
+            <input matInput [(ngModel)]="filter.naziv" (input)="applyFilter()" />
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" style="width: 100%;">
+            <mat-label>Autor</mat-label>
+            <input matInput [(ngModel)]="filter.autor" (input)="applyFilter()" />
+          </mat-form-field>
+
+          <mat-checkbox [(ngModel)]="filter.obrisano" (change)="applyFilter()">Prikaži obrisane</mat-checkbox>
+        </div>
+      </ng-template>
+    </mat-menu>
+
+    <button mat-icon-button [matMenuTriggerFor]="filterMenu" [matMenuTriggerRestoreFocus]="false" class="searchButton">
+      <mat-icon>search</mat-icon>
+    </button>
+
+    <div style="width: 40px;"></div>
+    <mat-card-title class="title">Udžbenici</mat-card-title>
+
+    <button mat-icon-button [matMenuTriggerFor]="menu" class="dropDown" hidden>
+      <mat-icon>more_vert</mat-icon>
+    </button>
+
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item>
+        <mat-icon>picture_as_pdf</mat-icon>
+        <span>Preuzmi PDF</span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon>code</mat-icon>
+        <span>Preuzmi XML</span>
+      </button>
+    </mat-menu>
+  </div>  
+
+  <div style="margin-right: 20px;margin-left: 20px;">
+    <mat-table [dataSource]="udzbenici" class="mat-elevation-z1">
+
+      <ng-container matColumnDef="id">
+        <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
+        <mat-cell *matCellDef="let u"> {{ u.id }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="naziv">
+        <mat-header-cell *matHeaderCellDef> Naziv </mat-header-cell>
+        <mat-cell *matCellDef="let u"> {{ u.naziv }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="autor">
+        <mat-header-cell *matHeaderCellDef> Autor </mat-header-cell>
+        <mat-cell *matCellDef="let u"> {{ u.autor }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="isbn">
+        <mat-header-cell *matHeaderCellDef> ISBN </mat-header-cell>
+        <mat-cell *matCellDef="let u"> {{ u.isbn }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="kolicina">
+        <mat-header-cell *matHeaderCellDef> Količina </mat-header-cell>
+        <mat-cell *matCellDef="let u"> {{ u.kolicina }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="obrisano">
+        <mat-header-cell *matHeaderCellDef> Obrisano </mat-header-cell>
+        <mat-cell *matCellDef="let u"> {{ u.obrisano ? 'Da' : 'Ne' }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="akcije">
+        <mat-header-cell *matHeaderCellDef> Akcije </mat-header-cell>
+        <mat-cell *matCellDef="let u">
+
+          <button mat-flat-button color="primary" [routerLink]="['/udzbenici', u.id]">Čitaj</button>
+
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+  </div>
+</mat-card>
