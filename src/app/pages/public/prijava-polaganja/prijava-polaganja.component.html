@@ -29,7 +29,7 @@
         {{ prijava.polaganje.evaluacijaZnanja.realizacijaPredmeta.predmet.naziv }}
       </td>
       <td>{{ prijava.polaganje.datum }}</td>
-      <td><button>Uđi u test</button></td>
+      <td><button [routerLink]="['/polaganje', prijava.id]">Uđi u test</button></td>
     </tr>
   </tbody>
 </table>

@@ -240,6 +240,10 @@ export const appConfig: ApplicationConfig = {
             loadComponent: () => import('./pages/public/polaganje/polaganje.component').then(m => m.PolaganjeComponent)
           },
           {
+            path: 'izvestaj',
+            loadComponent: () => import('./pages/public/izvestaj-polaganja/izvestaj-polaganja.component').then(m => m.IzvestajPolaganjaComponent)
+          },
+          {
             path: 'unauthorized',
             loadComponent: () => import('./pages/public/unauthorized/unauthorized.component').then(m => m.UnauthorizedComponent)
           },
