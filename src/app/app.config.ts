@@ -156,12 +156,20 @@ export const appConfig: ApplicationConfig = {
             loadComponent: () => import('./pages/public/pregled-udzbenika/pregled-udzbenika.component').then(m => m.PregledUdzbenikaComponent)
           },
           {
+            path: 'student/biranje-predmeta',
+            loadComponent: () => import('./pages/public/student/odabir-predmeta/odabir-predmeta.component').then(m => m.OdabirPredmetaComponent)
+          },
+          {
             path: 'kancelarijski-materijal',
             loadComponent: () => import('./pages/sluzba/kancelarijski-materijal/kancelarijski-materijal.component').then(m => m.KancelarijskiMaterijalComponent)
           },
           {
             path: 'udzbenici/:id',
             loadComponent: () => import('./pages/public/citanje-knjige/citanje-knjige.component').then(m => m.CitanjeKnjigeComponent)
+          },
+          {
+            path: 'godinastudija/:id/predmeti',
+            loadComponent: () => import('./pages/sluzba/pregled-programa/pregled-predmeta/pregled-predmeta.component').then(m => m.PregledPredmetaComponent)
           },
           {
             path: 'sluzba/udzbenici',
@@ -237,7 +245,7 @@ export const appConfig: ApplicationConfig = {
           },
           {
             path: 'polaganje/:id',
-            loadComponent: () => import('./pages/public/polaganje/polaganje.component').then(m => m.PolaganjeComponent)
+            loadComponent: () => import('./pages/public/student/polaganje/polaganje.component').then(m => m.PolaganjeComponent)
           },
           {
             path: 'unauthorized',

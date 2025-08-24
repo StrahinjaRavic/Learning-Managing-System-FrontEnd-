@@ -1,0 +1,70 @@
+.student-container {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 16px;
+
+  mat-card {
+    border-radius: 12px;
+    background-color: transparent   ;
+    box-shadow: none !important;
+    margin-bottom: 20px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    .card-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .card-content {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  .student-select {
+    width: 100%;
+  }
+
+  .single-student {
+    .student-info {
+      font-weight: 600;
+      font-size: 1rem;
+      margin-bottom: 8px;
+    }
+  }
+
+  .subjects-form {
+    display: flex;
+    flex-direction: column;
+
+    .subject-item {
+      margin-bottom: 10px;
+
+      .mat-checkbox {
+        font-size: 0.95rem;
+
+        .text-danger {
+          margin-left: 6px;
+          font-weight: 500;
+          color: #d32f2f;
+        }
+      }
+    }
+
+    .select-button {
+      align-self: flex-start;
+      margin-top: 12px;
+    }
+  }
+
+  .already-selected-card { 
+    .selected-text {
+      font-size: 1rem;
+      font-weight: 500;
+      color: #1976d2;
+    }
+  }
+}
+
+

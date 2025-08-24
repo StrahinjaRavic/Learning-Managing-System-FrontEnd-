@@ -2,14 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { PrijavaPolaganjaService } from '../../../services/prijava-polaganja.service';
 import { Polaganje } from '../../../Model/polaganje';
 import { PrijavaPolaganjaSaveDTO } from '../../../Model/DTO/PrijavaPolaganjaSaveDTO';
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule} from '@angular/common';
 import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-prijava-polaganja',
   templateUrl: './prijava-polaganja.component.html',
   standalone: true,
-  imports: [DatePipe, CommonModule], // dodaj CommonModule, MatTableModule, MatButtonModule itd. po potrebi
+  imports: [CommonModule], // dodaj CommonModule, MatTableModule, MatButtonModule itd. po potrebi
 })
 export class PrijavaPolaganjaComponent implements OnInit {
   polaganja: Polaganje  [] = [];

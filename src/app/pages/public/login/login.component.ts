@@ -7,6 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterModule } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 
 @Component({
@@ -19,7 +20,10 @@ export class LoginComponent {
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
   private router = inject(Router);
+  private http = inject(HttpClient)
   userRoles: string [] = [];
+  imageUrl: string | null = null;
+
 
   form = this.fb.group({
     username: ['', [Validators.required]],
@@ -39,6 +43,7 @@ export class LoginComponent {
       next: (token) => {
         console.log('Uspešna prijava, token:', token);
         this.form.reset();
+        this.loadProfilePhoto(this.authService.getLoggedInUserId()!);
 
         this.authService.userRole$.subscribe(roles => {
           this.userRoles = roles;
@@ -66,6 +71,19 @@ export class LoginComponent {
         console.error('Greška pri prijavi', err);
         this.loginError = 'Pogrešan username ili lozinka.';
       },
+    });
+  }
+
+  loadProfilePhoto(userId: number): void {
+    const url = `http://localhost:8080/api/photos/photo/${userId}`;
+    this.http.get(url, { responseType: 'blob' }).subscribe({
+      next: (blob) => {
+        if(blob && blob.size > 0){
+          this.imageUrl = URL.createObjectURL(blob);
+          this.authService.setSlikaUrl(this.imageUrl);
+        }else{
+          this.imageUrl = 'default-avatar.png'}
+      }
     });
   }
 }

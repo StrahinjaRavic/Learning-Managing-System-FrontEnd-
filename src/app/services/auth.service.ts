@@ -8,6 +8,9 @@ export class AuthService {
   private userRolesSubject = new BehaviorSubject<string[]>(this.getUserRolesFromToken());
   userRole$ = this.userRolesSubject.asObservable();
 
+  private slikaUrlSource = new BehaviorSubject<string | null>(null);
+  slikaUrl$ = this.slikaUrlSource.asObservable();
+
   constructor(private http: HttpClient) {}
 
   login(credentials: { username: string; password: string }): Observable<string> {
@@ -166,5 +169,9 @@ export class AuthService {
   getUserIdByUsername(username: string): Observable<number> {
   return this.http.get<number>(`http://localhost:8080/api/ulogovanikorisniks/idByUsername/${username}`);
 }
+
+  setSlikaUrl(url: string) {
+    this.slikaUrlSource.next(url);
+  }
 
 }

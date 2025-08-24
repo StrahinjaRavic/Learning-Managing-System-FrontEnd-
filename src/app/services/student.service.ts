@@ -28,6 +28,10 @@ export class StudentService {
     return this.http.get<Student[]>(`${this.API_URL1}/active`);
   }
 
+  getIdByUsername(username : string): Observable<number> {
+    return this.http.get<number>(`${this.API_URL1}/idByUsername/${username}`);
+  }
+
   getAll(): Observable<Student[]> {
     return this.http.get<Student[]>(this.API_URL1);
   }
