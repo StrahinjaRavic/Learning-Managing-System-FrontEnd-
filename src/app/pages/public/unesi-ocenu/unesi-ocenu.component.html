@@ -1,9 +1,9 @@
 <h2>Unos ocena za studenta #{{ studentId }}</h2>
 
 <div *ngFor="let prijava of prijave" class="prijava-forma">
-  <h3>{{ prijava.polaganje?.evaluacijaZnanja?.realizacijaPredmeta?.predmet?.naziv || 'Nepoznat predmet' }}</h3>
-  <h3>{{ prijava.polaganje?.evaluacijaZnanja?.naziv }}</h3>
-  <p>Rok: {{ prijava.polaganje?.rok?.naziv || 'Nepoznat rok' }}</p>
+  <h3>{{ prijava.polaganje.evaluacijaZnanja.realizacijaPredmeta.predmet.naziv || 'Nepoznat predmet' }}</h3>
+  <h3>{{ prijava.polaganje.evaluacijaZnanja.naziv }}</h3>
+  <p>Rok: {{ prijava.polaganje.rok.naziv || 'Nepoznat rok' }}</p>
 
   <form [formGroup]="forme[prijava.id]" (ngSubmit)="onSubmit(prijava.id)">
     <mat-form-field appearance="fill" style="width: 100%;">
