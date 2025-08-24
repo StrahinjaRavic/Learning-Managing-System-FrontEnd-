@@ -17,6 +17,8 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ForumService } from '../../../../services/forum.service';
+import { ForumHasKorisnikCreateDTO } from '../../../../Model/DTO/forumHasKorisnikCreateDTO';
 
 @Component({
   selector: 'app-odabir-predmeta',
@@ -30,13 +32,18 @@ export class OdabirPredmetaComponent implements OnInit{
   selectedStudentNaGodini!: StudentNaGodini;
   realizacijePredmeta: RealizacijaPredmeta[] = [];
   pohadjanjaPredmeta: PohadjanjePredmeta[] = [];
+  userRoles: string [] = [];
 
   predmetiOdabrani = false;
 
-  constructor(private authService: AuthService, private studentService: StudentService, private snackBar: MatSnackBar, private pohadjanjeService: PohadjanjePredmetaService, private studentNaGodiniService: StudentNaGodiniService, private realizacijaPredmetaService: RealizacijaPredmetaService){}
+  constructor(private authService: AuthService, private forumService: ForumService, private studentService: StudentService, private snackBar: MatSnackBar, private pohadjanjeService: PohadjanjePredmetaService, private studentNaGodiniService: StudentNaGodiniService, private realizacijaPredmetaService: RealizacijaPredmetaService){}
 
   ngOnInit(): void {
     this.loadStudentiNaGodini();
+
+    this.authService.userRole$.subscribe(roles => {
+      this.userRoles = roles;
+    });
   }
 
   loadStudentiNaGodini(){
@@ -115,6 +122,7 @@ export class OdabirPredmetaComponent implements OnInit{
 
   onOdaberiPredmete() {
     const selectedRealizacije = this.realizacijePredmeta.filter(r => r.selected);
+    const korisnikId = this.authService.getLoggedInUserId();
 
     selectedRealizacije.forEach(realizacija => {
       const newPohadjanje: PohadjanjePredmeta = {
@@ -127,9 +135,30 @@ export class OdabirPredmetaComponent implements OnInit{
       this.pohadjanjeService.create(newPohadjanje).subscribe({
         next: saved => {
           console.log("Pohadjanje saved:", saved);
+
+          this.forumService.getForumByNaziv(realizacija.predmet.naziv).subscribe({
+          next: forum => {
+            if (forum && korisnikId) {
+              const fkh: ForumHasKorisnikCreateDTO = {
+                forum_id: forum.id,
+                ulogovaniKorisnik_id: korisnikId
+              };
+
+              this.forumService.addKorisnikToForum(fkh).subscribe({
+                next: fhkSaved => {
+                  console.log("Student dodat u forum:", fhkSaved);
+                },
+                error: err => {
+                  console.log("Greška pri dodavanju studenta u forum");
+                }
+              });
+            }
+          }
+        });
+
         },
         error: err => {
-          console.error("Error saving pohadjanje:", err);
+          console.log("greska pri cuvanju pohadjanja");
         }
       });
     });

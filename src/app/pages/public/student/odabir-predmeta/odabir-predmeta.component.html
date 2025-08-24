@@ -56,3 +56,9 @@
   </mat-card>
 
 </div>
+
+<mat-card *ngIf="!userRoles.includes('ROLE_STUDENT')" class="not-student-card">
+  <mat-card-content>
+    <p class="text-danger">Niste ulogovani kao student.</p>
+  </mat-card-content>
+</mat-card>

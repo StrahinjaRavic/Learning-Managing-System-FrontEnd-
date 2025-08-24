@@ -67,4 +67,19 @@
   }
 }
 
+.not-student-card {
+  margin: 20px auto;
+  padding: 16px;
+  max-width: 500px;
+  text-align: center;
+  background-color: #fdecea;
+  color: #b71c1c;
+  font-weight: 500;
+
+  .mat-card-content {
+    font-size: 16px;
+  }
+}
+
+
 
