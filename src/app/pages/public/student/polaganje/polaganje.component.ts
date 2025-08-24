@@ -12,8 +12,9 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { PrijavaPolaganjaService } from '../../../../services/prijava-polaganja.service';
+import { Router } from '@angular/router';
 import { PrijavaPolaganja } from '../../../../Model/prijavapolaganja';
+import { PrijavaPolaganjaService } from '../../../../services/prijava-polaganja.service';
 
 @Component({
   selector: 'app-polaganje',
@@ -36,7 +37,7 @@ export class PolaganjeComponent implements OnInit{
   ukupnoTacnih: number = 0;
   testVecUradjen: boolean = false;
 
-  constructor(private polaganjeService: PolaganjeService, private route: ActivatedRoute, private service: EvaluacijaZadatakaService, private prijavaService: PrijavaPolaganjaService){}
+  constructor(private polaganjeService: PolaganjeService, private route: ActivatedRoute, private service: EvaluacijaZadatakaService, private prijavaService: PrijavaPolaganjaService, private router: Router){}
 
   ngOnInit(): void {
     this.prijavaPolaganja_id = Number(this.route.snapshot.paramMap.get('id'));
@@ -133,5 +134,9 @@ export class PolaganjeComponent implements OnInit{
       return this.odabraniCheckbox[z.id]?.[odgId] || false;
     }
   }
+
+  goToPrijava() {
+  this.router.navigate(['/prijava']);
+}
 
 }
