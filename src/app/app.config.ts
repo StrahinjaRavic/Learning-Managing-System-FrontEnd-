@@ -240,7 +240,7 @@ export const appConfig: ApplicationConfig = {
             loadComponent: () => import('./pages/public/predmet-evaluacije-component/predmet-evaluacije-component.component').then(m => m.PredmetEvaluacijeComponent)
           },
           {
-            path: 'nastavnik/prijave/:id/rezultati',
+            path: 'nastavnik/prijave/rezultati',
             loadComponent: () => import('./pages/public/prijava-results/prijava-results.component').then(m => m.PrijavaResultsComponent)
           },
           {

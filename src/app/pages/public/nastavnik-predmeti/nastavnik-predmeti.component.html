@@ -3,9 +3,10 @@
 <ul *ngIf="predmeti.length > 0; else nemaPredmeta">
   <li *ngFor="let predmet of predmeti" class="predmet-item">
     {{ predmet.naziv }} (šifra: {{ predmet.brojPredavanja }})
-    <a [routerLink]="['/nastavnik/predmet', predmet.id, 'studenti']">Pregled studenata</a>
-    <button [routerLink]="['/nastavnik/silabus', predmet.id]">Uredi silabus</button>
-    <button (click)="otvoriTermine(predmet.id)">Termini i Ishodi</button>
+    <a class="link" [routerLink]="['/nastavnik/predmet', predmet.id, 'studenti']">Pregled studenata</a>
+    <a class="link" [routerLink]="['/predmeti', predmet.id, 'evaluacije']">Pregled evaluacija</a>
+    <button class="silabus-button" mat-raised-button [routerLink]="['/nastavnik/silabus', predmet.id]">Uredi silabus</button>
+    <button mat-flat-button (click)="otvoriTermine(predmet.id)">Termini i Ishodi</button>
   </li>
 </ul>
 

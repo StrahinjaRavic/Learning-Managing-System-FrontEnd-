@@ -30,7 +30,9 @@ export class OpstaObavestenjaComponent {
   loadData(){
     this.obavestenjeService.getByForumId(1).subscribe({
       next: res => {
-        this.obavestenja = res;
+        this.obavestenja = res.sort(
+          (a, b) => new Date(b.vremePostavljanja).getTime() - new Date(a.vremePostavljanja).getTime()
+        );
       }
     })
 
@@ -89,6 +91,7 @@ export class OpstaObavestenjaComponent {
 
     dialogRef.afterClosed().subscribe((result: Obavestenje | undefined) => {
           if (result) {
+            result.forum_id = result.forum.id
             this.obavestenjeService.update(result.id!, result).subscribe({
               next: updated => {
                       

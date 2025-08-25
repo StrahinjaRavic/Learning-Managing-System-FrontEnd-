@@ -1,6 +1,6 @@
 .custom-table {
   width: 100%;
-  background: #ffffff;
+  background: transparent;
   color: #fff;
 
   th, td {
@@ -8,12 +8,8 @@
     text-align: left;
   }
 
-  th {
-    background-color: #ffffff;
-  }
-
   tr:hover {
-    background-color: #a1a1a1;
+    background-color: #d3d0d059;
   }
 
   button {
@@ -36,4 +32,8 @@
   text-align: center;
   padding: 20px;
   color: #aaa;
+}
+
+.containter{
+  margin: 10px;
 }

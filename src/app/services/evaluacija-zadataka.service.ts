@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Odgovor } from '../Model/odgovor';
+import { EvaluacijaZnanja } from '../Model/evaluacijaznanja';
+import { EvaluacijaZnanjaCreateDTO } from '../Model/DTO/EvaluacijaZnanjaCreateDTO';
 
 @Injectable()
 export class EvaluacijaZadatakaService {
@@ -19,6 +21,10 @@ export class EvaluacijaZadatakaService {
     evaluacijaId: number;
   }): Observable<any> {
     return this.http.post(`${this.baseUrl}/${zadatak.evaluacijaId}/zadaci`, zadatak);
+  }
+
+  create(evaluacija: EvaluacijaZnanjaCreateDTO): Observable<EvaluacijaZnanja> {
+        return this.http.post<EvaluacijaZnanja>(this.baseUrl, evaluacija);
   }
 
   getZadaciZaEvaluaciju(evaluacijaId: number): Observable<any[]> {
