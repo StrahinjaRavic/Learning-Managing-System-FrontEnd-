@@ -33,8 +33,8 @@ export class RealizacijaPredmetaService {
     return this.http.post<void>(`${this.baseUrl}/restore/${id}`, {});
   }
 
-  getPredmetiByNastavnikId(nastavnikId: number): Observable<Predmet[]> {
-    return this.http.get<Predmet[]>(`${this.baseUrl}/nastavnik/${nastavnikId}`);
+  getPredmetiByNastavnikId(nastavnikId: number): Observable<RealizacijaPredmeta[]> {
+    return this.http.get<RealizacijaPredmeta[]>(`${this.baseUrl}/nastavnik/${nastavnikId}`);
   }
 
   getStudentiZaPredmet(predmetId: number): Observable<StudentNaPredmetu[]> {

@@ -29,6 +29,7 @@ export class TerminComponent implements OnInit {
 
   sacuvaj(termin: Termin): void {
     console.log(termin)
+    termin.realizacijaPredmeta_id = termin.realizacijaPredmeta.id
     this.terminService.updateTermin(termin).subscribe({
       next: () => alert('Uspešno sačuvano.'),
       error: () => alert('Greška pri čuvanju.')
