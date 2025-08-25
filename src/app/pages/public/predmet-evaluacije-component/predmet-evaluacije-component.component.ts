@@ -14,6 +14,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { ZadatakAddComponent } from './zadatak-add/zadatak-add.component';
 import { MatCardModule } from '@angular/material/card';
+import { EvaluacijaAddComponent } from './evaluacija-add/evaluacija-add.component';
+import { EvaluacijaZnanja } from '../../../Model/evaluacijaznanja';
+import { EvaluacijaZnanjaCreateDTO } from '../../../Model/DTO/EvaluacijaZnanjaCreateDTO';
 
 @Component({
   selector: 'app-predmet-evaluacije',
@@ -143,6 +146,33 @@ export class PredmetEvaluacijeComponent implements OnInit {
         alert('Zadatak uspešno dodat.');
       },
       error: (err) => console.error('Greška prilikom dodavanja zadatka', err)
+    });
+  }
+
+  dodajEvaluaciju(){
+    const dialogRef = this.dialog.open(EvaluacijaAddComponent, {
+      width: '800px',
+      data: {
+        naziv: '',
+        title: 'Kreiraj Evaluaciju'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((result: string | undefined) => {
+      if (result) {
+        const nova: EvaluacijaZnanjaCreateDTO = {
+          naziv: result,
+          realizacijaPredmeta_id: this.predmetId
+        }
+        this.service.create(nova).subscribe({
+          next: created => {
+            this.ucitajEvaluacije()
+          },
+          error: err => {
+            console.log(err)
+          }
+        })
+      }
     });
   }
 }

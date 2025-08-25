@@ -5,13 +5,14 @@ import { Predmet } from '../../../Model/predmet';
 import { CommonModule, NgIf } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Router } from '@angular/router';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-nastavnik-predmeti',
   templateUrl: './nastavnik-predmeti.component.html',
   styleUrls: ['./nastavnik-predmeti.component.scss'],
   standalone: true,
-  imports: [CommonModule, RouterModule, NgIf],
+  imports: [CommonModule, RouterModule, NgIf, MatButtonModule],
 })
 export class NastavnikPredmetiComponent implements OnInit {
   predmeti: Predmet[] = [];

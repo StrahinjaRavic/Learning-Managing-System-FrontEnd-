@@ -25,6 +25,7 @@ export class StudentDetaljiComponent implements OnInit {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     this.studentService.getStudentPregled(id).subscribe(data => {
       this.student = data;
+      console.log(data)
     });
   }
 

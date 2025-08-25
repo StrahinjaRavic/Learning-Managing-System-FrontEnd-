@@ -54,6 +54,7 @@ export class StudentiNaPredmetuComponent implements OnInit {
 
     this.realizacijaService.getStudentiZaPredmet(this.predmetId).subscribe({
       next: data => {
+        console.log(data)
         this.sviStudenti = data;
         this.applyFilter();
         this.loading = false;
@@ -80,4 +81,8 @@ export class StudentiNaPredmetuComponent implements OnInit {
   otvoriUnosBodova(student: any): void {
     this.router.navigate(['/unesi-ocenu', student]);
   }
+
+  goToStudentDetalji(studentNaGodiniId: number) {
+  this.router.navigate(['/student-detalji', studentNaGodiniId]);
+}
 }
