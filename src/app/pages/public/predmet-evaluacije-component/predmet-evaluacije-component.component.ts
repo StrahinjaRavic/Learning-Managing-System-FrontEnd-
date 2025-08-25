@@ -78,7 +78,8 @@ export class PredmetEvaluacijeComponent implements OnInit {
 
     ucitajEvaluacije(): void {
       this.service.getEvaluacijeZaPredmet(this.predmetId).subscribe({
-        next: (data) => this.evaluacije = data,
+        next: (data) => {
+          this.evaluacije = data},
         error: (err) => console.error('Greška prilikom učitavanja evaluacija', err)
         
       });
@@ -99,7 +100,6 @@ export class PredmetEvaluacijeComponent implements OnInit {
       dialogRef.afterClosed().subscribe(result => {
         if (result) {
           // result = { pitanje: string, odgovori: string[] }
-          console.log(result)
           this.service.dodajZadatakZaEvaluaciju({
             pitanje: result.pitanje,
             odgovori: result.odgovori,
@@ -121,7 +121,6 @@ export class PredmetEvaluacijeComponent implements OnInit {
     this.service.getZadaciZaEvaluaciju(this.selektovanaEvaluacijaId).subscribe({
       next: (res) => {
         this.zadaci = res;
-        console.log(res);
       },
       error: (err) => console.error('Greška prilikom učitavanja zadataka', err)
     });

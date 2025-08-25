@@ -6,6 +6,7 @@ import { CommonModule, NgIf } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Router } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
+import { RealizacijaPredmeta } from '../../../Model/realizacijapredmeta';
 
 @Component({
   selector: 'app-nastavnik-predmeti',
@@ -15,7 +16,7 @@ import { MatButtonModule } from '@angular/material/button';
   imports: [CommonModule, RouterModule, NgIf, MatButtonModule],
 })
 export class NastavnikPredmetiComponent implements OnInit {
-  predmeti: Predmet[] = [];
+  predmeti: RealizacijaPredmeta[] = [];
   nastavnikId!: number;
 
   constructor(
