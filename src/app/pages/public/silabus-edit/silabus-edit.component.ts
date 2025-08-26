@@ -4,12 +4,15 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Silabus } from '../../../Model/silabus';
 import { FormsModule } from '@angular/forms';
 import { NgIf } from '@angular/common';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-silabus-edit',
   templateUrl: './silabus-edit.component.html',
   styleUrls: ['./silabus-edit.component.scss'],
-  imports:[FormsModule, NgIf]
+  imports:[FormsModule, NgIf,MatFormFieldModule,MatButtonModule,MatInputModule]
 })
 export class SilabusEditComponent implements OnInit {
   silabus!: Silabus;

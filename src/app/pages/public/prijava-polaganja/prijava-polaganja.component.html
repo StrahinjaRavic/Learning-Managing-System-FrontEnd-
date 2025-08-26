@@ -1,10 +1,39 @@
+<!-- Lista dostupnih polaganja -->
 <div *ngFor="let polaganje of polaganja">
-    <p>
-      📘 Predmet: {{ polaganje.evaluacijaZnanja.realizacijaPredmeta.predmet.naziv }}<br>
-      📅 Datum evaluacije: {{ polaganje.datum }}
-    </p>
+  <p>
+    📘 Predmet:
+    {{ polaganje.evaluacijaZnanja.realizacijaPredmeta.predmet.naziv }}<br />
+    📅 Datum evaluacije: {{ polaganje.datum }}
+  </p>
   <button (click)="prijavi(polaganje.id)">Prijavi</button>
-  <p *ngIf="prijavaStatus[polaganje.id]">{{ prijavaStatus[polaganje.id] }}</p>
+  <p *ngIf="prijavaStatus[polaganje.id]">
+    {{ prijavaStatus[polaganje.id] }}
+  </p>
 
   <hr />
 </div>
+
+<!-- Aktivne prijave -->
+<h3>📋 Aktivne prijave</h3>
+<table *ngIf="aktivnePrijave.length > 0; else nemaPrijava" border="1" cellpadding="5">
+  <thead>
+    <tr>
+      <th>Predmet</th>
+      <th>Datum polaganja</th>
+      <th>Akcija</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let prijava of aktivnePrijave">
+      <td>
+        {{ prijava.polaganje.evaluacijaZnanja.realizacijaPredmeta.predmet.naziv }}
+      </td>
+      <td>{{ prijava.polaganje.datum }}</td>
+      <td><button [routerLink]="['/polaganje', prijava.id]">Uđi u test</button></td>
+    </tr>
+  </tbody>
+</table>
+
+<ng-template #nemaPrijava>
+  <p>Nema aktivnih prijava.</p>
+</ng-template>

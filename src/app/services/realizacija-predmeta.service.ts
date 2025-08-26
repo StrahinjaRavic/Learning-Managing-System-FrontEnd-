@@ -17,8 +17,24 @@ export class RealizacijaPredmetaService {
     return this.http.get<RealizacijaPredmeta>(`${this.baseUrl}/${id}`);
   }
 
-  getPredmetiByNastavnikId(nastavnikId: number): Observable<Predmet[]> {
-    return this.http.get<Predmet[]>(`${this.baseUrl}/nastavnik/${nastavnikId}`);
+  update(id: number, realizacija: RealizacijaPredmeta): Observable<RealizacijaPredmeta> {
+    return this.http.put<RealizacijaPredmeta>(`${this.baseUrl}/${id}`, realizacija);
+  }
+
+  create(realizacija: RealizacijaPredmeta): Observable<RealizacijaPredmeta> {
+    return this.http.post<RealizacijaPredmeta>(this.baseUrl, realizacija);
+  }
+
+  delete(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  }
+  
+  restore(id: number): Observable<void> {
+    return this.http.post<void>(`${this.baseUrl}/restore/${id}`, {});
+  }
+
+  getPredmetiByNastavnikId(nastavnikId: number): Observable<RealizacijaPredmeta[]> {
+    return this.http.get<RealizacijaPredmeta[]>(`${this.baseUrl}/nastavnik/${nastavnikId}`);
   }
 
   getStudentiZaPredmet(predmetId: number): Observable<StudentNaPredmetu[]> {

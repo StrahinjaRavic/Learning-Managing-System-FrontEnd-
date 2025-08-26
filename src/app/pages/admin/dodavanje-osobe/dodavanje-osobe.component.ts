@@ -52,6 +52,7 @@ export class DodavanjeOsobeComponent {
   prava: PravoPristupa[] = [];
   role_nastavnik_id: number | null = null;
   role_admin_id: number | null = null;
+  role_sluzba_id: number | null = null;
 
   form = this.fb.group({
     jmbg: ['', [Validators.required, Validators.pattern(/^\d{13}$/)]],
@@ -78,9 +79,12 @@ export class DodavanjeOsobeComponent {
 
         const nastavnik = prava.find(p => p.naziv === 'ROLE_NASTAVNIK');
         const admin = prava.find(p => p.naziv === 'ROLE_ADMIN');
+        const sluzba = prava.find(p => p.naziv === 'ROLE_SLUZBA');
+
   
         this.role_nastavnik_id = nastavnik?.id ?? null;
         this.role_admin_id = admin?.id ?? null;
+        this.role_sluzba_id = sluzba?.id ?? null
       },
       error: err => console.error('Greška pri učitavanju prava pristupa:', err)
     });

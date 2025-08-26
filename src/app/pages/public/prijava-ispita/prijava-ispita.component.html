@@ -2,15 +2,17 @@
 
 <p *ngIf="!aktivniRok">Trenutno nema aktivnog roka za prijavu.</p>
 
-<form *ngIf="aktivniRok" [formGroup]="form" (ngSubmit)="prijaviIspit()">
+<form *ngIf="aktivniRok" [formGroup]="form">
   <mat-form-field appearance="fill">
     <mat-label>Predmet</mat-label>
     <mat-select formControlName="predmet">
       <mat-option *ngFor="let p of predmeti" [value]="p.id">
-  {{ p.realizacijaPredmeta?.predmet?.naziv }}
-</mat-option>
+        {{ p.naziv }}
+      </mat-option>
     </mat-select>
   </mat-form-field>
 
-  <button mat-raised-button color="primary" type="submit">Prijavi ispit</button>
+  <button mat-raised-button color="primary" type="button" (click)="prijaviIspit()">
+    Prijavi ispit
+  </button>
 </form>

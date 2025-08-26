@@ -3,10 +3,12 @@ import { RealizacijaPredmeta } from "./realizacijapredmeta";
 import { StudentNaGodini } from "./studentnagodini";
 
 export interface PohadjanjePredmeta {
-  id: number;
-  konacnaOcena: number;
-  studentNaGodini: StudentNaGodini;
-  realizacijaPredmeta: RealizacijaPredmeta;
-  evaluacijeZnanja: EvaluacijaZnanja;
+  id?: number;
+  konacnaOcena?: number | null;
+  studentNaGodini?: StudentNaGodini;
+  realizacijaPredmeta?: RealizacijaPredmeta;
+  realizacijaPredmeta_id?: number;
+  studentNaGodini_id?: number;
+  evaluacijeZnanja?: EvaluacijaZnanja;
   obrisano: boolean;
 }

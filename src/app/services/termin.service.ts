@@ -68,9 +68,8 @@ export class TerminService {
       vremePocetka: termin.vremePocetka,
       vremeKraja: termin.vremeKraja,
       ishod: termin.ishod,
-      realizacijaPredmetaId: termin.realizacijaPredmeta_id
+      realizacijaPredmeta_id: termin.realizacijaPredmeta_id
     };
-    console.log(dto.realizacijaPredmetaId)
     return this.http.put<Termin>(`${this.API_URL}/${termin.id}`, dto);
   }
 

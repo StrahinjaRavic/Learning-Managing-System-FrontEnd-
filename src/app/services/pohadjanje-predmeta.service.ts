@@ -48,4 +48,8 @@ export class PohadjanjePredmetaService {
     getPolozeniPredmetiByStudentId(studentId: number): Observable<Predmet[]> {
       return this.http.get<Predmet[]>(`${this.API_URL}/predmeti/polozeni/${studentId}`, {});
     }
+
+    getByStudentNaGodiniId(studentNaGodiniId: number): Observable<PohadjanjePredmeta[]> {
+      return this.http.get<PohadjanjePredmeta[]>(`${this.API_URL}/studentnagodini/${studentNaGodiniId}`);
+    }
 }
