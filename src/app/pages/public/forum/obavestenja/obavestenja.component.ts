@@ -57,10 +57,6 @@ export class ObavestenjaComponent implements OnInit {
   filterText: string = '';
   odabraniStudentId!: number;
 
-  // Nastavnici
-dostupniNastavnici: any[] = [];
-filterNastavnik: string = '';
-odabraniNastavnikId!: number|null;
 
   constructor(
     private route: ActivatedRoute,
@@ -145,6 +141,7 @@ odabraniNastavnikId!: number|null;
     if (this.showKorisniciPanel) {
       this.ucitajKorisnike();
       this.ucitajDostupneStudente();
+      this.ucitajDostupneNastavnike();
     }
   }
 
@@ -199,22 +196,28 @@ odabraniNastavnikId!: number|null;
     });
   }
 
-  ucitajDostupneNastavnike(): void {
+  // Nastavnici
+dostupniNastavnici: NastavnikForumDTO[] = [];
+filterNastavnik: string = '';
+odabraniNastavnikId: number | null = null;
+
+ucitajDostupneNastavnike(): void {
+  const kriterijum = this.filterNastavnik?.trim() || null;
   this.forumService.getAvailableNastavnici(this.forumId, this.filterNastavnik).subscribe({
     next: data => {
-      console.log("Dohvaćeni dostupni nastavnici:", data); // 👈 LOG OVDE
-      this.dostupniNastavnici = data;
+      console.log("Dohvaćeni dostupni nastavnici:", data);
+      // 👇 ovde garantujemo da je id number
+      this.dostupniNastavnici = data.map((n: any) => ({ ...n, id: Number(n.id) }));
     },
     error: err => console.error('Greška pri dohvatanju dostupnih nastavnika:', err)
   });
 }
 
-
 filtriraniNastavnici(): NastavnikForumDTO[] {
-  if (!this.filterNastavnik) return this.nastavnici;
+  if (!this.filterNastavnik) return this.dostupniNastavnici;
   const filter = this.filterNastavnik.toLowerCase();
-  return this.nastavnici.filter(n =>
-    n.ime.toLowerCase().includes(filter) || n.prezime.toLowerCase().includes(filter)
+  return this.dostupniNastavnici.filter(n =>
+    (n.ime + ' ' + n.prezime).toLowerCase().includes(filter)
   );
 }
 
@@ -224,6 +227,7 @@ dodajNastavnika(): void {
   this.forumService.dodajNastavnikaNaForum(this.odabraniNastavnikId, this.forumId).subscribe({
     next: () => {
       console.log('Nastavnik dodat:', this.odabraniNastavnikId);
+      this.ucitajKorisnike();
       this.ucitajDostupneNastavnike();
       this.odabraniNastavnikId = null;
     },
@@ -231,15 +235,14 @@ dodajNastavnika(): void {
   });
 }
 
+logOdabraniNastavnik(id: number) {
+  console.log('Izabrani nastavnik ID:', id, typeof id);
+}
 ukloniNastavnika(nastavnikId: number): void {
   this.forumService.ukloniNastavnikaSaForuma(this.forumId, nastavnikId).subscribe(() => {
     this.ucitajKorisnike();
     this.ucitajDostupneNastavnike();
   });
-}
-
-logOdabraniNastavnik(id: number) {
-  console.log('Izabrani nastavnik ID:', id);
 }
 
 }

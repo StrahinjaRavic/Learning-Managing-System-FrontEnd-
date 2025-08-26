@@ -30,25 +30,25 @@
         </mat-list-item>
       </mat-list>
 
-      <!-- Dostupni nastavnici za dodavanje -->
-      <div *ngIf="isSluzba">
-        <h4>Dostupni nastavnici</h4>
-        <mat-form-field appearance="fill" class="full-width">
-          <mat-label>Filter po imenu/prezimenu</mat-label>
-          <input matInput [(ngModel)]="filterNastavnik" (ngModelChange)="ucitajDostupneNastavnike()" placeholder="Unesi kriterijum">
-        </mat-form-field>
+      <!-- Dodavanje nastavnika -->
+<div *ngIf="isSluzba" class="dodaj-nastavnika">
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Pretraži nastavnika (ime, prezime)</mat-label>
+    <input matInput [(ngModel)]="filterNastavnik" placeholder="Unesi kriterijum pretrage" (ngModelChange)="ucitajDostupneNastavnike()">
+  </mat-form-field>
 
-        <mat-form-field appearance="fill" class="full-width">
-          <mat-label>Odaberi nastavnika</mat-label>
-          <mat-select [(value)]="odabraniNastavnikId">
-            <mat-option *ngFor="let n of filtriraniNastavnici()" [value]="n.id">
-              {{ n.ime }} {{ n.prezime }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Odaberi nastavnika</mat-label>
+    <!-- KORISTI ngModel UMESTO value -->
+    <mat-select [(ngModel)]="odabraniNastavnikId" (selectionChange)="logOdabraniNastavnik($event.value)">
+      <mat-option *ngFor="let n of filtriraniNastavnici()" [value]="n.ulogovaniKorisnikId">
+        {{ n.ime }} {{ n.prezime }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
 
-        <button mat-raised-button color="primary" (click)="dodajNastavnika()">Dodaj nastavnika</button>
-      </div>
+  <button mat-raised-button color="primary" (click)="dodajNastavnika()">Dodaj</button>
+</div>
 
       <!-- Studenti -->
       <h4>Studenti</h4>
