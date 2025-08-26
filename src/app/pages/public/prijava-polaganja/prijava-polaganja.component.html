@@ -28,8 +28,17 @@
       <td>
         {{ prijava.polaganje.evaluacijaZnanja.realizacijaPredmeta.predmet.naziv }}
       </td>
-      <td>{{ prijava.polaganje.datum }}</td>
-      <td><button [routerLink]="['/polaganje', prijava.id]">Uđi u test</button></td>
+      <td>{{ prijava.polaganje.datum | date:'yyyy-MM-dd' }}</td>
+      <td>
+        <button 
+          [routerLink]="['/polaganje', prijava.id]" 
+          [disabled]="!jeDanas(prijava.polaganje.datum)">
+          Uđi u test
+        </button>
+        <p *ngIf="!jeDanas(prijava.polaganje.datum)" style="color: red;">
+          Test će biti dostupan na datum polaganja.
+        </p>
+      </td>
     </tr>
   </tbody>
 </table>

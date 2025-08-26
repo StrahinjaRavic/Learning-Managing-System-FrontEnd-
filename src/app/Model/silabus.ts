@@ -1,7 +1,7 @@
 import { Predmet } from "./predmet";
 
 export interface Silabus {
-  id: number;
+  id: number | null;
   opis: string;
   predmet?: Predmet;
   predmetId: number;

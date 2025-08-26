@@ -16,6 +16,7 @@ import { RealizacijaPredmeta } from '../../../Model/realizacijapredmeta';
   imports: [CommonModule, RouterModule, NgIf, MatButtonModule],
 })
 export class NastavnikPredmetiComponent implements OnInit {
+
   predmeti: RealizacijaPredmeta[] = [];
   nastavnikId!: number;
 
@@ -26,13 +27,13 @@ export class NastavnikPredmetiComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const username = this.authService.getUsernameFromToken();
-    if (!username) {
+    const userId = this.authService.getUserId();
+    if (!userId) {
       console.error('Nije pronađen username u tokenu');
       return;
     }
 
-    this.authService.getNastavnikIdByUsername(username).subscribe((id) => {
+    this.authService.getNastavnikIdByUserId(userId).subscribe((id) => {
       if (id == null) {
         console.error('Nastavnik sa datim username-om nije pronađen');
         return;

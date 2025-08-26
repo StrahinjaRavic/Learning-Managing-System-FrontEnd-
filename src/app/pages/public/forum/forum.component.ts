@@ -17,15 +17,20 @@ import { MatIconModule } from '@angular/material/icon';
 export class ForumComponent implements OnInit {
   forumi: Forum[] = [];
   userId!: number;
+  isSluzba: boolean = false;
 
   constructor(private forumService: ForumService, private authService: AuthService) {}
 
   ngOnInit(): void {
-    this.userId = this.authService.getLoggedInUserId()!;
+  this.userId = this.authService.getLoggedInUserId()!;
+  const roles = this.authService.getUserRoles();
 
-    this.forumService.getMojiForumi(this.userId).subscribe({
-          next: res => this.forumi = res,
-          error: err => console.error('Greška prilikom učitavanja foruma:', err)
-        });
-  }
+  const isSluzba = roles.includes('ROLE_SLUZBA');
+
+  this.forumService.getMojiForumi(this.userId, isSluzba).subscribe({
+    next: res => this.forumi = res,
+    error: err => console.error('Greška prilikom učitavanja foruma:', err)
+  });
+}
+
 }

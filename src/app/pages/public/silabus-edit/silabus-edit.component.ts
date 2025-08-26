@@ -43,7 +43,7 @@ export class SilabusEditComponent implements OnInit {
         } else {
           // Ako nema silabusa, napravi prazan objekat za edit
           this.silabus = {
-            id: 0,
+            id: null,
             opis: '',
             predmetId: predmetId,
             obrisano: false

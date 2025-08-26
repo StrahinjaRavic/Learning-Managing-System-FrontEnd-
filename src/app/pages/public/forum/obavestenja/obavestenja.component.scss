@@ -1,23 +1,33 @@
 .obavestenja-wrapper {
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 100px); // ili koliko ti treba
+  height: calc(100vh - 100px);
   padding: 16px;
+  background: #f9f9fb; // svetla neutralna pozadina
 }
 
 .obavestenja-lista {
   flex: 1;
+  padding-top: 80px;
   overflow-y: auto;
   padding-right: 8px;
 }
 
 .obavestenje-kutija {
-  background-color: #1e1e2f;
-  color: white;
+  background-color: #ffffff; // bela kartica
+  color: #2c2c2c; // tamni tekst
   border-radius: 10px;
-  padding: 12px 16px;
-  margin-bottom: 12px;
+  padding: 14px 18px;
+  margin-bottom: 14px;
   position: relative;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+
+  // dodaj mali hover efekat da obaveštenja "iskaču"
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 14px rgba(0,0,0,0.12);
+  }
 }
 
 .obavestenje-header {
@@ -34,7 +44,7 @@
 
 .vreme {
   font-size: 0.8rem;
-  color: #aaaaaa;
+  color: #888; // malo tamnija siva da bude čitljivije
 }
 
 .akcije {
@@ -43,27 +53,34 @@
 }
 
 .obavestenje-sadrzaj {
-  margin-top: 8px;
+  margin-top: 10px;
 }
 
 .obavestenje-sadrzaj h4.naslov {
   margin: 0;
   font-weight: 600;
-  color: #80cbc4;
+  color: #1565c0; // jača plava za akcenat
+  font-size: 1.05rem;
 }
 
 .obavestenje-sadrzaj p {
   margin: 4px 0 0;
+  color: #444;
 }
 
 textarea[matInput],
 input[matInput] {
   width: 100%;
-  background: #2e2e42;
-  color: white;
+  background: #fefefe; 
+  color: #2c2c2c;
   border-radius: 4px;
   padding: 6px;
-  border: 1px solid #555;
+  border: 1px solid #bbb;
+  transition: border-color 0.2s;
+  &:focus {
+    border-color: #1565c0; // fokus naglašen plavom
+    outline: none;
+  }
 }
 
 .dugmici {
@@ -74,8 +91,8 @@ input[matInput] {
 
 .nova-poruka {
   padding: 16px;
-  background: #121212;
-  border-top: 1px solid #444;
+  background: #ffffff;
+  border-top: 1px solid #ddd;
   position: sticky;
   bottom: 0;
   left: 0;
@@ -91,4 +108,35 @@ input[matInput] {
 .posalji-dugme {
   display: flex;
   justify-content: flex-end;
+}
+
+.korisnici-dugme {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  z-index: 1100;
+}
+
+.korisnici-panel {
+  width: 600px;
+  max-height: 70vh;
+  overflow-y: auto;
+  position: fixed;
+  top: 70px;
+  right: 20px;
+  background-color: #fff;
+  padding: 12px;
+  z-index: 1050;
+  border-radius: 8px;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+
+  h4 {
+    margin-top: 10px;
+    margin-bottom: 6px;
+    color: #1565c0; // naglašen naslov
+  }
+
+  mat-list-item {
+    margin-bottom: 5px;
+  }
 }
