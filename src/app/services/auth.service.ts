@@ -147,24 +147,30 @@ export class AuthService {
 }
 
 
-  getNastavnikIdByUsername(username: string): Observable<number | null> {
-    if (!username) return of(null);
-    return this.http.get<number>(`${this.apiUrl}/nastavniks/idByUsername/${username}`)
-      .pipe(
-        catchError(() => of(null))
-      );
-  }
-
-  getStudentIdByUsername(username: string): Observable<number | null> {
-    if (!username) return of(null);
-    return this.http.get<number>(`${this.apiUrl}/students/idByUsername/${username}`)
-      .pipe(
-        catchError(() => of(null))
-      );
-  }
-
-  getUserIdByUsername(username: string): Observable<number> {
-  return this.http.get<number>(`http://localhost:8080/api/ulogovanikorisniks/idByUsername/${username}`);
+  getNastavnikIdByUserId(userId: number): Observable<number | null> {
+  if (!userId) return of(null);
+  return this.http.get<number>(`${this.apiUrl}/nastavniks/idByUser/${userId}`)
+    .pipe(
+      catchError(() => of(null))
+    );
 }
+
+getStudentIdByUserId(userId: number): Observable<number | null> {
+  if (!userId) return of(null);
+  return this.http.get<number>(`${this.apiUrl}/students/idByUser/${userId}`)
+    .pipe(
+      catchError(() => of(null))
+    );
+}
+
+
+  getUserId(): number | null {
+  const token = localStorage.getItem('authToken');
+  if (!token) return null;
+
+  const payload = JSON.parse(atob(token.split('.')[1]));
+  return payload.userId || null;
+}
+
 
 }

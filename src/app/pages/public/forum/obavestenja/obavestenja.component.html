@@ -1,7 +1,90 @@
-
-
 <div class="obavestenja-wrapper">
 
+  <!-- Dugme za korisnike -->
+  <div class="korisnici-dugme">
+    <button mat-raised-button color="accent" (click)="toggleKorisniciPanel()">
+      Prikaži korisnike
+      <mat-icon>{{ showKorisniciPanel ? 'expand_less' : 'expand_more' }}</mat-icon>
+    </button>
+  </div>
+
+  <!-- Panel sa korisnicima -->
+  <mat-card class="korisnici-panel mat-elevation-z8" *ngIf="showKorisniciPanel">
+    <mat-card-header>
+      <mat-card-title>Korisnici foruma</mat-card-title>
+    </mat-card-header>
+
+    <mat-divider></mat-divider>
+
+    <mat-card-content>
+      <!-- Nastavnici -->
+      <h4>Postojeći nastavnici</h4>
+      <mat-list>
+        <mat-list-item *ngFor="let n of nastavnici">
+          <mat-icon matListIcon>person</mat-icon>
+          <span>{{ n.ime }} {{ n.prezime }}</span>
+          <span class="spacer"></span>
+          <button *ngIf="isSluzba" mat-mini-button color="warn" (click)="ukloniNastavnika(n.id)">
+            Ukloni
+          </button>
+        </mat-list-item>
+      </mat-list>
+
+      <!-- Dostupni nastavnici za dodavanje -->
+      <div *ngIf="isSluzba">
+        <h4>Dostupni nastavnici</h4>
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Filter po imenu/prezimenu</mat-label>
+          <input matInput [(ngModel)]="filterNastavnik" (ngModelChange)="ucitajDostupneNastavnike()" placeholder="Unesi kriterijum">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Odaberi nastavnika</mat-label>
+          <mat-select [(value)]="odabraniNastavnikId">
+            <mat-option *ngFor="let n of filtriraniNastavnici()" [value]="n.id">
+              {{ n.ime }} {{ n.prezime }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" (click)="dodajNastavnika()">Dodaj nastavnika</button>
+      </div>
+
+      <!-- Studenti -->
+      <h4>Studenti</h4>
+      <mat-list>
+        <mat-list-item *ngFor="let s of studenti">
+          <mat-icon matListIcon>school</mat-icon>
+          <span>{{ s.ime }} {{ s.prezime }} ({{ s.brojIndeksa }})</span>
+          <span class="spacer"></span>
+          <button *ngIf="isNastavnik" mat-mini-button color="warn" (click)="ukloniStudenta(s.id)">
+            Ukloni
+          </button>
+        </mat-list-item>
+      </mat-list>
+
+      <!-- Dodavanje studenta -->
+      <div *ngIf="isNastavnik" class="dodaj-studenta">
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Pretraži studenta (JMBG, indeks, ime, prezime)</mat-label>
+          <input matInput [(ngModel)]="filterText" placeholder="Unesi kriterijum pretrage">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Odaberi studenta</mat-label>
+          <mat-select [(value)]="odabraniStudentId">
+            <mat-option *ngFor="let s of filtriraniStudenti()" [value]="s.id">
+              {{ s.ime }} {{ s.prezime }} ({{ s.brojIndeksa }}) - JMBG: {{ s.jmbg }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" (click)="dodajStudenta()">Dodaj</button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Lista obaveštenja -->
   <div class="obavestenja-lista">
     <div *ngFor="let o of obavestenja" class="obavestenje-kutija mat-elevation-z2">
 
@@ -40,11 +123,10 @@
           <p>{{ o.tekstObavjestenja }}</p>
         </ng-template>
       </div>
-
     </div>
   </div>
 
-  <!-- Forma za unos -->
+  <!-- Nova poruka -->
   <div *ngIf="isNastavnik" class="nova-poruka mat-elevation-z4">
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Naslov</mat-label>
@@ -60,5 +142,4 @@
       <button mat-raised-button color="primary" (click)="dodajObavestenje()">Pošalji</button>
     </div>
   </div>
-
 </div>

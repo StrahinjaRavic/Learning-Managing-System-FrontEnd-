@@ -25,10 +25,10 @@ export class PrijavaPolaganjaComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const username = this.authService.getUsernameFromToken();
+    const userId = this.authService.getUserId();
 
-    if (username) {
-      this.authService.getStudentIdByUsername(username).subscribe({
+    if (userId) {
+      this.authService.getStudentIdByUserId(userId).subscribe({
         next: (studentId) => {
           if (studentId) {
             this.studentId = studentId;
@@ -41,7 +41,7 @@ export class PrijavaPolaganjaComponent implements OnInit {
         error: (err) => console.error('Greška pri dohvatanju studentId:', err),
       });
     } else {
-      console.error('Username nije pronađen u tokenu.');
+      console.error('UserId nije pronađen u tokenu.');
     }
   }
 
@@ -92,5 +92,16 @@ export class PrijavaPolaganjaComponent implements OnInit {
           this.prijavaStatus[polaganjeId] = 'Greška pri prijavi.';
         },
       });
+  }
+
+  jeDanas(datumPolaganja: string | Date): boolean {
+    const danas = new Date();
+    const datum = new Date(datumPolaganja);
+
+    return (
+      datum.getFullYear() === danas.getFullYear() &&
+      datum.getMonth() === danas.getMonth() &&
+      datum.getDate() === danas.getDate()
+    );
   }
 }

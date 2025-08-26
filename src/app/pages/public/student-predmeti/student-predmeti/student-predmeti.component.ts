@@ -23,14 +23,14 @@ export class StudentPredmetiComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-  const username = this.authService.getUsernameFromToken();
-  if (!username) {
+  const userId = this.authService.getUserId();
+  if (!userId) {
     console.error('Nije pronađen username u tokenu.');
     return;
   }
-  console.log(username)
+  console.log(userId)
 
-  this.authService.getStudentIdByUsername(username).subscribe({
+  this.authService.getStudentIdByUserId(userId).subscribe({
     next: (studentId) => {
       if (studentId !== null && studentId !== undefined) {
         this.loading = true;

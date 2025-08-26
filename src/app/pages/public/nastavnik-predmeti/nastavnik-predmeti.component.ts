@@ -5,6 +5,7 @@ import { Predmet } from '../../../Model/predmet';
 import { CommonModule, NgIf } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Router } from '@angular/router';
+import { RealizacijaPredmeta } from '../../../Model/realizacijapredmeta';
 
 @Component({
   selector: 'app-nastavnik-predmeti',
@@ -14,7 +15,7 @@ import { Router } from '@angular/router';
   imports: [CommonModule, RouterModule, NgIf],
 })
 export class NastavnikPredmetiComponent implements OnInit {
-  predmeti: Predmet[] = [];
+  realizacijaPredmeta: RealizacijaPredmeta[] = [];
   nastavnikId!: number;
 
   constructor(
@@ -24,13 +25,13 @@ export class NastavnikPredmetiComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const username = this.authService.getUsernameFromToken();
-    if (!username) {
+    const userId = this.authService.getUserId();
+    if (!userId) {
       console.error('Nije pronađen username u tokenu');
       return;
     }
 
-    this.authService.getNastavnikIdByUsername(username).subscribe((id) => {
+    this.authService.getNastavnikIdByUserId(userId).subscribe((id) => {
       if (id == null) {
         console.error('Nastavnik sa datim username-om nije pronađen');
         return;
@@ -47,7 +48,7 @@ export class NastavnikPredmetiComponent implements OnInit {
 
   loadPredmeti(nastavnikId: number): void {
     this.realizacijaPredmetaService.getPredmetiByNastavnikId(nastavnikId).subscribe({
-      next: (data) => (this.predmeti = data),
+      next: (data) => (this.realizacijaPredmeta = data),
       error: (err) => console.error('Greška pri učitavanju predmeta:', err),
     });
   }

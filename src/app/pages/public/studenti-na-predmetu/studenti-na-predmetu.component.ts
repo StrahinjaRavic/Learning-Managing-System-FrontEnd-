@@ -14,7 +14,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-studenti-na-predmetu',
+  selector: 'app-studenti-na-realizaciji',
   templateUrl: './studenti-na-predmetu.component.html',
   styleUrls: ['./studenti-na-predmetu.component.scss'],
   standalone: true,
@@ -26,7 +26,7 @@ import { Router } from '@angular/router';
 export class StudentiNaPredmetuComponent implements OnInit {
   studenti: StudentNaPredmetu[] = [];
   sviStudenti: StudentNaPredmetu[] = [];
-  predmetId!: number;
+  realizacijaId!: number;
   loading = true;
   error = '';
   displayedColumns: string[] = ['ime', 'prezime', 'jmbg', 'brojIndeksa', 'akcije'];
@@ -44,15 +44,15 @@ export class StudentiNaPredmetuComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.predmetId = Number(this.route.snapshot.paramMap.get('predmetId'));
+    this.realizacijaId = Number(this.route.snapshot.paramMap.get('predmetId'));
 
-    if (!this.predmetId) {
-      this.error = 'Nevažeći predmet ID';
+    if (!this.realizacijaId) {
+      this.error = 'Nevažeći ID realizacije predmeta';
       this.loading = false;
       return;
     }
 
-    this.realizacijaService.getStudentiZaPredmet(this.predmetId).subscribe({
+    this.realizacijaService.getStudentiZaPredmet(this.realizacijaId).subscribe({
       next: data => {
         this.sviStudenti = data;
         this.applyFilter();

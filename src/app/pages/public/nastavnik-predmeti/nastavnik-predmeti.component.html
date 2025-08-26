@@ -1,11 +1,11 @@
 <h2>Predmeti na kojima ste aktivni</h2>
 
-<ul *ngIf="predmeti.length > 0; else nemaPredmeta">
-  <li *ngFor="let predmet of predmeti" class="predmet-item">
-    {{ predmet.naziv }} (šifra: {{ predmet.brojPredavanja }})
-    <a [routerLink]="['/nastavnik/predmet', predmet.id, 'studenti']">Pregled studenata</a>
-    <button [routerLink]="['/nastavnik/silabus', predmet.id]">Uredi silabus</button>
-    <button (click)="otvoriTermine(predmet.id)">Termini i Ishodi</button>
+<ul *ngIf="realizacijaPredmeta.length > 0; else nemaPredmeta">
+  <li *ngFor="let realizacijaPredmeta of realizacijaPredmeta" class="predmet-item">
+    {{ realizacijaPredmeta.predmet.naziv }} (šifra: {{ realizacijaPredmeta.predmet.brojPredavanja }})
+    <a [routerLink]="['/nastavnik/predmet', realizacijaPredmeta.id,'studenti']">Pregled studenata</a>
+    <button [routerLink]="['/nastavnik/silabus', realizacijaPredmeta.id]">Uredi silabus</button>
+    <button (click)="otvoriTermine(realizacijaPredmeta.id)">Termini i Ishodi</button>
   </li>
 </ul>
 

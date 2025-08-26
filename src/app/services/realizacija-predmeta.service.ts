@@ -17,12 +17,12 @@ export class RealizacijaPredmetaService {
     return this.http.get<RealizacijaPredmeta>(`${this.baseUrl}/${id}`);
   }
 
-  getPredmetiByNastavnikId(nastavnikId: number): Observable<Predmet[]> {
-    return this.http.get<Predmet[]>(`${this.baseUrl}/nastavnik/${nastavnikId}`);
+  getPredmetiByNastavnikId(nastavnikId: number): Observable<RealizacijaPredmeta[]> {
+    return this.http.get<RealizacijaPredmeta[]>(`${this.baseUrl}/nastavnik/${nastavnikId}`);
   }
 
   getStudentiZaPredmet(predmetId: number): Observable<StudentNaPredmetu[]> {
-    return this.http.get<StudentNaPredmetu[]>(`${this.baseUrl}/studentipredmet/${predmetId}`);
+    return this.http.get<StudentNaPredmetu[]>(`${this.baseUrl}/studentirealizacija/${predmetId}`);
   }
 
   getRealizacijaByGodinaStudijaId(godinaStudijaid: number): Observable<RealizacijaPredmeta[]> {

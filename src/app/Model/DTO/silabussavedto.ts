@@ -1,5 +1,5 @@
 export interface SilabusSaveDTO {
-  id: number;
+  id: number | null;
   opis: string;
   predmet_id: number;
   obrisano: boolean;
