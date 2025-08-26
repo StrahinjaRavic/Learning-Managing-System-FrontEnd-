@@ -3,7 +3,7 @@ import { PrijavaPolaganjaService } from '../../../services/prijava-polaganja.ser
 import { Polaganje } from '../../../Model/polaganje';
 import { PrijavaPolaganja } from '../../../Model/prijavapolaganja';
 import { PrijavaPolaganjaSaveDTO } from '../../../Model/DTO/PrijavaPolaganjaSaveDTO';
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule, DatePipe} from '@angular/common';
 import { AuthService } from '../../../services/auth.service';
 import { RouterLink } from '@angular/router';
 
@@ -11,7 +11,7 @@ import { RouterLink } from '@angular/router';
   selector: 'app-prijava-polaganja',
   templateUrl: './prijava-polaganja.component.html',
   standalone: true,
-  imports: [DatePipe, CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink],
 })
 export class PrijavaPolaganjaComponent implements OnInit {
   polaganja: Polaganje[] = [];

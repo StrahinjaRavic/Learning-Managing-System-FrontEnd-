@@ -1,0 +1,64 @@
+<div class="student-container" *ngIf="loggedInStudentNaGodini.length">
+
+  <!-- Student Selection Card -->
+  <mat-card class="student-card">
+    <mat-card-content class="card-content">
+
+      <!-- Multiple students -->
+      <div *ngIf="loggedInStudentNaGodini.length > 1" class="multiple-students">
+        <mat-form-field appearance="fill" class="student-select">
+          <mat-label>Godina studija</mat-label>
+          <mat-select [(ngModel)]="selectedStudentNaGodini" (selectionChange)="onStudentNaGodiniChange($event.value)">
+            <mat-option *ngFor="let sng of loggedInStudentNaGodini" [value]="sng">
+              {{ sng.godinaStudija.studijskiProgram.naziv }} {{ sng.godinaStudija.godina }} - {{ sng.brojIndeksa }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <!-- Single student -->
+      <div *ngIf="loggedInStudentNaGodini.length === 1" class="single-student">
+        <p class="student-info">
+          {{ selectedStudentNaGodini.godinaStudija.studijskiProgram.naziv }} 
+          {{ selectedStudentNaGodini.godinaStudija.godina }} - {{ selectedStudentNaGodini.brojIndeksa }}
+        </p>
+      </div>
+
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Subjects Selection Card -->
+  <mat-card *ngIf="!predmetiOdabrani" class="subjects-card">
+    <mat-card-title class="card-title">Odaberite predmete</mat-card-title>
+    <mat-card-content class="card-content">
+      <form class="subjects-form">
+        <div *ngFor="let realizacija of realizacijePredmeta" class="subject-item">
+          <mat-checkbox [(ngModel)]="realizacija.selected" 
+                        [disabled]="realizacija.predmet.obavezan"
+                        name="realizacija-{{ realizacija.id }}">
+            {{ realizacija.predmet.naziv }}
+            <span *ngIf="realizacija.predmet.obavezan" class="text-danger">(Obavezan)</span>
+          </mat-checkbox>
+        </div>
+
+        <button mat-flat-button color="primary" type="button" class="select-button" (click)="onOdaberiPredmete()">
+          Odaberi
+        </button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Already Selected -->
+  <mat-card *ngIf="predmetiOdabrani" class="already-selected-card">
+    <mat-card-content>
+      <p class="selected-text">Predmeti su već odabrani.</p>
+    </mat-card-content>
+  </mat-card>
+
+</div>
+
+<mat-card *ngIf="!userRoles.includes('ROLE_STUDENT')" class="not-student-card">
+  <mat-card-content>
+    <p class="text-danger">Niste ulogovani kao student.</p>
+  </mat-card-content>
+</mat-card>

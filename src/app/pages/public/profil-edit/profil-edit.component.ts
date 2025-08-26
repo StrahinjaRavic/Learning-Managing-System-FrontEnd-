@@ -80,7 +80,11 @@ export class ProfilEditComponent implements OnInit{
     const url = `http://localhost:8080/api/photos/photo/${userId}`;
     this.http.get(url, { responseType: 'blob' }).subscribe({
       next: (blob) => {
-        if(blob && blob.size > 0){this.imageUrl = URL.createObjectURL(blob);}else{this.imageUrl = 'default-avatar.png'}
+        if(blob && blob.size > 0){
+          this.imageUrl = URL.createObjectURL(blob);
+          this.authService.setSlikaUrl(this.imageUrl);
+        }else{
+          this.imageUrl = 'default-avatar.png'}
       }
     });
   }
@@ -123,7 +127,6 @@ export class ProfilEditComponent implements OnInit{
       next: (response) => {
         this.loadProfilePhoto(userId);
         this.imageChangedEvent = '';
-        window.location.reload();
       },
       error: (err) => {
         console.error('Upload error:', err);

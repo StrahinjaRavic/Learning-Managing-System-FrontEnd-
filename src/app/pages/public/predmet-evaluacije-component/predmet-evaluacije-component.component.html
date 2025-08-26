@@ -1,11 +1,17 @@
 <div *ngIf="evaluacije" class="content">
   <h2 *ngIf="realizacija" style="text-align: center;">Evaluacije za predmet: {{ realizacija.predmet.naziv }}</h2>
 
+  <button mat-flat-button (click)="dodajEvaluaciju()"> Dodaj evaluaciju </button>
+
   <mat-form-field appearance="outline" class="full-width">
     <mat-label>Izaberi evaluaciju</mat-label>
     <mat-select [(ngModel)]="selektovanaEvaluacijaId" (selectionChange)="ucitajZadatke()">
       <mat-option *ngFor="let eval of evaluacije" [value]="eval.id">
         {{ eval.naziv }}
+      </mat-option>
+
+      <mat-option *ngIf="evaluacije.length === 0" disabled>
+        Nema evaluacija za ovaj predmet
       </mat-option>
     </mat-select>
   </mat-form-field>

@@ -14,6 +14,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { ZadatakAddComponent } from './zadatak-add/zadatak-add.component';
 import { MatCardModule } from '@angular/material/card';
+import { EvaluacijaAddComponent } from './evaluacija-add/evaluacija-add.component';
+import { EvaluacijaZnanja } from '../../../Model/evaluacijaznanja';
+import { EvaluacijaZnanjaCreateDTO } from '../../../Model/DTO/EvaluacijaZnanjaCreateDTO';
 
 @Component({
   selector: 'app-predmet-evaluacije',
@@ -75,7 +78,8 @@ export class PredmetEvaluacijeComponent implements OnInit {
 
     ucitajEvaluacije(): void {
       this.service.getEvaluacijeZaPredmet(this.predmetId).subscribe({
-        next: (data) => this.evaluacije = data,
+        next: (data) => {
+          this.evaluacije = data},
         error: (err) => console.error('Greška prilikom učitavanja evaluacija', err)
         
       });
@@ -96,7 +100,6 @@ export class PredmetEvaluacijeComponent implements OnInit {
       dialogRef.afterClosed().subscribe(result => {
         if (result) {
           // result = { pitanje: string, odgovori: string[] }
-          console.log(result)
           this.service.dodajZadatakZaEvaluaciju({
             pitanje: result.pitanje,
             odgovori: result.odgovori,
@@ -118,7 +121,6 @@ export class PredmetEvaluacijeComponent implements OnInit {
     this.service.getZadaciZaEvaluaciju(this.selektovanaEvaluacijaId).subscribe({
       next: (res) => {
         this.zadaci = res;
-        console.log(res);
       },
       error: (err) => console.error('Greška prilikom učitavanja zadataka', err)
     });
@@ -143,6 +145,33 @@ export class PredmetEvaluacijeComponent implements OnInit {
         alert('Zadatak uspešno dodat.');
       },
       error: (err) => console.error('Greška prilikom dodavanja zadatka', err)
+    });
+  }
+
+  dodajEvaluaciju(){
+    const dialogRef = this.dialog.open(EvaluacijaAddComponent, {
+      width: '800px',
+      data: {
+        naziv: '',
+        title: 'Kreiraj Evaluaciju'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((result: string | undefined) => {
+      if (result) {
+        const nova: EvaluacijaZnanjaCreateDTO = {
+          naziv: result,
+          realizacijaPredmeta_id: this.predmetId
+        }
+        this.service.create(nova).subscribe({
+          next: created => {
+            this.ucitajEvaluacije()
+          },
+          error: err => {
+            console.log(err)
+          }
+        })
+      }
     });
   }
 }

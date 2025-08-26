@@ -48,6 +48,10 @@ export class PregledProgramaComponent implements OnInit{
     this.router.navigate(['/kreiranje-rasporeda', godinaStudijaId]);
   }
 
+  otvoriPredmete(godinaStudija : GodinaStudija) {
+    this.router.navigate([`/godinastudija/${godinaStudija.id}/predmeti`]);
+  }
+
   dodaj(): void {
     const dialogRef = this.dialog.open(DodavanjeProgramaComponent, {
       width: '500px',

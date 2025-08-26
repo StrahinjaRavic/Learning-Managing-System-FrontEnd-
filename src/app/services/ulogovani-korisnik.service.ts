@@ -27,6 +27,10 @@ export class UlogovaniKorisnikService {
     getById(id: number): Observable<UlogovaniKorisnik> {
       return this.http.get<UlogovaniKorisnik>(`${this.API_URL}/${id}`);
     }
+
+    getByOsobaId(id: number): Observable<UlogovaniKorisnik> {
+      return this.http.get<UlogovaniKorisnik>(`${this.API_URL}/osoba/${id}`);
+    }
   
     create(korisnik: UlogovaniKorisnikCreateDTO): Observable<UlogovaniKorisnik> {
       return this.http.post<UlogovaniKorisnik>(this.API_URL, korisnik);

@@ -21,7 +21,8 @@
     <ng-container matColumnDef="akcije">
       <mat-header-cell *matHeaderCellDef></mat-header-cell>
       <mat-cell *matCellDef="let godina" class="akcije"> 
-        <button mat-flat-button color="primary" (click)="otvoriRaspored(godina.id)">Pregledaj Raspored</button> 
+        <button mat-raised-button color="primary" (click)="otvoriRaspored(godina.id)">Pregledaj Raspored</button>
+        <button style="margin-left: 10px;" mat-flat-button color="primary" (click)="otvoriPredmete(godina)">Pregledaj Predmete</button> 
       </mat-cell>
     </ng-container>
 

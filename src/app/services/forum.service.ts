@@ -4,6 +4,9 @@ import { Forum } from '../Model/forum';
 import { Observable } from 'rxjs';
 import { Obavestenje } from '../Model/obavestenje';
 import { Nastavnik } from '../Model/nastavnik';
+import { ForumSaveDTO } from '../Model/DTO/forumSaveDTO';
+import { ForumHasKorisnikCreateDTO } from '../Model/DTO/forumHasKorisnikCreateDTO';
+import { ForumHasKorisnik } from '../Model/forumhaskorisnik';
 
 
 @Injectable({ providedIn: 'root' })
@@ -26,6 +29,10 @@ export class ForumService {
   return this.http.get<Forum[]>(`${this.API2}`); // API2 je http://localhost:8080/api/forums
 }
 
+
+  create(forum: ForumSaveDTO): Observable<Forum> {
+        return this.http.post<Forum>(this.API2, forum);
+      }
 
   getObavestenjaZaForum(forumId: number): Observable<Obavestenje[]> {
     return this.http.get<Obavestenje[]>(`${this.API1}/forum/${forumId}`);
@@ -75,8 +82,7 @@ ukloniNastavnikaSaForuma(forumId: number, nastavnikId: number): Observable<void>
   return this.http.delete<void>(`http://localhost:8080/api/forumhaskorisniks/forum/${forumId}/nastavnik/${nastavnikId}`);
 }
 
-
-
-
-
+  addKorisnikToForum(korisnik: ForumHasKorisnikCreateDTO): Observable<ForumHasKorisnik>{
+    return this.http.post<ForumHasKorisnik>(this.API, korisnik);
+  }
 }

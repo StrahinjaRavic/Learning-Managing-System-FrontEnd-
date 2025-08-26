@@ -1,3 +1,5 @@
+import { RealizacijaPredmeta } from "./realizacijapredmeta";
+
 export interface Termin {
   id?: number;
   datum: string;                 // ISO string (yyyy-MM-dd)
@@ -5,5 +7,6 @@ export interface Termin {
   vremeKraja: string;            // HH:mm:ss
   ishod: string;
   realizacijaPredmeta_id: number;
+  realizacijaPredmeta: RealizacijaPredmeta
   obrisano: boolean;
 }

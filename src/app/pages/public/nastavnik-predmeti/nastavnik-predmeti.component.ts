@@ -5,6 +5,7 @@ import { Predmet } from '../../../Model/predmet';
 import { CommonModule, NgIf } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Router } from '@angular/router';
+import { MatButtonModule } from '@angular/material/button';
 import { RealizacijaPredmeta } from '../../../Model/realizacijapredmeta';
 
 @Component({
@@ -12,10 +13,11 @@ import { RealizacijaPredmeta } from '../../../Model/realizacijapredmeta';
   templateUrl: './nastavnik-predmeti.component.html',
   styleUrls: ['./nastavnik-predmeti.component.scss'],
   standalone: true,
-  imports: [CommonModule, RouterModule, NgIf],
+  imports: [CommonModule, RouterModule, NgIf, MatButtonModule],
 })
 export class NastavnikPredmetiComponent implements OnInit {
-  realizacijaPredmeta: RealizacijaPredmeta[] = [];
+
+  predmeti: RealizacijaPredmeta[] = [];
   nastavnikId!: number;
 
   constructor(
@@ -48,7 +50,7 @@ export class NastavnikPredmetiComponent implements OnInit {
 
   loadPredmeti(nastavnikId: number): void {
     this.realizacijaPredmetaService.getPredmetiByNastavnikId(nastavnikId).subscribe({
-      next: (data) => (this.realizacijaPredmeta = data),
+      next: (data) => (this.predmeti = data),
       error: (err) => console.error('Greška pri učitavanju predmeta:', err),
     });
   }
