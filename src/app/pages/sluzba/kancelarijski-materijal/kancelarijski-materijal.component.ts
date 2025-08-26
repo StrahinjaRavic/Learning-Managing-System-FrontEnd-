@@ -9,6 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatTableModule } from '@angular/material/table';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-kancelarijski-materijal',
@@ -23,7 +24,10 @@ export class KancelarijskiMaterijalComponent implements OnInit {
   izmenaId?: string;
   pretraga: string = ''; // polje za pretragu
 
-  constructor(private materijalService: KancelarijskiMaterijalService) {}
+  constructor(
+    private materijalService: KancelarijskiMaterijalService,
+    private authService : AuthService
+  ) {}
 
   ngOnInit(): void {
     this.ucitajMaterijale();
@@ -36,6 +40,8 @@ export class KancelarijskiMaterijalComponent implements OnInit {
   dodajMaterijal(): void {
     // automatski datum danas
     this.noviMaterijal.datumNarudzbine = new Date().toISOString().split('T')[0];
+
+    this.noviMaterijal.radnik = this.authService.getUsernameFromToken() ?? '';
 
     this.materijalService.create(this.noviMaterijal).subscribe(() => {
       this.ucitajMaterijale();
@@ -55,6 +61,9 @@ export class KancelarijskiMaterijalComponent implements OnInit {
 
   izmeniMaterijal(): void {
     if (!this.izmenaId) return;
+
+    this.noviMaterijal.radnik = this.authService.getUsernameFromToken() ?? '';
+    
     this.materijalService.update(this.izmenaId, this.noviMaterijal).subscribe(() => {
       this.ucitajMaterijale();
       this.noviMaterijal = { naziv: '', kolicina: 0, opis: '', datumNarudzbine: '', radnik: '', status: 'uToku' };
