@@ -15,6 +15,8 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
 import { NastavnikForumDTO } from '../../../../Model/DTO/nastavnik-forum.model';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
   selector: 'app-obavestenja',
@@ -24,12 +26,14 @@ import { NastavnikForumDTO } from '../../../../Model/DTO/nastavnik-forum.model';
   imports: [
     CommonModule,
     FormsModule,
+    MatAutocompleteModule,
     ReactiveFormsModule,
     MatCardModule,
     MatIconModule,
     MatMenuModule,
     MatButtonModule,
     MatInputModule,
+    MatFormFieldModule,
     MatDividerModule,
     MatListModule,
     MatSelectModule
@@ -145,12 +149,16 @@ odabraniNastavnikId!: number|null;
     if (this.showKorisniciPanel) {
       this.ucitajKorisnike();
       this.ucitajDostupneStudente();
+      this.ucitajDostupneNastavnike();
     }
   }
 
   ucitajKorisnike(): void {
     this.forumService.getKorisniciZaForum(this.forumId).subscribe({
-      next: (data) => this.korisnici = data,
+      next: (data) => {
+        this.korisnici = data
+        console.log(data)
+      },
       error: (err) => console.error('Greška pri dohvatanju korisnika:', err)
     });
   }
@@ -166,7 +174,9 @@ odabraniNastavnikId!: number|null;
   // ========== S T U D E N T I ==========
   ucitajDostupneStudente(): void {
     this.forumService.getNeprijavljeniStudentiZaForum(this.forumId).subscribe({
-      next: (data) => this.dostupniStudenti = data,
+      next: (data) => {
+        console.log("studenti",data)
+        this.dostupniStudenti = data},
       error: (err) => console.error('Greška pri dohvatanju studenata:', err)
     });
   }
@@ -192,6 +202,12 @@ odabraniNastavnikId!: number|null;
     });
   }
 
+  onStudentSelected(student: any) {
+    console.log(student)
+    this.odabraniStudentId = student.ulogovaniKorisnik_id;
+    this.filterText = `${student.ime} ${student.prezime} (${student.brojIndeksa})`;
+  }
+
   ukloniStudenta(studentId: number): void {
     this.forumService.ukloniStudentaSaForuma(this.forumId, studentId).subscribe(() => {
       this.ucitajKorisnike();
@@ -200,7 +216,7 @@ odabraniNastavnikId!: number|null;
   }
 
   ucitajDostupneNastavnike(): void {
-  this.forumService.getAvailableNastavnici(this.forumId, this.filterNastavnik).subscribe({
+  this.forumService.getAvailableNastavnici(this.forumId).subscribe({
     next: data => {
       console.log("Dohvaćeni dostupni nastavnici:", data); // 👈 LOG OVDE
       this.dostupniNastavnici = data;
@@ -211,20 +227,27 @@ odabraniNastavnikId!: number|null;
 
 
 filtriraniNastavnici(): NastavnikForumDTO[] {
-  if (!this.filterNastavnik) return this.nastavnici;
+  if (!this.filterNastavnik) return this.dostupniNastavnici;
   const filter = this.filterNastavnik.toLowerCase();
-  return this.nastavnici.filter(n =>
+  return this.dostupniNastavnici.filter(n =>
     n.ime.toLowerCase().includes(filter) || n.prezime.toLowerCase().includes(filter)
   );
 }
 
+onNastavnikSelected(nastavnik: any) {
+    this.odabraniNastavnikId = nastavnik.ulogovaniKorisnikId;
+    this.filterNastavnik = `${nastavnik.ime} ${nastavnik.prezime} (${nastavnik.jmbg})`;
+  }
+
 dodajNastavnika(): void {
+  console.log(this.odabraniNastavnikId)
   if (!this.odabraniNastavnikId) return;
 
-  this.forumService.dodajNastavnikaNaForum(this.odabraniNastavnikId, this.forumId).subscribe({
+  this.forumService.dodajNastavnikaNaForum(this.forumId, this.odabraniNastavnikId).subscribe({
     next: () => {
       console.log('Nastavnik dodat:', this.odabraniNastavnikId);
       this.ucitajDostupneNastavnike();
+      this.ucitajKorisnike();
       this.odabraniNastavnikId = null;
     },
     error: (err) => console.error('Greška pri dodavanju nastavnika', err)

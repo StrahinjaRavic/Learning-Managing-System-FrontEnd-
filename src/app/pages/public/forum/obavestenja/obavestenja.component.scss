@@ -3,6 +3,7 @@
   flex-direction: column;
   height: calc(100vh - 100px);
   padding: 16px;
+  position: relative;
   background: #f9f9fb; // svetla neutralna pozadina
 }
 
@@ -11,7 +12,14 @@
   padding-top: 80px;
   overflow-y: auto;
   padding-right: 8px;
+  margin-bottom: 67px;
 }
+
+.close-button {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+  }
 
 .obavestenje-kutija {
   background-color: #ffffff; // bela kartica
@@ -70,13 +78,6 @@
 
 textarea[matInput],
 input[matInput] {
-  width: 100%;
-  background: #fefefe; 
-  color: #2c2c2c;
-  border-radius: 4px;
-  padding: 6px;
-  border: 1px solid #bbb;
-  transition: border-color 0.2s;
   &:focus {
     border-color: #1565c0; // fokus naglašen plavom
     outline: none;
@@ -90,15 +91,39 @@ input[matInput] {
 }
 
 .nova-poruka {
-  padding: 16px;
-  background: #ffffff;
-  border-top: 1px solid #ddd;
-  position: sticky;
+  position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
+  padding: 8px;
+  background: #fff;
+  border-top: 1px solid #ddd;
   z-index: 2;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  .full-width {
+    margin: 0; 
+  }
+
+  .naslov-input {
+    width: 200px; 
+  }
+
+  .tekst-input {
+    flex: 1;
+  }
+
+  .posalji-dugme {
+    margin-bottom: 20px;
+    button {
+      min-width: 80px;
+    }
+  }
 }
+
 
 .full-width {
   width: 100%;
@@ -113,17 +138,18 @@ input[matInput] {
 .korisnici-dugme {
   position: fixed;
   top: 80px;
-  right: 20px;
+  right: 40px;
   z-index: 1100;
+  border-radius: 20px;
+  background-color: #1565c0;
 }
 
 .korisnici-panel {
   width: 600px;
-  max-height: 70vh;
+  max-height: 100%;
   overflow-y: auto;
   position: fixed;
-  top: 70px;
-  right: 20px;
+  right: 0px;
   background-color: #fff;
   padding: 12px;
   z-index: 1050;
@@ -139,4 +165,41 @@ input[matInput] {
   mat-list-item {
     margin-bottom: 5px;
   }
+}
+
+.korisnici-side-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  width: 400px; // možeš povećati/smanjiti
+  transform: translateX(100%); // skriveno desno
+  transition: transform 0.3s ease;
+  z-index: 1200; // iznad ostatka sadržaja
+
+  &.open {
+    transform: translateX(0); // vidljivo
+  }
+
+  .korisnici-panel {
+    height: 100%;
+    border-radius: 0; // da izgleda kao pravi meni
+    display: flex;
+    flex-direction: column;
+
+    mat-card-content {
+      flex: 1;
+      overflow-y: auto;
+    }
+  }
+}
+
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.4);
+  z-index: 1100;
 }
