@@ -2,26 +2,32 @@
 
   <!-- Dugme za korisnike -->
   <div class="korisnici-dugme">
-    <button mat-raised-button color="accent" (click)="toggleKorisniciPanel()">
-      Prikaži korisnike
-      <mat-icon>{{ showKorisniciPanel ? 'expand_less' : 'expand_more' }}</mat-icon>
+    <button mat-icon-button color="accent" (click)="toggleKorisniciPanel()">
+      <mat-icon style="color: white;">person</mat-icon>
     </button>
   </div>
 
   <!-- Panel sa korisnicima -->
+<div class="backdrop" *ngIf="showKorisniciPanel" (click)="toggleKorisniciPanel()"></div>
+<div class="korisnici-side-panel" [class.open]="showKorisniciPanel">
   <mat-card class="korisnici-panel mat-elevation-z8" *ngIf="showKorisniciPanel">
     <mat-card-header>
       <mat-card-title>Korisnici foruma</mat-card-title>
+
+      <button mat-icon-button class="close-button" (click)="toggleKorisniciPanel()">
+        <mat-icon>close</mat-icon>
+      </button>
+
     </mat-card-header>
 
     <mat-divider></mat-divider>
 
     <mat-card-content>
       <!-- Nastavnici -->
-      <h4>Postojeći nastavnici</h4>
+      <h4>Nastavnici</h4>
       <mat-list>
         <mat-list-item *ngFor="let n of nastavnici">
-          <mat-icon matListIcon>person</mat-icon>
+          <mat-icon class="nastavnik-icon" matListIcon>person</mat-icon>
           <span>{{ n.ime }} {{ n.prezime }}</span>
           <span class="spacer"></span>
           <button *ngIf="isSluzba" mat-mini-button color="warn" (click)="ukloniNastavnika(n.id)">
@@ -30,25 +36,26 @@
         </mat-list-item>
       </mat-list>
 
-      <!-- Dodavanje nastavnika -->
-<div *ngIf="isSluzba" class="dodaj-nastavnika">
-  <mat-form-field appearance="fill" class="full-width">
-    <mat-label>Pretraži nastavnika (ime, prezime)</mat-label>
-    <input matInput [(ngModel)]="filterNastavnik" placeholder="Unesi kriterijum pretrage" (ngModelChange)="ucitajDostupneNastavnike()">
-  </mat-form-field>
+      <!-- Dostupni nastavnici za dodavanje -->
+      <div *ngIf="isSluzba">
+        <h4>Dostupni nastavnici</h4>
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Filter po imenu/prezimenu</mat-label>
+          <input 
+          matInput
+          [(ngModel)]="filterNastavnik"
+          [matAutocomplete]="autoNastavnik"
+          placeholder="Unesi kriterijum">
 
-  <mat-form-field appearance="fill" class="full-width">
-    <mat-label>Odaberi nastavnika</mat-label>
-    <!-- KORISTI ngModel UMESTO value -->
-    <mat-select [(ngModel)]="odabraniNastavnikId" (selectionChange)="logOdabraniNastavnik($event.value)">
-      <mat-option *ngFor="let n of filtriraniNastavnici()" [value]="n.ulogovaniKorisnikId">
-        {{ n.ime }} {{ n.prezime }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+          <mat-autocomplete #autoNastavnik="matAutocomplete" (optionSelected)="onNastavnikSelected($event.option.value)">
+            <mat-option *ngFor="let s of filtriraniNastavnici()" [value]="s">
+              {{ s.ime }} {{ s.prezime }}  - JMBG: {{ s.jmbg }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
 
-  <button mat-raised-button color="primary" (click)="dodajNastavnika()">Dodaj</button>
-</div>
+        <button mat-raised-button color="primary" (click)="dodajNastavnika()">Dodaj nastavnika</button>
+      </div>
 
       <!-- Studenti -->
       <h4>Studenti</h4>
@@ -67,23 +74,24 @@
       <div *ngIf="isNastavnik" class="dodaj-studenta">
         <mat-form-field appearance="fill" class="full-width">
           <mat-label>Pretraži studenta (JMBG, indeks, ime, prezime)</mat-label>
-          <input matInput [(ngModel)]="filterText" placeholder="Unesi kriterijum pretrage">
-        </mat-form-field>
-
-        <mat-form-field appearance="fill" class="full-width">
-          <mat-label>Odaberi studenta</mat-label>
-          <mat-select [(value)]="odabraniStudentId">
-            <mat-option *ngFor="let s of filtriraniStudenti()" [value]="s.id">
+          <input
+            matInput
+            [(ngModel)]="filterText"
+            [matAutocomplete]="auto"
+            placeholder="Unesi kriterijum pretrage"
+          >
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onStudentSelected($event.option.value)">
+            <mat-option *ngFor="let s of filtriraniStudenti()" [value]="s">
               {{ s.ime }} {{ s.prezime }} ({{ s.brojIndeksa }}) - JMBG: {{ s.jmbg }}
             </mat-option>
-          </mat-select>
+          </mat-autocomplete>
         </mat-form-field>
 
         <button mat-raised-button color="primary" (click)="dodajStudenta()">Dodaj</button>
       </div>
     </mat-card-content>
   </mat-card>
-
+</div>
   <!-- Lista obaveštenja -->
   <div class="obavestenja-lista">
     <div *ngFor="let o of obavestenja" class="obavestenje-kutija mat-elevation-z2">
@@ -128,14 +136,14 @@
 
   <!-- Nova poruka -->
   <div *ngIf="isNastavnik" class="nova-poruka mat-elevation-z4">
-    <mat-form-field appearance="outline" class="full-width">
+    <mat-form-field appearance="outline" class="full-width naslov-input">
       <mat-label>Naslov</mat-label>
       <input matInput [(ngModel)]="noviNaslov" />
     </mat-form-field>
 
-    <mat-form-field appearance="outline" class="full-width">
+    <mat-form-field appearance="outline" class="full-width tekst-input">
       <mat-label>Tekst</mat-label>
-      <textarea matInput rows="3" [(ngModel)]="noviTekst"></textarea>
+      <input matInput [(ngModel)]="noviTekst"/>
     </mat-form-field>
 
     <div class="posalji-dugme">

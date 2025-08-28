@@ -15,6 +15,8 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
 import { NastavnikForumDTO } from '../../../../Model/DTO/nastavnik-forum.model';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
   selector: 'app-obavestenja',
@@ -24,12 +26,14 @@ import { NastavnikForumDTO } from '../../../../Model/DTO/nastavnik-forum.model';
   imports: [
     CommonModule,
     FormsModule,
+    MatAutocompleteModule,
     ReactiveFormsModule,
     MatCardModule,
     MatIconModule,
     MatMenuModule,
     MatButtonModule,
     MatInputModule,
+    MatFormFieldModule,
     MatDividerModule,
     MatListModule,
     MatSelectModule
@@ -57,6 +61,10 @@ export class ObavestenjaComponent implements OnInit {
   filterText: string = '';
   odabraniStudentId!: number;
 
+  // Nastavnici
+dostupniNastavnici: any[] = [];
+filterNastavnik: string = '';
+odabraniNastavnikId!: number|null;
 
   constructor(
     private route: ActivatedRoute,
@@ -147,7 +155,10 @@ export class ObavestenjaComponent implements OnInit {
 
   ucitajKorisnike(): void {
     this.forumService.getKorisniciZaForum(this.forumId).subscribe({
-      next: (data) => this.korisnici = data,
+      next: (data) => {
+        this.korisnici = data
+        console.log(data)
+      },
       error: (err) => console.error('Greška pri dohvatanju korisnika:', err)
     });
   }
@@ -163,7 +174,9 @@ export class ObavestenjaComponent implements OnInit {
   // ========== S T U D E N T I ==========
   ucitajDostupneStudente(): void {
     this.forumService.getNeprijavljeniStudentiZaForum(this.forumId).subscribe({
-      next: (data) => this.dostupniStudenti = data,
+      next: (data) => {
+        console.log("studenti",data)
+        this.dostupniStudenti = data},
       error: (err) => console.error('Greška pri dohvatanju studenata:', err)
     });
   }
@@ -189,6 +202,12 @@ export class ObavestenjaComponent implements OnInit {
     });
   }
 
+  onStudentSelected(student: any) {
+    console.log(student)
+    this.odabraniStudentId = student.ulogovaniKorisnik_id;
+    this.filterText = `${student.ime} ${student.prezime} (${student.brojIndeksa})`;
+  }
+
   ukloniStudenta(studentId: number): void {
     this.forumService.ukloniStudentaSaForuma(this.forumId, studentId).subscribe(() => {
       this.ucitajKorisnike();
@@ -196,53 +215,54 @@ export class ObavestenjaComponent implements OnInit {
     });
   }
 
-  // Nastavnici
-dostupniNastavnici: NastavnikForumDTO[] = [];
-filterNastavnik: string = '';
-odabraniNastavnikId: number | null = null;
-
-ucitajDostupneNastavnike(): void {
-  const kriterijum = this.filterNastavnik?.trim() || null;
-  this.forumService.getAvailableNastavnici(this.forumId, this.filterNastavnik).subscribe({
+  ucitajDostupneNastavnike(): void {
+  this.forumService.getAvailableNastavnici(this.forumId).subscribe({
     next: data => {
-      console.log("Dohvaćeni dostupni nastavnici:", data);
-      // 👇 ovde garantujemo da je id number
-      this.dostupniNastavnici = data.map((n: any) => ({ ...n, id: Number(n.id) }));
+      console.log("Dohvaćeni dostupni nastavnici:", data); // 👈 LOG OVDE
+      this.dostupniNastavnici = data;
     },
     error: err => console.error('Greška pri dohvatanju dostupnih nastavnika:', err)
   });
 }
 
+
 filtriraniNastavnici(): NastavnikForumDTO[] {
   if (!this.filterNastavnik) return this.dostupniNastavnici;
   const filter = this.filterNastavnik.toLowerCase();
   return this.dostupniNastavnici.filter(n =>
-    (n.ime + ' ' + n.prezime).toLowerCase().includes(filter)
+    n.ime.toLowerCase().includes(filter) || n.prezime.toLowerCase().includes(filter)
   );
 }
 
+onNastavnikSelected(nastavnik: any) {
+    this.odabraniNastavnikId = nastavnik.ulogovaniKorisnikId;
+    this.filterNastavnik = `${nastavnik.ime} ${nastavnik.prezime} (${nastavnik.jmbg})`;
+  }
+
 dodajNastavnika(): void {
+  console.log(this.odabraniNastavnikId)
   if (!this.odabraniNastavnikId) return;
 
-  this.forumService.dodajNastavnikaNaForum(this.odabraniNastavnikId, this.forumId).subscribe({
+  this.forumService.dodajNastavnikaNaForum(this.forumId, this.odabraniNastavnikId).subscribe({
     next: () => {
       console.log('Nastavnik dodat:', this.odabraniNastavnikId);
-      this.ucitajKorisnike();
       this.ucitajDostupneNastavnike();
+      this.ucitajKorisnike();
       this.odabraniNastavnikId = null;
     },
     error: (err) => console.error('Greška pri dodavanju nastavnika', err)
   });
 }
 
-logOdabraniNastavnik(id: number) {
-  console.log('Izabrani nastavnik ID:', id, typeof id);
-}
 ukloniNastavnika(nastavnikId: number): void {
   this.forumService.ukloniNastavnikaSaForuma(this.forumId, nastavnikId).subscribe(() => {
     this.ucitajKorisnike();
     this.ucitajDostupneNastavnike();
   });
+}
+
+logOdabraniNastavnik(id: number) {
+  console.log('Izabrani nastavnik ID:', id);
 }
 
 }
