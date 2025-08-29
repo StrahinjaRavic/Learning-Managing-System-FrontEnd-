@@ -80,7 +80,7 @@ export class StudentiNaPredmetuComponent implements OnInit {
   }
 
   otvoriUnosBodova(student: any): void {
-    this.router.navigate(['/unesi-ocenu', student]);
+    this.router.navigate(['/unesi-ocenu', student, this.realizacijaId]);
   }
 
   goToStudentDetalji(studentNaGodiniId: number) {

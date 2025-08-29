@@ -33,8 +33,8 @@ unesiOcenu(prijavaId: number, brojBodova: number): Observable<PrijavaPolaganja> 
     return this.http.get<PrijavaPolaganja>(`${this.apiUrl}/${id}`);
   }
 
-  getPrijaveZaStudenta(studentId: number): Observable<PrijavaPolaganja[]> {
-  return this.http.get<PrijavaPolaganja[]>(`${this.apiUrl}/prijavapolaganjas/student/${studentId}`);
+  getPrijaveZaStudenta(studentId: number, predmetId: number): Observable<PrijavaPolaganja[]> {
+  return this.http.get<PrijavaPolaganja[]>(`${this.apiUrl}/prijavapolaganjas/student/${studentId}/predmet/${predmetId}`);
 }
 
 getAktivnePrijaveZaStudenta(studentId: number): Observable<PrijavaPolaganja[]> {

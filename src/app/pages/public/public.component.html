@@ -32,7 +32,8 @@
       <a mat-list-item routerLink="/pregled-rokova" *ngIf="userRoles?.includes('ROLE_SLUZBA')">Pregled Rokova</a>
       <a mat-list-item routerLink="/izvestaj" *ngIf="userRoles?.includes('ROLE_SLUZBA')">Slanje Izvestaja</a>
       <a mat-list-item routerLink="/sluzba/udzbenici" *ngIf="userRoles?.includes('ROLE_SLUZBA')">Izdavanje udzbenika</a>
-       <a mat-list-item routerLink="/kancelarijski-materijal" *ngIf="userRoles?.includes('ROLE_SLUZBA')">Kancelarijski materijal</a>
+      <a mat-list-item routerLink="/kancelarijski-materijal" *ngIf="userRoles?.includes('ROLE_SLUZBA')">Kancelarijski materijal</a>
+      <a mat-list-item routerLink="/forum" *ngIf="userRoles?.includes('ROLE_SLUZBA')">Forumi</a>
 
       <a mat-list-item (click)="showPotvrde = !showPotvrde" *ngIf="userRoles?.includes('ROLE_SLUZBA')">
         <div class="flex-center">

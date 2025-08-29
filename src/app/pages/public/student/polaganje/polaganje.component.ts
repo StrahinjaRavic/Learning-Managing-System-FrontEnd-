@@ -49,7 +49,6 @@ export class PolaganjeComponent implements OnInit{
     this.prijavaService.getById(this.prijavaPolaganja_id).subscribe({
       next: res => {
         this.prijavaPolaganja = res
-        console.log(res)
         this.polaganje = res.polaganje
         this.polaganje_id = res.polaganje.id
 
@@ -136,7 +135,7 @@ export class PolaganjeComponent implements OnInit{
   }
 
   goToPrijava() {
-  this.router.navigate(['/prijava']);
+  this.router.navigate(['/prijava-ispita']);
 }
 
 }

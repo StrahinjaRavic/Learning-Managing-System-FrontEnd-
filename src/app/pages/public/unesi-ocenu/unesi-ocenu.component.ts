@@ -16,8 +16,10 @@ import { PrijavaPolaganja } from '../../../Model/prijavapolaganja';
 })
 export class UnesiOcenuComponent implements OnInit {
   studentId!: number;
+  realizacijaPredmetaId!: number;
   prijave: PrijavaPolaganja[] = [];
   forme: { [prijavaId: number]: FormGroup } = {};
+  studentImePrezime: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -28,13 +30,29 @@ export class UnesiOcenuComponent implements OnInit {
 
   ngOnInit(): void {
     this.studentId = Number(this.route.snapshot.paramMap.get('studentId'));
+    this.realizacijaPredmetaId = Number(this.route.snapshot.paramMap.get('realizacijaPredmetaId'));
 
-    this.prijavaService.getPrijaveZaStudenta(this.studentId).subscribe({
+    if (!this.studentId || !this.realizacijaPredmetaId) {
+      console.error('Nedostaje studentId ili realizacijaPredmetaId u ruti.');
+      return;
+    }
+
+    this.prijavaService.getPrijaveZaStudenta(this.studentId, this.realizacijaPredmetaId).subscribe({
       next: data => {
         this.prijave = data;
+        console.log(data);
+
+        if (this.prijave.length > 0) {
+          const student = this.prijave[0]?.pohadjanjePredmeta?.studentNaGodini?.student?.osoba;
+          this.studentImePrezime = student
+            ? `${student.ime} ${student.prezime}`
+            : `#${this.studentId}`;
+        }
+
         this.prijave.forEach(prijava => {
+          const brojBodova = prijava.brojBodova ?? null;
           this.forme[prijava.id] = this.fb.group({
-            brojBodova: [null, [Validators.required, Validators.min(0), Validators.max(100)]]
+            brojBodova: [brojBodova, [Validators.required, Validators.min(0), Validators.max(100)]]
           });
         });
       },

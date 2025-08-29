@@ -99,11 +99,6 @@ export const appConfig: ApplicationConfig = {
             loadComponent: () => import('./pages/public/forum/obavestenja/obavestenja.component').then(m => m.ObavestenjaComponent),
           },
           {
-            path: 'prijava-ispita',
-            loadComponent: () => import('./pages/public/prijava-ispita/prijava-ispita.component').then(m => m.PrijavaIspitaComponent),
-
-          },
-          {
             path: 'admin',
             loadComponent: () => import('./pages/admin/landing-page/landing-page.component').then(m => m.LandingPageComponent)
           },
@@ -228,11 +223,11 @@ export const appConfig: ApplicationConfig = {
             loadComponent: () => import('./pages/public/termin/termin.component').then(m => m.TerminComponent)
           },
           {
-            path: 'prijava',
+            path: 'prijava-ispita',
             loadComponent: () => import('./pages/public/prijava-polaganja/prijava-polaganja.component').then(m => m.PrijavaPolaganjaComponent)
           },
           {
-            path: 'unesi-ocenu/:studentId',
+            path: 'unesi-ocenu/:studentId/:realizacijaPredmetaId',
             loadComponent: () => import('./pages/public/unesi-ocenu/unesi-ocenu.component').then(m => m.UnesiOcenuComponent)
           },
           {

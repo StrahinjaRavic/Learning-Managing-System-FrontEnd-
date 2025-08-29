@@ -1,4 +1,4 @@
-<h2>Unos ocena za studenta #{{ studentId }}</h2>
+<h2>Unos ocena za studenta: {{ studentImePrezime }}</h2>
 
 <div *ngFor="let prijava of prijave" class="prijava-forma">
   <h3>{{ prijava.polaganje.evaluacijaZnanja.realizacijaPredmeta.predmet.naziv || 'Nepoznat predmet' }}</h3>
