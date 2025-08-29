@@ -45,6 +45,7 @@ export class StudentiNaPredmetuComponent implements OnInit {
 
   ngOnInit(): void {
     this.realizacijaId = Number(this.route.snapshot.paramMap.get('predmetId'));
+    console.log(this.realizacijaId)
 
     if (!this.realizacijaId) {
       this.error = 'Nevažeći ID realizacije predmeta';
