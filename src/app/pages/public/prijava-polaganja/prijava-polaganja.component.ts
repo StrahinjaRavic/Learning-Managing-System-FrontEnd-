@@ -25,9 +25,10 @@ export class PrijavaPolaganjaComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const userId = this.authService.getUserId();
+    try{
+      const userId = this.authService.getUserId();
 
-    if (userId) {
+      if (userId) {
       this.authService.getStudentIdByUserId(userId).subscribe({
         next: (studentId) => {
           if (studentId) {
@@ -42,6 +43,9 @@ export class PrijavaPolaganjaComponent implements OnInit {
       });
     } else {
       console.error('UserId nije pronađen u tokenu.');
+    }
+    }catch{
+      ReferenceError
     }
   }
 
