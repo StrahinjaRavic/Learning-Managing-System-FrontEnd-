@@ -49,20 +49,6 @@ export const appConfig: ApplicationConfig = {
               ),
           },
           {
-            path: 'smerovi',
-            loadComponent: () =>
-              import('./pages/public/smerovi/smerovi.component').then(
-                (m) => m.SmeroviComponent
-              ),
-          },
-          {
-            path: 'smerovi/:id',
-            loadComponent: () =>
-              import('./pages/public/smerovi/smer-detalji/smer-detalji.component').then(
-                (m) => m.SmerDetaljiComponent
-              ),
-          },
-          {
             path: 'studijski-programi',
             loadComponent: () =>
               import('./pages/public/studijski-programi/studijski-programi.component').then(

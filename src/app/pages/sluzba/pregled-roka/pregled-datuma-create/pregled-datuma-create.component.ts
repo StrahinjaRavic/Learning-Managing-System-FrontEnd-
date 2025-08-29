@@ -43,6 +43,7 @@ export class PregledDatumaCreateComponent {
   maxDate!: Date;
   evaluacije: EvaluacijaZnanja[] = [];
   showEvaluacije: boolean = false;
+  showError: boolean = false;
 
   constructor(
     private dialogRef: MatDialogRef<PregledDatumaCreateComponent>,
@@ -69,6 +70,7 @@ export class PregledDatumaCreateComponent {
         this.loadEvaluacije(id);
       } else {
         this.showEvaluacije = false;
+        this.showError = true;
         this.evaluacije = [];
         this.form.get('evaluacijaId')?.reset();
       }
@@ -80,6 +82,8 @@ export class PregledDatumaCreateComponent {
     next: res => {
       this.evaluacije = res;
       this.showEvaluacije = res.length > 0;
+      this.showError = res.length === 0
+
     },
     error: () => {
       this.evaluacije = [];

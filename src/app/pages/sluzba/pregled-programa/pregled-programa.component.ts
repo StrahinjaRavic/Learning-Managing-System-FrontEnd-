@@ -15,6 +15,7 @@ import { FormsModule } from '@angular/forms'
 import { MatDialog } from '@angular/material/dialog';
 import { DodavanjeProgramaComponent } from './dodavanje-programa/dodavanje-programa.component';
 import { GodinaStudijaCreateDTO } from '../../../Model/DTO/GodinaStudijaCreateDTO';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-pregled-programa',
@@ -24,12 +25,16 @@ import { GodinaStudijaCreateDTO } from '../../../Model/DTO/GodinaStudijaCreateDT
 })
 export class PregledProgramaComponent implements OnInit{
 
+  userRoles: string [] = [];
   godineStudija: GodinaStudija[] = [];
   displayedColumns: string[] = ['godina', 'studijskiProgram','akcije'];
 
-  constructor(private godinaStudijaService: GodinaStudijaService,private router: Router,private dialog: MatDialog){}
+  constructor(private godinaStudijaService: GodinaStudijaService,private router: Router,private dialog: MatDialog, private auth: AuthService){}
 
   ngOnInit(): void {
+    this.auth.userRole$.subscribe(roles => {
+      this.userRoles = roles;
+    });
     this.loadData();
   }
 

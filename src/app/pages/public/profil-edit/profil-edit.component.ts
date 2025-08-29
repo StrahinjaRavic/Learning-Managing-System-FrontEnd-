@@ -58,6 +58,7 @@ export class ProfilEditComponent implements OnInit{
 
     const userId = this.authService.getLoggedInUserId();
     if (userId != null) {
+      console.log(userId)
       this.loadProfilePhoto(userId);
 
       this.ulogovaniKorisnikService.getById(this.authService.getLoggedInUserId()!).subscribe({
