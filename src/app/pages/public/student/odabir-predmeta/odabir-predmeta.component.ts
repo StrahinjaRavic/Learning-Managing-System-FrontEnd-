@@ -33,13 +33,20 @@ export class OdabirPredmetaComponent implements OnInit{
   realizacijePredmeta: RealizacijaPredmeta[] = [];
   pohadjanjaPredmeta: PohadjanjePredmeta[] = [];
   userRoles: string [] = [];
+  studentId!: number
+  id! : number
 
   predmetiOdabrani = false;
 
   constructor(private authService: AuthService, private forumService: ForumService, private studentService: StudentService, private snackBar: MatSnackBar, private pohadjanjeService: PohadjanjePredmetaService, private studentNaGodiniService: StudentNaGodiniService, private realizacijaPredmetaService: RealizacijaPredmetaService){}
 
   ngOnInit(): void {
-    this.loadStudentiNaGodini();
+    this.authService.getStudentIdByUserId(this.authService.getLoggedInUserId()!).subscribe(id => {
+      this.studentId = id!;
+      this.loadStudentiNaGodini();
+    });
+
+    
 
     this.authService.userRole$.subscribe(roles => {
       this.userRoles = roles;
@@ -47,10 +54,9 @@ export class OdabirPredmetaComponent implements OnInit{
   }
 
   loadStudentiNaGodini(){
-    if(this.authService.getUsernameFromToken()){
-      this.studentService.getIdByUsername(this.authService.getUsernameFromToken()!).subscribe({
-        next: id => {
-          this.studentNaGodiniService.getByStudentId(id).subscribe({
+    
+    if(this.studentId != null){
+      this.studentNaGodiniService.getByStudentId(this.studentId).subscribe({
             next: res => {
               this.loggedInStudentNaGodini = res;
 
@@ -59,9 +65,7 @@ export class OdabirPredmetaComponent implements OnInit{
                 this.loadRealizacije(this.selectedStudentNaGodini.godinaStudija.id);
               }
             }
-          })
-        }
-      })    
+          }) 
     }
   }
 

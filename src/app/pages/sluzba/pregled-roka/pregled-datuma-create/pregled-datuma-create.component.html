@@ -23,7 +23,7 @@
       <mat-datepicker-toggle matSuffix [for]="krajPicker"></mat-datepicker-toggle>
       <mat-datepicker #krajPicker></mat-datepicker>
     </mat-form-field>
-
+    <span *ngIf="showError">Ne postoji ni jedna evaluacija znanja za ovaj predmet</span>
     <mat-form-field *ngIf="showEvaluacije" appearance="fill" style="width: 100%;">
       <mat-label>Evaluacija Znanja</mat-label>
       <mat-select formControlName="evaluacijaId">
