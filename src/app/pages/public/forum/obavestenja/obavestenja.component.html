@@ -1,23 +1,19 @@
-<div class="obavestenja-wrapper">
+<!-- Dugme za korisnike (uvek gore, iznad tabova) -->
+<div class="korisnici-dugme">
+  <button mat-icon-button color="accent" (click)="toggleKorisniciPanel()">
+    <mat-icon style="color: white;">person</mat-icon>
+  </button>
+</div>
 
-  <!-- Dugme za korisnike -->
-  <div class="korisnici-dugme">
-    <button mat-icon-button color="accent" (click)="toggleKorisniciPanel()">
-      <mat-icon style="color: white;">person</mat-icon>
-    </button>
-  </div>
-
-  <!-- Panel sa korisnicima -->
+<!-- Panel sa korisnicima (samo jednom, globalno) -->
 <div class="backdrop" *ngIf="showKorisniciPanel" (click)="toggleKorisniciPanel()"></div>
 <div class="korisnici-side-panel" [class.open]="showKorisniciPanel">
   <mat-card class="korisnici-panel mat-elevation-z8" *ngIf="showKorisniciPanel">
     <mat-card-header>
       <mat-card-title>Korisnici foruma</mat-card-title>
-
       <button mat-icon-button class="close-button" (click)="toggleKorisniciPanel()">
         <mat-icon>close</mat-icon>
       </button>
-
     </mat-card-header>
 
     <mat-divider></mat-divider>
@@ -42,14 +38,14 @@
         <mat-form-field appearance="fill" class="full-width">
           <mat-label>Filter po imenu/prezimenu</mat-label>
           <input 
-          matInput
-          [(ngModel)]="filterNastavnik"
-          [matAutocomplete]="autoNastavnik"
-          placeholder="Unesi kriterijum">
+            matInput
+            [(ngModel)]="filterNastavnik"
+            [matAutocomplete]="autoNastavnik"
+            placeholder="Unesi kriterijum">
 
           <mat-autocomplete #autoNastavnik="matAutocomplete" (optionSelected)="onNastavnikSelected($event.option.value)">
             <mat-option *ngFor="let s of filtriraniNastavnici()" [value]="s">
-              {{ s.ime }} {{ s.prezime }}  - JMBG: {{ s.jmbg }}
+              {{ s.ime }} {{ s.prezime }} - JMBG: {{ s.jmbg }}
             </mat-option>
           </mat-autocomplete>
         </mat-form-field>
@@ -92,62 +88,138 @@
     </mat-card-content>
   </mat-card>
 </div>
-  <!-- Lista obaveštenja -->
-  <div class="obavestenja-lista">
-    <div *ngFor="let o of obavestenja" class="obavestenje-kutija mat-elevation-z2">
 
-      <div class="obavestenje-header">
-        <div class="ime-vreme">
-          <strong>{{ o.korisnik.osoba.ime }} {{ o.korisnik.osoba.prezime }}</strong>
-          <span class="vreme">{{ o.vremePostavljanja | date: 'short' }}</span>
-        </div>
 
-        <div class="akcije" *ngIf="isNastavnik">
-          <button mat-icon-button [matMenuTriggerFor]="menu">
-            <mat-icon>more_vert</mat-icon>
-          </button>
-          <mat-menu #menu="matMenu">
-            <button mat-menu-item (click)="pokreniIzmenu(o)">
-              <mat-icon>edit</mat-icon> Izmeni
-            </button>
-            <button mat-menu-item (click)="obrisiObavestenje(o.id)">
-              <mat-icon>delete</mat-icon> Obriši
-            </button>
-          </mat-menu>
-        </div>
-      </div>
+<!-- Tabovi -->
+<mat-tab-group>
+  <!-- Tab 2: Obaveštenja -->
+  <mat-tab label="Obaveštenja">
+    <div class="obavestenja-wrapper">
+      <!-- Lista obaveštenja -->
+      <div class="obavestenja-lista">
+        <div *ngFor="let o of obavestenja" class="obavestenje-kutija mat-elevation-z2">
 
-      <div class="obavestenje-sadrzaj">
-        <ng-container *ngIf="editModeId === o.id; else prikazTeksta">
-          <input matInput [(ngModel)]="izmenjeniNaslov" placeholder="Naslov" />
-          <textarea matInput rows="3" [(ngModel)]="izmenjeniTekst"></textarea>
-          <div class="dugmici">
-            <button mat-button color="primary" (click)="sacuvajIzmenu(o.id)">Sačuvaj</button>
-            <button mat-button (click)="otkaziIzmenu()">Otkaži</button>
+          <div class="obavestenje-header">
+            <div class="ime-vreme">
+              <strong>{{ o.korisnik.osoba.ime }} {{ o.korisnik.osoba.prezime }}</strong>
+              <span class="vreme">{{ o.vremePostavljanja | date: 'short' }}</span>
+            </div>
+
+            <div class="akcije" *ngIf="isNastavnik">
+              <button mat-icon-button [matMenuTriggerFor]="menu">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="pokreniIzmenu(o)">
+                  <mat-icon>edit</mat-icon> Izmeni
+                </button>
+                <button mat-menu-item (click)="obrisiObavestenje(o.id)">
+                  <mat-icon>delete</mat-icon> Obriši
+                </button>
+              </mat-menu>
+            </div>
           </div>
-        </ng-container>
-        <ng-template #prikazTeksta>
-          <h4 class="naslov">{{ o.naslov }}</h4>
-          <p>{{ o.tekstObavjestenja }}</p>
-        </ng-template>
+
+          <div class="obavestenje-sadrzaj">
+            <ng-container *ngIf="editModeId === o.id; else prikazTeksta">
+              <input matInput [(ngModel)]="izmenjeniNaslov" placeholder="Naslov" />
+              <textarea matInput rows="3" [(ngModel)]="izmenjeniTekst"></textarea>
+              <div class="dugmici">
+                <button mat-button color="primary" (click)="sacuvajIzmenu(o.id)">Sačuvaj</button>
+                <button mat-button (click)="otkaziIzmenu()">Otkaži</button>
+              </div>
+            </ng-container>
+            <ng-template #prikazTeksta>
+              <h4 class="naslov">{{ o.naslov }}</h4>
+              <p>{{ o.tekstObavjestenja }}</p>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+
+      <!-- Nova poruka -->
+      <div class="nova-poruka mat-elevation-z4">
+        <mat-form-field appearance="outline" class="full-width naslov-input">
+          <mat-label>Naslov</mat-label>
+          <input 
+            matInput 
+            [(ngModel)]="noviNaslov" 
+            [readonly]="!isNastavnik"
+            placeholder="Naslov obaveštenja"
+          />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width tekst-input">
+          <mat-label>Tekst</mat-label>
+          <input 
+            matInput 
+            rows="3" 
+            [(ngModel)]="noviTekst" 
+            [readonly]="!isNastavnik"
+            placeholder="Tekst obaveštenja"
+          >
+        </mat-form-field>
+
+        <!-- Nastavnik => dugme -->
+        <div *ngIf="isNastavnik" class="posalji-dugme">
+          <button mat-raised-button color="primary" (click)="dodajObavestenje()">
+            Pošalji
+          </button>
+        </div>
+
+        <!-- Student => poruka -->
+        <div *ngIf="!isNastavnik" class="info-poruka">
+          <mat-icon>lock</mat-icon>
+          <span>Samo nastavnici mogu objavljivati obaveštenja.</span>
+        </div>
       </div>
     </div>
-  </div>
+  </mat-tab>
 
-  <!-- Nova poruka -->
-  <div *ngIf="isNastavnik" class="nova-poruka mat-elevation-z4">
-    <mat-form-field appearance="outline" class="full-width naslov-input">
-      <mat-label>Naslov</mat-label>
-      <input matInput [(ngModel)]="noviNaslov" />
-    </mat-form-field>
+  <!-- Tab 3: Podforumi -->
+  <mat-tab label="Podforumi">
+    <mat-card class="mat-elevation-z4 forum-list-card">
+      <mat-card-title>
+        <mat-icon class="icon">forum</mat-icon>
+        Podforumi
+      </mat-card-title>
 
-    <mat-form-field appearance="outline" class="full-width tekst-input">
-      <mat-label>Tekst</mat-label>
-      <input matInput [(ngModel)]="noviTekst"/>
-    </mat-form-field>
+      <mat-card-content>
+        <mat-nav-list *ngIf="podforumi?.length && podforumi.length > 0; else noSubforums">
+          <a mat-list-item *ngFor="let forum of podforumi" [routerLink]="['/forum', forum.id]">
+            <mat-icon matListIcon color="primary">chat</mat-icon>
+            <span matLine>{{ forum.naziv }}</span>
 
-    <div class="posalji-dugme">
-      <button mat-raised-button color="primary" (click)="dodajObavestenje()">Pošalji</button>
+            <span class="spacer"></span>
+
+            <!-- Akcije za nastavnike -->
+            <ng-container *ngIf="isNastavnik">
+              <button mat-icon-button color="accent" (click)="otvoriIzmenuPodforuma(forum); $event.stopPropagation()">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button color="warn" (click)="obrisiPodforum(forum.id); $event.stopPropagation()">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </ng-container>
+          </a>
+        </mat-nav-list>
+
+        <ng-template #noSubforums>
+          <p class="empty-info">Nema dostupnih podforuma.</p>
+        </ng-template>
+
+        <!-- Dugme za dodavanje novog podforuma -->
+        <div *ngIf="isNastavnik" class="dodaj-podforum">
+          <button mat-raised-button color="primary" (click)="otvoriDodavanjePodforuma()">Dodaj podforum</button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </mat-tab>  
+
+  <!-- Tab 4: Files -->
+  <mat-tab label="Files">
+    <div class="files-tab">
+      <p>Ova sekcija će biti dostupna uskoro.</p>
     </div>
-  </div>
-</div>
+  </mat-tab>
+</mat-tab-group>

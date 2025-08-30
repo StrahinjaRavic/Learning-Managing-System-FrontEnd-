@@ -26,7 +26,7 @@ export class ForumService {
 
 
   getSviForumi(): Observable<Forum[]> {
-  return this.http.get<Forum[]>(`${this.API2}`); // API2 je http://localhost:8080/api/forums
+  return this.http.get<Forum[]>(`${this.API2}/root`); // API2 je http://localhost:8080/api/forums
 }
 
 
@@ -45,7 +45,7 @@ export class ForumService {
   getKorisniciZaForum(forumId: number): Observable<any[]> {
   return this.http.get<any[]>(`http://localhost:8080/api/forumhaskorisniks/forum/${forumId}/korisnici`);
 }
-
+ 
 dodajStudentaNaForum(forumId: number, studentId: number): Observable<void> {
   return this.http.post<void>(`${this.API}/forum/${forumId}/student/${studentId}`, {});
 }
@@ -85,4 +85,32 @@ ukloniNastavnikaSaForuma(forumId: number, nastavnikId: number): Observable<void>
   addKorisnikToForum(korisnik: ForumHasKorisnikCreateDTO): Observable<ForumHasKorisnik>{
     return this.http.post<ForumHasKorisnik>(this.API, korisnik);
   }
+
+  getPodforume(parentForumId: number): Observable<Forum[]> {
+    return this.http.get<Forum[]>(`${this.API2}/${parentForumId}/podforumi`);
+  }
+
+  dodajPodforum(roditeljskiForumId: number, naziv: string) {
+  const body = { naziv: naziv };
+  return this.http.post<Forum>(
+    `${this.API2}/${roditeljskiForumId}/podforumi`,
+    body
+  );
+}
+
+// Izmena podforuma
+izmeniPodforum(podforumId: number, noviNaziv: string) {
+  const body = { naziv: noviNaziv };
+  return this.http.put<Forum>(`${this.API2}/podforumi/${podforumId}`, body);
+}
+
+// Brisanje podforuma
+obrisiPodforum(podforumId: number) {
+  return this.http.delete<void>(`${this.API2}/podforumi/${podforumId}`);
+}
+
+isMember(forumId: number, userId: number) {
+  return this.http.get<boolean>(`${this.API2}/${forumId}/isMember/${userId}`);
+}
+
 }

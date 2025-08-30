@@ -28,9 +28,13 @@ export class ForumComponent implements OnInit {
   const isSluzba = roles.includes('ROLE_SLUZBA');
 
   this.forumService.getMojiForumi(this.userId, isSluzba).subscribe({
-    next: res => this.forumi = res,
-    error: err => console.error('Greška prilikom učitavanja foruma:', err)
-  });
+  next: res => {
+    console.log("Dobijeni forumi:", res);
+    this.forumi = res;
+  },
+  error: err => console.error('Greška prilikom učitavanja foruma:', err)
+});
+
 }
 
 }

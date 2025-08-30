@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterModule, Router, NavigationEnd } from '@angular/router';
 import { Obavestenje } from '../../../../Model/obavestenje';
 import { ObavestenjeService } from '../../../../services/obavestenje.service';
 import { AuthService } from '../../../../services/auth.service';
@@ -17,6 +17,14 @@ import { MatSelectModule } from '@angular/material/select';
 import { NastavnikForumDTO } from '../../../../Model/DTO/nastavnik-forum.model';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatTabsModule } from '@angular/material/tabs';
+import { Forum } from '../../../../Model/forum';
+import { filter } from 'rxjs/operators';
+import { DodajPodforumDialog } from './podforum-dialog';
+import { MatDialog } from '@angular/material/dialog';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
+
 
 @Component({
   selector: 'app-obavestenja',
@@ -36,12 +44,15 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     MatFormFieldModule,
     MatDividerModule,
     MatListModule,
-    MatSelectModule
+    MatSelectModule,
+    MatTabsModule,
+    RouterModule,
   ]
 })
 export class ObavestenjaComponent implements OnInit {
   forumId!: number;
   obavestenja: Obavestenje[] = [];
+  userId!: number;
 
   // Obavestenja
   noviTekst: string = '';
@@ -66,21 +77,71 @@ dostupniNastavnici: any[] = [];
 filterNastavnik: string = '';
 odabraniNastavnikId!: number|null;
 
+podforumi: Forum[] = [];
+  currentForumId!: number;
+
   constructor(
     private route: ActivatedRoute,
     private obavestenjeService: ObavestenjeService,
+    private router: Router,
     private forumService: ForumService,
-    private authService: AuthService
+    private authService: AuthService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
-    this.forumId = Number(this.route.snapshot.paramMap.get('id'));
-    this.ucitajObavestenja();
+  this.forumId = Number(this.route.snapshot.paramMap.get('id'));
+  this.userId = this.authService.getLoggedInUserId()!;
+  const roles = this.authService.getUserRoles();
+  this.isNastavnik = roles.includes('ROLE_NASTAVNIK');
+  this.isSluzba = roles.includes('ROLE_SLUZBA');
 
-    const roles = this.authService.getUserRoles();
-    this.isNastavnik = roles.includes('ROLE_NASTAVNIK');
-    this.isSluzba = roles.includes('ROLE_SLUZBA');
+  if (this.isSluzba) {
+    // Služba uvek može da pristupi
+    this.ucitajObavestenja();
+    this.ucitajPodforume();
+    this.podesiNavigationEndListener();
+  } else {
+    // Ostali korisnici -> proverava se članstvo
+    this.forumService.isMember(this.forumId, this.userId).subscribe({
+      next: (isMember) => {
+        if (!isMember) {
+          this.router.navigate(['/access-denied']);
+        } else {
+          this.ucitajObavestenja();
+          this.ucitajPodforume();
+          this.podesiNavigationEndListener();
+        }
+      },
+      error: (err) => {
+        console.error('Greška prilikom provere članstva:', err);
+        this.router.navigate(['/access-denied']);
+      }
+    });
   }
+}
+
+
+// izdvojena metoda za podforume da ne ponavljamo kod
+ucitajPodforume() {
+  this.forumService.getPodforume(this.forumId).subscribe({
+    next: res => this.podforumi = res,
+    error: err => console.error('Greška prilikom učitavanja podforuma:', err)
+  });
+}
+
+private podesiNavigationEndListener(): void {
+  this.router.events
+    .pipe(filter(event => event instanceof NavigationEnd))
+    .subscribe(() => {
+      const newForumId = Number(this.route.snapshot.paramMap.get('id'));
+      if (newForumId !== this.forumId) {
+        this.forumId = newForumId;
+        this.ucitajObavestenja();
+        this.ucitajPodforume();
+      }
+    });
+}
 
   // ========== O B A V E Š T E NJ A ==========
   ucitajObavestenja(): void {
@@ -263,6 +324,46 @@ ukloniNastavnika(nastavnikId: number): void {
 
 logOdabraniNastavnik(id: number) {
   console.log('Izabrani nastavnik ID:', id);
+}
+
+// Otvaranje dialoga
+otvoriDodavanjePodforuma() {
+  const dialogRef = this.dialog.open(DodajPodforumDialog, {
+    width: '350px',
+    data: { roditeljskiForumId: this.forumId }
+  });
+
+  dialogRef.afterClosed().subscribe(result => {
+    if (result) {
+      // Ako je uneseno ime, osvežavamo listu podforuma
+      this.ucitajPodforume();
+    }
+  });
+}
+
+// Editovanje podforuma
+otvoriIzmenuPodforuma(forum: Forum) {
+  const noviNaziv = prompt('Izmeni naziv podforuma:', forum.naziv);
+  if (noviNaziv?.trim() && noviNaziv.trim() !== forum.naziv) {
+    this.forumService.izmeniPodforum(forum.id, noviNaziv.trim()).subscribe({
+      next: (izmenjeni) => {
+        forum.naziv = izmenjeni.naziv; // ažuriramo lokalno
+      },
+      error: (err) => console.error('Greška prilikom izmena podforuma:', err)
+    });
+  }
+}
+
+// Brisanje podforuma
+obrisiPodforum(podforumId: number) {
+  if (confirm('Da li ste sigurni da želite da obrišete ovaj podforum?')) {
+    this.forumService.obrisiPodforum(podforumId).subscribe({
+      next: () => {
+        this.podforumi = this.podforumi.filter(f => f.id !== podforumId);
+      },
+      error: (err) => console.error('Greška prilikom brisanja podforuma:', err)
+    });
+  }
 }
 
 }
