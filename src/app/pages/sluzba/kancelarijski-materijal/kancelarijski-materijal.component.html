@@ -1,34 +1,63 @@
-<div>
-  <h3>Nova porudžbina</h3>
-  <input matInput [(ngModel)]="noviMaterijal.naziv" placeholder="Naziv">
-  <input type="number" [(ngModel)]="noviMaterijal.kolicina" placeholder="Količina">
-  <input [(ngModel)]="noviMaterijal.opis" placeholder="Opis">
-  <input [(ngModel)]="noviMaterijal.datumNarudzbine" placeholder="Datum (YYYY-MM-DD)">
-  <input [(ngModel)]="noviMaterijal.radnik" placeholder="Radnik">
-  <select [(ngModel)]="noviMaterijal.status">
-    <option value="uToku">uToku</option>
-    <option value="odobreno">odobreno</option>
-    <option value="isporuceno">isporučeno</option>
-  </select>
-  <button (click)="dodajMaterijal()">Dodaj</button>
-</div>
+<div style="display: flex; justify-content: center; margin-top: 40px; margin-bottom: 20px;">
+  <div style="width: 100%; max-width: 600px;">
 
-<hr>
+    <!-- Dodavanje novog materijala -->
+    <form (ngSubmit)="izmenaId ? izmeniMaterijal() : dodajMaterijal()">
+      <mat-card class="mat-elevation-z4" style="margin-bottom: 30px; padding: 20px;">
+        <mat-card-title style="margin: 10px; text-align: center;">
+          {{ izmenaId ? 'Izmeni materijal' : 'Dodaj novi materijal' }}
+        </mat-card-title>
+        <mat-card-content>
+          <mat-form-field appearance="outline" style="width: 100%;">
+            <mat-label>Naziv</mat-label>
+            <input matInput [(ngModel)]="noviMaterijal.naziv" name="naziv" required>
+          </mat-form-field>
 
-<button (click)="prikaziIstoriju = !prikaziIstoriju">
-  {{ prikaziIstoriju ? 'Sakrij istoriju porudžbina' : 'Prikaži istoriju porudžbina' }}
-</button>
+          <mat-form-field appearance="outline" style="width: 100%;">
+            <mat-label>Količina</mat-label>
+            <input matInput type="number" [(ngModel)]="noviMaterijal.kolicina" name="kolicina" required>
+          </mat-form-field>
 
-<!-- Istorija porudžbina se prikazuje samo ako je prikaziIstoriju = true -->
-<div *ngIf="prikaziIstoriju">
-  <h3>Istorija porudžbina</h3>
-  <ul>
-    <li *ngFor="let m of materijali">
-      <b>{{ m.naziv }}</b> ({{ m.kolicina }}) - {{ m.opis }} <br>
-      Datum: {{ m.datumNarudzbine }}, Radnik: {{ m.radnik }}, Status: {{ m.status }}
-      <br>
-      <button (click)="obrisiMaterijal(m.id)">Obriši</button>
-      <button (click)="podesiZaIzmenu(m)">Izmeni</button>
-    </li>
-  </ul>
+          <mat-form-field appearance="outline" style="width: 100%;">
+            <mat-label>Opis</mat-label>
+            <input matInput [(ngModel)]="noviMaterijal.opis" name="opis">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" style="width: 100%;">
+            <mat-label>Status</mat-label>
+            <select matNativeControl [(ngModel)]="noviMaterijal.status" name="status">
+              <option value="Hitno">Hitno</option>
+              <option value="Regularno">Regularno</option>
+            </select>
+          </mat-form-field>
+
+          <div style="text-align: center; margin-top: 16px;">
+            <button mat-raised-button color="primary" type="submit">
+              {{ izmenaId ? 'Izmeni' : 'Dodaj' }}
+            </button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </form>
+
+    <!-- Polje za pretragu -->
+    <mat-form-field appearance="outline" style="width: 100%; margin-bottom: 20px;">
+      <mat-label>Pretraga po svim atributima</mat-label>
+      <input matInput [(ngModel)]="pretraga" name="pretraga" placeholder="Unesi tekst za pretragu">
+    </mat-form-field>
+
+    <!-- Lista materijala -->
+    <mat-card class="mat-elevation-z4" style="padding: 20px;">
+      <mat-card-title style="margin: 10px; text-align: center;">Lista materijala</mat-card-title>
+      <mat-card-content>
+        <div *ngFor="let m of filtriraniMaterijali()" style="margin-bottom: 20px; border-bottom: 1px solid #ccc; padding-bottom: 10px;">
+          <h3>{{ m.naziv }}</h3>
+          <p>Količina: {{ m.kolicina }} | Opis: {{ m.opis }} | Radnik: {{ m.radnik }} | Status: {{ m.status }} | Datum: {{ m.datumNarudzbine }}</p>
+          <button mat-button color="primary" (click)="podesiZaIzmenu(m)">Izmeni</button>
+          <button mat-button color="warn" (click)="obrisiMaterijal(m.id)">Obriši</button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+  </div>
 </div>

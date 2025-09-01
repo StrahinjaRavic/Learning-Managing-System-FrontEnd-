@@ -1,0 +1,38 @@
+.container {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+.content-card {
+  width: 100%;
+  max-width: 500px; /* malo uži da bude lepše */
+  padding: 20px;
+  text-align: center;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.form mat-form-field {
+  width: 100%;
+  display: block;
+}
+
+.form button {
+  align-self: center;
+  width: fit-content;
+}
+
+.search {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.full-width-table {
+  width: 100%;
+}
