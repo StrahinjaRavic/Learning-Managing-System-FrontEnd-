@@ -13,6 +13,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { RouterModule } from '@angular/router';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-pregled-udzbenika',
@@ -25,6 +26,7 @@ export class PregledUdzbenikaComponent {
   udzbenici: Udzbenik[] = [];
   sviUdzbenici: Udzbenik[] = [];
   displayedColumns: string[] = ['id', 'naziv', 'autor', 'isbn', 'kolicina', 'obrisano', 'akcije'];
+  userRoles: string [] = [];
 
   filter = {
     naziv: '',
@@ -32,7 +34,7 @@ export class PregledUdzbenikaComponent {
     obrisano: false
   };
 
-   constructor(private service: UdzbenikService, private snackBar: MatSnackBar) {}
+   constructor(private service: UdzbenikService, private snackBar: MatSnackBar, private authService: AuthService) {}
 
    ngOnInit(): void {
     this.loadData();
@@ -46,6 +48,10 @@ export class PregledUdzbenikaComponent {
       },
       error: err => console.error('Greška pri učitavanju udžbenika:', err)
     });
+
+    this.authService.userRole$.subscribe(roles => {
+      this.userRoles = roles;
+    });
   }
 
   applyFilter() {
@@ -58,4 +64,6 @@ export class PregledUdzbenikaComponent {
       (this.filter.obrisano || !u.obrisano)
     );
   }
+
+  obrisi(u : Udzbenik){}
 }

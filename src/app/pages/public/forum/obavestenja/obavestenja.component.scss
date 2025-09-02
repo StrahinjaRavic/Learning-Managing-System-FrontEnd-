@@ -135,13 +135,27 @@ input[matInput] {
   justify-content: flex-end;
 }
 
+.title-row {
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; // pushes button to far right
+  padding: 0 16px; // optional spacing
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  padding: 20px;
+}
+
 .korisnici-dugme {
-  position: fixed;
-  top: 70px;
-  right: 40px;
-  z-index: 1100;
-  border-radius: 20px;
   background-color: #1565c0;
+  border-radius: 20px;
+
+  button {
+    color: white;
+  }
 }
 .nazad-dugme {
   position: fixed;
@@ -269,6 +283,10 @@ input[matInput] {
   }
 }
 
+.forum-list-card{
+  padding: 20px;
+}
+
 .podforum-row {
   display: flex;
   align-items: center;
@@ -293,3 +311,61 @@ input[matInput] {
 
 }
 
+.tab-group{
+  background-color: white;
+}
+
+.clickable-row {
+  cursor: pointer;
+}
+
+.clickable-row:hover {
+  background-color: rgba(0, 0, 0, 0.04); /* Material-like hover */
+}
+
+.backButton{
+  margin: 10px;
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: #555;
+  margin: 10px 0 10px 15px;
+
+  .crumb {
+    cursor: pointer;
+    color: #1976d2; // Material blue
+    font-weight: 500;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: #0d47a1; // darker blue on hover
+      text-decoration: underline;
+    }
+  }
+
+  span {
+    margin: 0 4px;
+  }
+}
+
+.actions{
+  margin-left: 10px;
+}
+
+.actions-content {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+mat-row:hover .actions-content {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.folder-table{
+  height: 100%;
+}

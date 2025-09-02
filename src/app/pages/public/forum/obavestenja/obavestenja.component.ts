@@ -23,6 +23,11 @@ import { filter } from 'rxjs/operators';
 import { DodajPodforumDialog } from './podforum-dialog';
 import { MatDialog } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FolderService } from '../../../../services/folder.service';
+import { Folder } from '../../../../Model/Folder';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { FileService } from '../../../../services/file.service';
+import { FolderCreateDTO } from '../../../../Model/DTO/FolderCreateDTO';
 
 
 
@@ -47,12 +52,24 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
     MatSelectModule,
     MatTabsModule,
     RouterModule,
+    MatTableModule
   ]
 })
 export class ObavestenjaComponent implements OnInit {
   forumId!: number;
+  forum!: Forum;
   obavestenja: Obavestenje[] = [];
   userId!: number;
+  folder!: Folder;
+  previousFolder!: Folder;
+  displayedColumns: string[] = ['naziv','size','dodato','akcije'];
+  selectedFile!: File;
+  folderId: number = 3;
+  dataSource = new MatTableDataSource<any>([]);
+  isDragOver = false;
+  draggedFiles: File[] = [];
+  isAddingFolder = false;
+  newFolderName = "";
 
   // Obavestenja
   noviTekst: string = '';
@@ -86,6 +103,8 @@ podforumi: Forum[] = [];
     private router: Router,
     private forumService: ForumService,
     private authService: AuthService,
+    private folderService: FolderService,
+    private fileService: FileService,
     private dialog: MatDialog
   ) {}
 
@@ -95,6 +114,21 @@ podforumi: Forum[] = [];
   const roles = this.authService.getUserRoles();
   this.isNastavnik = roles.includes('ROLE_NASTAVNIK');
   this.isSluzba = roles.includes('ROLE_SLUZBA');
+
+  this.forumService.getById(this.forumId).subscribe({
+    next:res => {
+      this.forum = res
+    }
+  })
+
+  this.folderService.getByForumId(this.forumId).subscribe({
+    next: res => {
+      this.folder = res
+      this.dataSource.data = [...res.subfolders, ...res.files]
+      console.log(res)
+      console.log(this.dataSource.data)
+    }
+  })
 
   if (this.isSluzba) {
     // Služba uvek može da pristupi
@@ -209,8 +243,13 @@ private podesiNavigationEndListener(): void {
     this.showKorisniciPanel = !this.showKorisniciPanel;
     if (this.showKorisniciPanel) {
       this.ucitajKorisnike();
-      this.ucitajDostupneStudente();
-      this.ucitajDostupneNastavnike();
+      if(this.isNastavnik){
+        this.ucitajDostupneStudente();
+      }
+      if(this.isSluzba){
+        this.ucitajDostupneNastavnike();
+      }
+      
     }
   }
 
@@ -365,5 +404,151 @@ obrisiPodforum(podforumId: number) {
     });
   }
 }
+
+//Folderi
+
+  onRowClick(row: any) {
+    console.log("Clicked row:", row);
+    if(row.naziv){
+      this.folderService.getById(row.id).subscribe({
+        next: res => {
+          this.previousFolder = this.folder
+          this.folder = res
+          this.dataSource.data = [...res.subfolders, ...res.files];
+        }
+      })
+    }
+    
+  }
+
+  getFolderPathArray(folder: Folder): Folder[] {
+    const path: Folder[] = [];
+    let current: Folder | null = folder;
+
+    while (current) {
+      path.unshift(current); // prepend
+      current = current.parentFolder;
+    }
+
+    return path;
+  }
+
+  toggleAddFolder() {
+    this.isAddingFolder = !this.isAddingFolder;
+  }
+
+  cancelAddFolder() {
+    this.isAddingFolder = false;
+    this.newFolderName = "";
+  }
+
+  confirmAddFolder() {
+    if (!this.newFolderName.trim()) return;
+
+    const newFolder: FolderCreateDTO = {
+      naziv: this.newFolderName,
+      parentFolder_id: this.folder.id,
+    };
+    this.folderService.create(newFolder).subscribe({
+      next: res => {
+        this.dataSource.data = [res, ...this.dataSource.data]
+        this.isAddingFolder = false;
+        this.newFolderName = "";
+      }
+    })
+    
+    
+  }
+
+  // ========== F A J L O V I==========
+
+  onFileSelected(event: any) {
+    this.selectedFile = event.target.files[0];
+    this.onUpload();
+  }
+
+  onUpload() {
+    const filesToUpload = this.draggedFiles.length ? this.draggedFiles : [this.selectedFile];
+    filesToUpload.forEach(file => {
+      this.fileService.uploadFile(this.folder.id, file).subscribe({
+        next: res => {
+          this.onRowClick(this.folder)
+        },
+        error: err => console.error('Upload error', err)
+      });
+    });
+
+    this.draggedFiles = [];
+  }
+
+  formatFileSize(bytes: number): string {
+    if (!bytes) return '';
+    const sizes = ['B', 'KB', 'MB', 'GB', 'TB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(1024));
+    return (bytes / Math.pow(1024, i)).toFixed(2) + ' ' + sizes[i];
+  }
+
+  getFileIcon(file: any): string {
+    if (file.naziv) {
+      return 'folder';
+    }
+
+    if (file.contentType) {
+      if (file.contentType.startsWith('image/')) return 'image';
+      if (file.contentType === 'application/pdf') return 'picture_as_pdf';
+      if (file.contentType.startsWith('text/')) return 'article';
+      if (file.contentType === 'application/vnd.ms-excel' || 
+          file.contentType === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') return 'grid_on';
+      if (file.contentType === 'application/msword' ||
+          file.contentType === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') return 'description';
+      if (file.contentType === 'application/java' || file.originalName?.endsWith('.java')) return 'code';
+      if (file.contentType === 'application/python' || file.originalName?.endsWith('.py')) return 'code';
+    }
+    return 'insert_drive_file';
+  }
+
+  onDownload(file: any) {
+    this.fileService.downloadFile(file.id, file.originalName);
+  }
+
+  deleteFile(fileId: number){
+    this.fileService.deleteFile(fileId).subscribe({
+      next: res => {
+        this.folderService.getByForumId(this.forumId).subscribe({
+          next: res => {
+            this.folder = res
+            this.dataSource.data = [...res.subfolders, ...res.files]
+            console.log(res)
+            console.log(this.dataSource.data)
+          }
+        })
+      }
+    });
+    
+  }
+
+  //Drag & Drop
+
+  onDragOver(event: DragEvent) {
+    event.preventDefault();
+    this.isDragOver = true;
+  }
+
+  onDragLeave(event: DragEvent) {
+    this.isDragOver = false;
+  }
+
+  onDrop(event: DragEvent) {
+    if(this.isNastavnik){
+      event.preventDefault();
+      this.isDragOver = false;
+
+      if (event.dataTransfer?.files.length) {
+        this.draggedFiles = Array.from(event.dataTransfer.files);
+        this.onUpload();
+      }
+    }
+    
+  }
 
 }

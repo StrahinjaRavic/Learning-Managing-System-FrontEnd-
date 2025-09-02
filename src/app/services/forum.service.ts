@@ -18,16 +18,20 @@ export class ForumService {
   constructor(private http: HttpClient) {}
 
   getMojiForumi(userId: number, svi: boolean = false): Observable<Forum[]> {
-  if (svi) {
-    return this.getSviForumi();
+    if (svi) {
+      return this.getSviForumi();
+    }
+    return this.http.get<Forum[]>(`${this.API}/korisnik/${userId}`);
   }
-  return this.http.get<Forum[]>(`${this.API}/korisnik/${userId}`);
-}
+
+  getById(id: number): Observable<Forum> {
+    return this.http.get<Forum>(`${this.API2}/${id}`);
+  }
 
 
   getSviForumi(): Observable<Forum[]> {
-  return this.http.get<Forum[]>(`${this.API2}/root`); // API2 je http://localhost:8080/api/forums
-}
+    return this.http.get<Forum[]>(`${this.API2}/root`); // API2 je http://localhost:8080/api/forums
+  }
 
 
   create(forum: ForumSaveDTO): Observable<Forum> {
@@ -110,6 +114,7 @@ obrisiPodforum(podforumId: number) {
 }
 
 isMember(forumId: number, userId: number) {
+  console.log(userId)
   return this.http.get<boolean>(`${this.API2}/${forumId}/isMember/${userId}`);
 }
 
