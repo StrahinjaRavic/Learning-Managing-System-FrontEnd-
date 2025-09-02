@@ -13,7 +13,7 @@
 
       <a mat-list-item routerLink="/student-predmeti" *ngIf="userRoles?.includes('ROLE_STUDENT')">Moji Predmeti</a>
       <a mat-list-item routerLink="/istorija-studiranja" *ngIf="userRoles?.includes('ROLE_STUDENT')">Istorija studiranja</a>
-      <a mat-list-item routerLink="/forum" *ngIf="userRoles?.includes('ROLE_STUDENT')">Forumi</a>
+      <a mat-list-item routerLink="/forum" *ngIf="userRoles?.includes('ROLE_STUDENT') || userRoles?.includes('ROLE_NASTAVNIK')">Forumi</a>
       <a mat-list-item routerLink="/prijava-ispita" *ngIf="userRoles?.includes('ROLE_STUDENT')">Prijava ispita</a>
       <a mat-list-item routerLink="/student/biranje-predmeta" *ngIf="userRoles?.includes('ROLE_STUDENT')">Biranje Predmeta</a>
 
@@ -24,7 +24,6 @@
       <a mat-list-item routerLink="/admin/pregled-gresaka" *ngIf="userRoles?.includes('ROLE_ADMIN')">Pregled Grešaka</a>
 
       <a mat-list-item routerLink="/nastavnik-predmeti" *ngIf="userRoles?.includes('ROLE_NASTAVNIK')">Moji Predmeti</a>
-      <a mat-list-item routerLink="/forum" *ngIf="userRoles?.includes('ROLE_NASTAVNIK')">Forumi</a>
 
       <a mat-list-item routerLink="/upis-studenta" *ngIf="userRoles?.includes('ROLE_SLUZBA')">Upis</a>
       <a mat-list-item routerLink="/kreiranje-studenta" *ngIf="userRoles?.includes('ROLE_SLUZBA')">Dodavanje studenta</a>

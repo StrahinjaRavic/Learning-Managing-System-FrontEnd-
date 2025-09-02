@@ -134,7 +134,7 @@ export class PregledNastavnikaComponent implements OnInit{
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'studenti.xml';
+    a.download = 'nastavnici.xml';
     a.click();
     URL.revokeObjectURL(url);
   }
@@ -167,6 +167,6 @@ export class PregledNastavnikaComponent implements OnInit{
               startY: 20
             });
         
-            doc.save('studenti.pdf');
+            doc.save('nastavnici.pdf');
   }
 }

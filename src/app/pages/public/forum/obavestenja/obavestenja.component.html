@@ -1,10 +1,3 @@
-<!-- Dugme za korisnike (uvek gore, iznad tabova) -->
-<div class="korisnici-dugme">
-  <button mat-icon-button color="accent" (click)="toggleKorisniciPanel()">
-    <mat-icon style="color: white;">person</mat-icon>
-  </button>
-</div>
-
 <!-- Panel sa korisnicima (samo jednom, globalno) -->
 <div class="backdrop" *ngIf="showKorisniciPanel" (click)="toggleKorisniciPanel()"></div>
 <div class="korisnici-side-panel" [class.open]="showKorisniciPanel">
@@ -19,6 +12,41 @@
     <mat-divider></mat-divider>
 
     <mat-card-content>
+
+      <!-- Dostupni nastavnici za dodavanje -->
+      <div *ngIf="isSluzba" style="margin-bottom: 20px;margin-top: 20px;">
+        <h4>Dostupni nastavnici</h4>
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Filter po imenu/prezimenu</mat-label>
+          <input matInput [(ngModel)]="filterNastavnik" [matAutocomplete]="autoNastavnik"
+            placeholder="Unesi kriterijum">
+
+          <mat-autocomplete #autoNastavnik="matAutocomplete"
+            (optionSelected)="onNastavnikSelected($event.option.value)">
+            <mat-option *ngFor="let s of filtriraniNastavnici()" [value]="s">
+              {{ s.ime }} {{ s.prezime }} - JMBG: {{ s.jmbg }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" (click)="dodajNastavnika()">Dodaj nastavnika</button>
+      </div>
+
+      <!-- Dodavanje studenta -->
+      <div *ngIf="isNastavnik" class="dodaj-studenta" style="margin-bottom: 20px;margin-top: 20px;">
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Pretraži studenta (JMBG, indeks, ime, prezime)</mat-label>
+          <input matInput [(ngModel)]="filterText" [matAutocomplete]="auto" placeholder="Unesi kriterijum pretrage">
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onStudentSelected($event.option.value)">
+            <mat-option *ngFor="let s of filtriraniStudenti()" [value]="s">
+              {{ s.ime }} {{ s.prezime }} ({{ s.brojIndeksa }}) - JMBG: {{ s.jmbg }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" (click)="dodajStudenta()">Dodaj</button>
+      </div>
+
       <!-- Nastavnici -->
       <h4>Nastavnici</h4>
       <mat-list>
@@ -32,26 +60,7 @@
         </mat-list-item>
       </mat-list>
 
-      <!-- Dostupni nastavnici za dodavanje -->
-      <div *ngIf="isSluzba">
-        <h4>Dostupni nastavnici</h4>
-        <mat-form-field appearance="fill" class="full-width">
-          <mat-label>Filter po imenu/prezimenu</mat-label>
-          <input 
-            matInput
-            [(ngModel)]="filterNastavnik"
-            [matAutocomplete]="autoNastavnik"
-            placeholder="Unesi kriterijum">
 
-          <mat-autocomplete #autoNastavnik="matAutocomplete" (optionSelected)="onNastavnikSelected($event.option.value)">
-            <mat-option *ngFor="let s of filtriraniNastavnici()" [value]="s">
-              {{ s.ime }} {{ s.prezime }} - JMBG: {{ s.jmbg }}
-            </mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
-
-        <button mat-raised-button color="primary" (click)="dodajNastavnika()">Dodaj nastavnika</button>
-      </div>
 
       <!-- Studenti -->
       <h4>Studenti</h4>
@@ -65,33 +74,24 @@
           </button>
         </mat-list-item>
       </mat-list>
-
-      <!-- Dodavanje studenta -->
-      <div *ngIf="isNastavnik" class="dodaj-studenta">
-        <mat-form-field appearance="fill" class="full-width">
-          <mat-label>Pretraži studenta (JMBG, indeks, ime, prezime)</mat-label>
-          <input
-            matInput
-            [(ngModel)]="filterText"
-            [matAutocomplete]="auto"
-            placeholder="Unesi kriterijum pretrage"
-          >
-          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onStudentSelected($event.option.value)">
-            <mat-option *ngFor="let s of filtriraniStudenti()" [value]="s">
-              {{ s.ime }} {{ s.prezime }} ({{ s.brojIndeksa }}) - JMBG: {{ s.jmbg }}
-            </mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
-
-        <button mat-raised-button color="primary" (click)="dodajStudenta()">Dodaj</button>
-      </div>
     </mat-card-content>
   </mat-card>
 </div>
+<div class="title-row">
+  <mat-card-title class="title" *ngIf="forum">{{forum.naziv}}</mat-card-title>
+
+  <!-- Dugme za korisnike (uvek gore, iznad tabova) -->
+  <div class="korisnici-dugme">
+    <button mat-icon-button color="accent" (click)="toggleKorisniciPanel()">
+      <mat-icon style="color: white;">person</mat-icon>
+    </button>
+  </div>
+</div>
+
 
 
 <!-- Tabovi -->
-<mat-tab-group>
+<mat-tab-group class="tab-group">
   <!-- Tab 2: Obaveštenja -->
   <mat-tab label="Obaveštenja">
     <div class="obavestenja-wrapper">
@@ -141,23 +141,12 @@
       <div class="nova-poruka mat-elevation-z4">
         <mat-form-field appearance="outline" class="full-width naslov-input">
           <mat-label>Naslov</mat-label>
-          <input 
-            matInput 
-            [(ngModel)]="noviNaslov" 
-            [readonly]="!isNastavnik"
-            placeholder="Naslov obaveštenja"
-          />
+          <input matInput [(ngModel)]="noviNaslov" [readonly]="!isNastavnik" placeholder="Naslov obaveštenja" />
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="full-width tekst-input">
           <mat-label>Tekst</mat-label>
-          <input 
-            matInput 
-            rows="3" 
-            [(ngModel)]="noviTekst" 
-            [readonly]="!isNastavnik"
-            placeholder="Tekst obaveštenja"
-          >
+          <input matInput rows="3" [(ngModel)]="noviTekst" [readonly]="!isNastavnik" placeholder="Tekst obaveštenja">
         </mat-form-field>
 
         <!-- Nastavnik => dugme -->
@@ -214,12 +203,80 @@
         </div>
       </mat-card-content>
     </mat-card>
-  </mat-tab>  
+  </mat-tab>
 
   <!-- Tab 4: Files -->
   <mat-tab label="Files">
-    <div class="files-tab">
-      <p>Ova sekcija će biti dostupna uskoro.</p>
+    <div class="files-tab" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)" (drop)="onDrop($event)"
+      [class.dragover]="isDragOver">
+
+      <div *ngIf="folder">
+        <nav class="breadcrumb">
+          <ng-container *ngFor="let f of getFolderPathArray(folder); let last = last">
+            <span (click)="onRowClick(f)" class="crumb">{{ f.naziv }}</span>
+            <span *ngIf="!last"> / </span>
+          </ng-container>
+        </nav>
+
+        <div class="actions">
+          <button mat-icon-button (click)="toggleAddFolder()">
+            <mat-icon>create_new_folder</mat-icon>
+          </button>
+
+          <input #fileInput type="file" (change)="onFileSelected($event)" hidden>
+          <button mat-icon-button color="primary" (click)="fileInput.click()">
+            <mat-icon>upload</mat-icon>
+          </button>
+
+          <div *ngIf="isAddingFolder" class="add-folder-container">
+            <mat-form-field appearance="outline" style="width: 250px; margin-right: 10px;">
+              <mat-label>Folder name</mat-label>
+              <input matInput [(ngModel)]="newFolderName" />
+            </mat-form-field>
+
+            <button mat-raised-button color="primary" (click)="confirmAddFolder()">Save</button>
+            <button mat-button (click)="cancelAddFolder()">Cancel</button>
+          </div>
+        </div>
+
+        <mat-table *ngIf="dataSource.data?.length || isAddingFolder" [dataSource]="dataSource"
+          class="mat-elevation-z1 folder-table">
+
+          <ng-container matColumnDef="naziv">
+            <mat-header-cell *matHeaderCellDef> Naziv </mat-header-cell>
+            <mat-cell *matCellDef="let sub"> <mat-icon style="margin-bottom: 5px;margin-right: 10px;color: gray;">{{
+                getFileIcon(sub) }}</mat-icon> {{ sub.naziv || sub.originalName }} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="size">
+            <mat-header-cell *matHeaderCellDef> Velicina </mat-header-cell>
+            <mat-cell *matCellDef="let sub"> {{ sub.size ? formatFileSize(sub.size) : '' }} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="dodato">
+            <mat-header-cell *matHeaderCellDef> Dodato </mat-header-cell>
+            <mat-cell *matCellDef="let sub"> {{ sub.uploadedAt ? (sub.uploadedAt | date:'medium') : '' }} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="akcije">
+            <mat-header-cell *matHeaderCellDef></mat-header-cell>
+            <mat-cell *matCellDef="let file">
+              <div class="actions-content">
+                <button (click)="onDownload(file)" mat-icon-button color="primary" *ngIf="file.originalName">
+                  <mat-icon class="icon">download</mat-icon>
+                </button>
+                <button (click)="deleteFile(file.id)" mat-icon-button color="warn" *ngIf="isNastavnik && file.originalName">
+                  <mat-icon class="icon">delete</mat-icon>
+                </button>
+              </div>
+            </mat-cell>
+          </ng-container>
+
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="onRowClick(row)"
+            class="clickable-row"></mat-row>
+        </mat-table>
+      </div>
     </div>
   </mat-tab>
 </mat-tab-group>
