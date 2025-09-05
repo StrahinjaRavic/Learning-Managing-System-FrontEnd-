@@ -15,6 +15,9 @@ import { DodavanjePredmetaComponent } from '../dodavanje-predmeta/dodavanje-pred
 import { ForumService } from '../../../../services/forum.service';
 import { UlogovaniKorisnikService } from '../../../../services/ulogovani-korisnik.service';
 import { catchError, firstValueFrom, of } from 'rxjs';
+import { FolderCreateDTO } from '../../../../Model/DTO/FolderCreateDTO';
+import { FolderService } from '../../../../services/folder.service';
+import { ForumHasKorisnikCreateDTO } from '../../../../Model/DTO/forumHasKorisnikCreateDTO';
 
 @Component({
   selector: 'app-pregled-predmeta',
@@ -28,7 +31,7 @@ export class PregledPredmetaComponent implements OnInit{
   loading = true;
   displayedColumns = ['naziv', 'profesor', 'akcije'];
 
-  constructor( private route: ActivatedRoute, private ulogovaniKorisnikService: UlogovaniKorisnikService, private realizacijaService: RealizacijaPredmetaService, private forumService: ForumService, private godinaStudijaService: GodinaStudijaService, private dialog: MatDialog){}
+  constructor( private route: ActivatedRoute, private ulogovaniKorisnikService: UlogovaniKorisnikService, private folderService: FolderService, private realizacijaService: RealizacijaPredmetaService, private forumService: ForumService, private godinaStudijaService: GodinaStudijaService, private dialog: MatDialog){}
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
@@ -109,20 +112,36 @@ export class PregledPredmetaComponent implements OnInit{
           );
           // If forum does not exist, create it
           if (!forum) {
-             forum = await firstValueFrom(this.forumService.create({
-               naziv: nazivPredmeta
-             }))
+             this.forumService.create({naziv: nazivPredmeta}).subscribe({
+              next: res => {
+                const forumId = res.id;
+                const newFolder: FolderCreateDTO = {
+                  naziv: nazivPredmeta,
+                  forum_id: res.id,
+                };
+                this.folderService.create(newFolder).subscribe({
+                  next: res => {
+                  }
+                })
+                // Step 3: get ulogovaniKorisnik for the nastavnik
+                this.ulogovaniKorisnikService.getByOsobaId(nastavnikOsobaId).subscribe({
+                  next: res => {
+                    // Step 4: create ForumHasKorisnik entry
+                    const fhs: ForumHasKorisnikCreateDTO = {
+                      forum_id: forumId,
+                      ulogovaniKorisnik_id:res.id
+                    }
+                    console.log("noviKorisnik:",fhs)
+                    this.forumService.addKorisnikToForum(fhs).subscribe({
+                      next: res => {
+                        console.log("forumHasKorisnik:", res)
+                      }
+                    })
+                  }
+                })
+              }
+             })
            }
-
-          // Step 3: get ulogovaniKorisnik for the nastavnik
-          const korisnik = await firstValueFrom(this.ulogovaniKorisnikService.getByOsobaId(nastavnikOsobaId))
-
-          // Step 4: create ForumHasKorisnik entry
-          await firstValueFrom(this.forumService.addKorisnikToForum({
-             forum_id: forum!.id,
-             ulogovaniKorisnik_id: korisnik!.id
-           }))
-
         } catch (err) {
           console.error('Error while creating forum or linking korisnik:', err);
         }

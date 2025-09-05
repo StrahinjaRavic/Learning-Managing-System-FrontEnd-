@@ -71,8 +71,8 @@
       </ng-container>
 
       <ng-container matColumnDef="obrisano">
-        <mat-header-cell *matHeaderCellDef> Obrisano </mat-header-cell>
-        <mat-cell *matCellDef="let u"> {{ u.obrisano ? 'Da' : 'Ne' }} </mat-cell>
+        <mat-header-cell *matHeaderCellDef> U upotrebi </mat-header-cell>
+        <mat-cell *matCellDef="let u"> {{ u.obrisano ? 'Ne' : 'Da' }} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="akcije">
@@ -80,7 +80,11 @@
         <mat-cell *matCellDef="let u">
 
           <button mat-flat-button color="primary" [routerLink]="['/udzbenici', u.id]">Čitaj</button>
-
+          <div *ngIf="userRoles?.includes('ROLE_SLUZBA')">
+            <button mat-icon-button color="warn" (click)="obrisi(u)">
+              <mat-icon class="icon">delete</mat-icon>
+            </button>
+          </div>
         </mat-cell>
       </ng-container>
 
