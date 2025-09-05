@@ -13,7 +13,7 @@ export interface IzvestajRow {
 
 export interface IzvestajDTO {
   rokId: number;
-  predmetId: number;
+  realizacijaPredmetaId: number;
   rokNaziv: string;
   predmetNaziv: string;
   histogram: { [ocena: string]: number };
@@ -30,28 +30,27 @@ export class IzvestajPolaganjaService {
 
   constructor(private http: HttpClient) {}
 
-  getIzvestaj(rokId: number, predmetId: number): Observable<IzvestajDTO> {
+  getIzvestaj(rokId: number, realizacijaPredmetaId: number): Observable<IzvestajDTO> {
     const params = new HttpParams()
       .set('rokId', rokId)
-      .set('predmetId', predmetId);
+      .set('realizacijaPredmetaId', realizacijaPredmetaId);
     return this.http.get<IzvestajDTO>(this.baseUrl, { params });
   }
 
-  generatePdf(rokId: number, predmetId: number): Observable<Blob> {
-    return this.http.get(`${this.baseUrl}/pdf/${rokId}/${predmetId}`, { responseType: 'blob' });
+  getIzvestajZaDownload(rokId: number, realizacijaPredmetaId: number): Observable<Blob> {
+    const url = `http://localhost:8080/api/izvestaj/pdf?rokId=${rokId}&realizacijaId=${realizacijaPredmetaId}`;
+    return this.http.get(url, { responseType: 'blob' });
   }
 
-  /**
-   * Pošalji izveštaj mejlom nastavnicima angažovanim na predmetu
-   */
-  sendMail(rokId: number, predmetId: number): Observable<any> {
-    const params = new HttpParams()
-      .set('rokId', rokId)
-      .set('predmetId', predmetId);
-      console.log(rokId, predmetId)
-    return this.http.post(`http://localhost:8080/api/izvestaj/send-pdf?rokId=${rokId}&predmetId=${predmetId}`, null, { params });
-  }
+  sendMail(rokId: number, realizacijaPredmetaId: number): Observable<any> {
+    console.log(realizacijaPredmetaId)
+  const params = new HttpParams()
+    .set('rokId', rokId)
+    .set('realizacijaId', realizacijaPredmetaId);
+  return this.http.post(`http://localhost:8080/api/izvestaj/send-pdf`, null, { params });
+}
+
 
   getRokovi() { return this.http.get<any[]>('http://localhost:8080/api/roks'); }
-getPredmeti() { return this.http.get<any[]>('http://localhost:8080/api/predmets'); }
+  getRealizacije() { return this.http.get<any[]>('http://localhost:8080/api/realizacijapredmetas'); }
 }

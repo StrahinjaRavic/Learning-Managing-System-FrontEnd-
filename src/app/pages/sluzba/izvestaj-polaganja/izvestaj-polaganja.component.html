@@ -9,26 +9,27 @@
   </mat-form-field>
 
   <mat-form-field appearance="fill">
-    <mat-label>Predmet</mat-label>
-    <mat-select formControlName="predmetId">
-      <mat-option *ngFor="let predmet of predmeti" [value]="predmet.id">{{ predmet.naziv }}</mat-option>
+    <mat-label>Realizacija predmeta</mat-label>
+    <mat-select formControlName="realizacijaPredmetaId">
+      <mat-option *ngFor="let r of realizacije" [value]="r.id">
+        {{ r.predmet.naziv }} – {{ r.godinaStudija.godina }}
+      </mat-option>
     </mat-select>
   </mat-form-field>
 
   <button mat-raised-button color="primary" type="button" (click)="load()">Učitaj izveštaj</button>
   <button mat-raised-button color="accent" type="button" (click)="downloadPdf()">Preuzmi PDF</button>
-   <button mat-raised-button color="warn" type="button" (click)="sendMail()">Pošalji mejl nastavnicima</button>
-
+  <button mat-raised-button color="warn" type="button" (click)="sendMail()">Pošalji mejl nastavnicima</button>
 </form>
 
 <div class="chartWrap">
-    <canvas #histCanvas></canvas>
-  </div>
+  <canvas #histCanvas></canvas>
+</div>
 
 <div *ngIf="data as d">
   <div class="meta">
     <div><strong>Rok:</strong> {{ d.rokNaziv }} (ID: {{ d.rokId }})</div>
-    <div><strong>Predmet:</strong> {{ d.predmetNaziv }} (ID: {{ d.predmetId }})</div>
+    <div><strong>Realizacija predmeta:</strong> {{ d.predmetNaziv }} (ID: {{ d.realizacijaPredmetaId }})</div>
     <div class="aggs">
       <span><strong>Broj prijava:</strong> {{ d.brojPrijava }}</span>
       <span><strong>Prosek bodova:</strong> {{ d.prosekBodova || '-' }}</span>

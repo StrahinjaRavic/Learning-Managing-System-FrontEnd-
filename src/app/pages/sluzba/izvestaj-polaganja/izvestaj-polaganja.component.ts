@@ -30,22 +30,22 @@ export class IzvestajPolaganjaComponent implements OnInit, OnDestroy {
   displayedColumns = ['polaganjeId', 'datum', 'student', 'indeks', 'bodovi', 'ocena'];
 
   rokovi: any[] = [];
-  predmeti: any[] = [];
+  realizacije: any[] = [];
 
   private chart?: Chart;
 
-  @ViewChild('histCanvas') histCanvas!: ElementRef<HTMLCanvasElement>; // <-- ovde
+  @ViewChild('histCanvas') histCanvas!: ElementRef<HTMLCanvasElement>;
 
   constructor(private fb: FormBuilder, private svc: IzvestajPolaganjaService) {}
 
   ngOnInit(): void {
     this.form = this.fb.group({
-      predmetId: [''],
+      realizacijaPredmetaId: [''],
       rokId: [''],
     });
 
     this.svc.getRokovi().subscribe(r => this.rokovi = r);
-    this.svc.getPredmeti().subscribe(p => this.predmeti = p);
+    this.svc.getRealizacije().subscribe(p => this.realizacije = p);
   }
 
   ngOnDestroy(): void {
@@ -53,10 +53,10 @@ export class IzvestajPolaganjaComponent implements OnInit, OnDestroy {
   }
 
   load() {
-    const { rokId, predmetId } = this.form.value;
-    if (!rokId || !predmetId) return;
+    const { rokId, realizacijaPredmetaId } = this.form.value;
+    if (!rokId || !realizacijaPredmetaId) return;
 
-    this.svc.getIzvestaj(rokId, predmetId).subscribe({
+    this.svc.getIzvestaj(rokId, realizacijaPredmetaId).subscribe({
       next: (dto) => {
         this.data = dto;
         this.renderChart(dto);
@@ -77,23 +77,31 @@ export class IzvestajPolaganjaComponent implements OnInit, OnDestroy {
   }
 
   downloadPdf() {
-  const rokId = this.form.value.rokId;
-  const predmetId = this.form.value.predmetId;
-  if (!rokId || !predmetId) return;
+    const { rokId, realizacijaPredmetaId } = this.form.value;
+    if (!rokId || !realizacijaPredmetaId) return;
 
-  // kreiramo URL sa query parametrima
-  const url = `http://localhost:8080/api/izvestaj/pdf?rokId=${rokId}&predmetId=${predmetId}`;
+    this.svc.getIzvestajZaDownload(rokId, realizacijaPredmetaId).subscribe({
+      next: (response: Blob) => {
+        const blob = new Blob([response], { type: 'application/pdf' });
+        const url = window.URL.createObjectURL(blob);
 
-  // kreiramo skriven link za preuzimanje
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = `izvestaj_polaganja.pdf`;
-  link.click();
-}
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'izvestaj_polaganja.pdf';
+        a.click();
+        window.URL.revokeObjectURL(url);
+      },
+      error: err => {
+        console.error('Greška pri preuzimanju izveštaja:', err);
+      }
+    });
+  }
 
-
-private renderChart(dto: IzvestajDTO) {
+  private renderChart(dto: IzvestajDTO) {
     if (!this.histCanvas) return;
+
+    this.destroyChart();
+    
 
     const labels = ['5','6','7','8','9','10'];
     const values = labels.map(l => dto.histogram[l] ?? 0);
@@ -112,7 +120,7 @@ private renderChart(dto: IzvestajDTO) {
       },
       options: {
         responsive: true,
-        maintainAspectRatio: false, // obavezno da popuni visinu
+        maintainAspectRatio: false,
         plugins: { legend: { display: true } },
         scales: {
           x: { title: { display: true, text: 'Ocena' } },
@@ -122,15 +130,13 @@ private renderChart(dto: IzvestajDTO) {
     });
   }
 
-   sendMail() {
-    const predmetId = Number(this.form.value.predmetId);
-    const rokId = Number(this.form.value.rokId);
-    if (!predmetId) return;
+  sendMail() {
+    const { rokId, realizacijaPredmetaId } = this.form.value;
+    if (!rokId || !realizacijaPredmetaId) return;
 
-    this.svc.sendMail(rokId, predmetId).subscribe({
-      next: () => alert('Mail poslat svim nastavnicima angažovanim na predmetu!'),
-      error: (err) => console.error('Greška pri slanju mejla', err)
-    });
+    this.svc.sendMail(rokId, realizacijaPredmetaId).subscribe({
+  next: (res) => console.log('Poslato:', res),
+  error: (err) => console.error('Greška pri slanju mejla', err)
+});
   }
-
 }
