@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { StudentService } from '../../../../services/student.service';
-import { AuthService } from '../../../../services/auth.service';
+import { StudentService } from '../../../services/student.service';
+import { AuthService } from '../../../services/auth.service';
 import { MatCardModule } from '@angular/material/card';
-import { IstorijaStudiranjaDTO } from '../../../../Model/DTO/istorijastudiranjaDTO';
-import { IstorijaPredmetaDTO } from '../../../../Model/DTO/istorijapredmetaDTO';
+import { IstorijaStudiranjaDTO } from '../../../Model/DTO/istorijastudiranjaDTO';
+import { IstorijaPredmetaDTO } from '../../../Model/DTO/istorijapredmetaDTO';
 
 @Component({
   selector: 'app-istorija-studiranja',

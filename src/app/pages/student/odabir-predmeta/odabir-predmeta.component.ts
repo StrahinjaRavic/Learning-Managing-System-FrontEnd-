@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../../../../services/auth.service';
-import { StudentService } from '../../../../services/student.service';
-import { StudentNaGodiniService } from '../../../../services/student-na-godini.service';
-import { StudentNaGodini } from '../../../../Model/studentnagodini';
+import { AuthService } from '../../../services/auth.service';
+import { StudentService } from '../../../services/student.service';
+import { StudentNaGodiniService } from '../../../services/student-na-godini.service';
+import { StudentNaGodini } from '../../../Model/studentnagodini';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RealizacijaPredmetaService } from '../../../../services/realizacija-predmeta.service';
-import { RealizacijaPredmeta } from '../../../../Model/realizacijapredmeta';
-import { PohadjanjePredmetaService } from '../../../../services/pohadjanje-predmeta.service';
-import { PohadjanjePredmeta } from '../../../../Model/pohadjanjepredmeta';
+import { RealizacijaPredmetaService } from '../../../services/realizacija-predmeta.service';
+import { RealizacijaPredmeta } from '../../../Model/realizacijapredmeta';
+import { PohadjanjePredmetaService } from '../../../services/pohadjanje-predmeta.service';
+import { PohadjanjePredmeta } from '../../../Model/pohadjanjepredmeta';
 import { catchError, of } from 'rxjs';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -17,8 +17,8 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ForumService } from '../../../../services/forum.service';
-import { ForumHasKorisnikCreateDTO } from '../../../../Model/DTO/forumHasKorisnikCreateDTO';
+import { ForumService } from '../../../services/forum.service';
+import { ForumHasKorisnikCreateDTO } from '../../../Model/DTO/forumHasKorisnikCreateDTO';
 
 @Component({
   selector: 'app-odabir-predmeta',

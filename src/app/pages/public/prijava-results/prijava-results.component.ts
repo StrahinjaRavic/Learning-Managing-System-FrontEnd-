@@ -25,7 +25,6 @@ export class PrijavaResultsComponent {
   upload() {
   const dto: PrijavaResultsUploadDTO = {
     xmlContent: this.fileContent || this.xmlContent || undefined,
-    // filePath ti sada nije potreban, možeš ga izbaciti
   };
   this.prijavaService.uploadResults(dto).subscribe({
     next: (res) => {

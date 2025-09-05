@@ -58,7 +58,7 @@ ucitajZadatke() {
 dodaj() {
   const dtoo = {
     pitanje: this.forma.value.pitanje,
-    odgovori: this.forma.value.tacanOdgovor, // ako backend očekuje "odgovor", a ne "tacanOdgovor"
+    odgovori: this.forma.value.tacanOdgovor,
     evaluacijaId: this.evaluacijaId
   };
 

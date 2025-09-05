@@ -1,20 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import { PolaganjeService } from '../../../../services/polaganje.service';
+import { PolaganjeService } from '../../../services/polaganje.service';
 import { ActivatedRoute } from '@angular/router';
-import { Polaganje } from '../../../../Model/polaganje';
-import { EvaluacijaZadatakaService } from '../../../../services/evaluacija-zadataka.service';
+import { Polaganje } from '../../../Model/polaganje';
+import { EvaluacijaZadatakaService } from '../../../services/evaluacija-zadataka.service';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatRadioGroup, MatRadioModule } from '@angular/material/radio';
-import { Zadatak } from '../../../../Model/zadatak';
-import { Odgovor } from '../../../../Model/odgovor';
+import { Zadatak } from '../../../Model/zadatak';
+import { Odgovor } from '../../../Model/odgovor';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
-import { PrijavaPolaganja } from '../../../../Model/prijavapolaganja';
-import { PrijavaPolaganjaService } from '../../../../services/prijava-polaganja.service';
+import { PrijavaPolaganja } from '../../../Model/prijavapolaganja';
+import { PrijavaPolaganjaService } from '../../../services/prijava-polaganja.service';
 
 @Component({
   selector: 'app-polaganje',

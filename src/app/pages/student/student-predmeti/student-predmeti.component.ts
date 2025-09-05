@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { StudentService } from '../../../../services/student.service';
-import { Predmet } from '../../../../Model/predmet';
-import { AuthService } from '../../../../services/auth.service';
+import { StudentService } from '../../../services/student.service';
+import { Predmet } from '../../../Model/predmet';
+import { AuthService } from '../../../services/auth.service';
 import { MatCardModule } from '@angular/material/card';
 
 @Component({

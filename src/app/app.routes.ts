@@ -31,13 +31,13 @@ export const routes: Routes = [
   },
   {
   path: 'student-predmeti',
-  loadComponent: () => import('./pages/public/student-predmeti/student-predmeti/student-predmeti.component').then(m => m.StudentPredmetiComponent),
+  loadComponent: () => import('./pages/student/student-predmeti/student-predmeti.component').then(m => m.StudentPredmetiComponent),
   canActivate: [roleGuard],
   data: {roles: ['ROLE_STUDENT']}
   },
   {
   path: 'istorija-predmeta',
-  loadComponent: () => import('./pages/public/istorija-studiranja/istorija-studiranja/istorija-studiranja.component').then(m => m.IstorijaStudiranjaComponent)
+  loadComponent: () => import('./pages/student/istorija-studiranja/istorija-studiranja.component').then(m => m.IstorijaStudiranjaComponent)
   },
 
   {
