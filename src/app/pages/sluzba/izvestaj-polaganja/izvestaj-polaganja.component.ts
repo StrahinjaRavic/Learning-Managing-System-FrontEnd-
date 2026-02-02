@@ -135,8 +135,8 @@ export class IzvestajPolaganjaComponent implements OnInit, OnDestroy {
     if (!rokId || !realizacijaPredmetaId) return;
 
     this.svc.sendMail(rokId, realizacijaPredmetaId).subscribe({
-  next: (res) => console.log('Poslato:', res),
-  error: (err) => console.error('Greška pri slanju mejla', err)
-});
+      next: () => alert('Mail poslat svim nastavnicima angažovanim na realizaciji predmeta!'),
+      error: (err) => console.error('Greška pri slanju mejla', err)
+    });
   }
 }

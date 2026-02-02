@@ -14,19 +14,33 @@ import { AuthService } from '../../../services/auth.service';
 @Component({
   selector: 'app-kancelarijski-materijal',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, MatCardModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatAutocompleteModule, MatTableModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatAutocompleteModule,
+    MatTableModule
+  ],
   templateUrl: './kancelarijski-materijal.component.html',
   styleUrls: ['./kancelarijski-materijal.component.scss']
 })
 export class KancelarijskiMaterijalComponent implements OnInit {
+
   materijali: KancelarijskiMaterijal[] = [];
-  noviMaterijal: KancelarijskiMaterijal = { naziv: '', kolicina: 0, opis: '', datumNarudzbine: '', radnik: '', status: 'uToku' };
-  izmenaId?: string;
-  pretraga: string = ''; // polje za pretragu
+
+  noviMaterijal: KancelarijskiMaterijal = this.prazanMaterijal();
+
+  izmenaKey?: string;
+
+  pretraga: string = '';
 
   constructor(
     private materijalService: KancelarijskiMaterijalService,
-    private authService : AuthService
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -34,53 +48,77 @@ export class KancelarijskiMaterijalComponent implements OnInit {
   }
 
   ucitajMaterijale(): void {
-    this.materijalService.getAll().subscribe(data => this.materijali = data);
+    this.materijalService.getAll()
+      .subscribe(data => this.materijali = data);
   }
 
   dodajMaterijal(): void {
-    // automatski datum danas
-    this.noviMaterijal.datumNarudzbine = new Date().toISOString().split('T')[0];
+    this.noviMaterijal.datumNarudzbine =
+      new Date().toISOString().split('T')[0];
 
-    this.noviMaterijal.radnik = this.authService.getUsernameFromToken() ?? '';
+    this.noviMaterijal.radnik =
+      this.authService.getUsernameFromToken() ?? '';
 
-    this.materijalService.create(this.noviMaterijal).subscribe(() => {
-      this.ucitajMaterijale();
-      this.noviMaterijal = { naziv: '', kolicina: 0, opis: '', datumNarudzbine: '', radnik: '', status: 'uToku' };
-    });
+    this.materijalService.create(this.noviMaterijal)
+      .subscribe(() => {
+        this.ucitajMaterijale();
+        this.resetForm();
+      });
   }
 
-  obrisiMaterijal(id?: string): void {
-    if (!id) return;
-    this.materijalService.delete(id).subscribe(() => this.ucitajMaterijale());
+  obrisiMaterijal(key?: string): void {
+    if (!key) return;
+
+    this.materijalService.delete(key)
+      .subscribe(() => this.ucitajMaterijale());
   }
 
-  podesiZaIzmenu(materijal: KancelarijskiMaterijal): void {
-    this.izmenaId = materijal.id;
-    this.noviMaterijal = { ...materijal };
+  podesiZaIzmenu(m: KancelarijskiMaterijal): void {
+    this.izmenaKey = m._key;
+    this.noviMaterijal = { ...m };
   }
 
   izmeniMaterijal(): void {
-    if (!this.izmenaId) return;
+    if (!this.izmenaKey) return;
 
-    this.noviMaterijal.radnik = this.authService.getUsernameFromToken() ?? '';
-    
-    this.materijalService.update(this.izmenaId, this.noviMaterijal).subscribe(() => {
-      this.ucitajMaterijale();
-      this.noviMaterijal = { naziv: '', kolicina: 0, opis: '', datumNarudzbine: '', radnik: '', status: 'uToku' };
-      this.izmenaId = undefined;
-    });
+    this.noviMaterijal.radnik =
+      this.authService.getUsernameFromToken() ?? '';
+
+    this.materijalService.update(this.izmenaKey, this.noviMaterijal)
+      .subscribe(() => {
+        this.ucitajMaterijale();
+        this.resetForm();
+      });
   }
 
-  // filtrira materijale po svim atributima
+  resetForm(): void {
+    this.noviMaterijal = this.prazanMaterijal();
+    this.izmenaKey = undefined;
+  }
+
+  prazanMaterijal(): KancelarijskiMaterijal {
+    return {
+      naziv: '',
+      kolicina: 0,
+      opis: '',
+      datumNarudzbine: '',
+      radnik: '',
+      status: 'Regularno'
+    };
+  }
+
   filtriraniMaterijali(): KancelarijskiMaterijal[] {
     if (!this.pretraga) return this.materijali;
+
     const text = this.pretraga.toLowerCase();
+
     return this.materijali.filter(m =>
       m.naziv?.toLowerCase().includes(text) ||
       m.kolicina?.toString().includes(text) ||
       m.opis?.toLowerCase().includes(text) ||
       m.radnik?.toLowerCase().includes(text) ||
-      m.status?.toLowerCase().includes(text)
+      m.status?.toLowerCase().includes(text) ||
+      m.datumNarudzbine?.toLowerCase().includes(text)
     );
   }
 }

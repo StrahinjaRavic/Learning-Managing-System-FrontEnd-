@@ -1,13 +1,14 @@
 <div style="display: flex; justify-content: center; margin-top: 40px; margin-bottom: 20px;">
   <div style="width: 100%; max-width: 600px;">
 
-    <!-- Dodavanje novog materijala -->
-    <form (ngSubmit)="izmenaId ? izmeniMaterijal() : dodajMaterijal()">
+    <form (ngSubmit)="izmenaKey ? izmeniMaterijal() : dodajMaterijal()">
       <mat-card class="mat-elevation-z4" style="margin-bottom: 30px; padding: 20px;">
-        <mat-card-title style="margin: 10px; text-align: center;">
-          {{ izmenaId ? 'Izmeni materijal' : 'Dodaj novi materijal' }}
+        <mat-card-title style="text-align: center;">
+          {{ izmenaKey ? 'Izmeni materijal' : 'Dodaj novi materijal' }}
         </mat-card-title>
+
         <mat-card-content>
+
           <mat-form-field appearance="outline" style="width: 100%;">
             <mat-label>Naziv</mat-label>
             <input matInput [(ngModel)]="noviMaterijal.naziv" name="naziv" required>
@@ -33,28 +34,42 @@
 
           <div style="text-align: center; margin-top: 16px;">
             <button mat-raised-button color="primary" type="submit">
-              {{ izmenaId ? 'Izmeni' : 'Dodaj' }}
+              {{ izmenaKey ? 'Izmeni' : 'Dodaj' }}
             </button>
           </div>
+
         </mat-card-content>
       </mat-card>
     </form>
 
-    <!-- Polje za pretragu -->
     <mat-form-field appearance="outline" style="width: 100%; margin-bottom: 20px;">
-      <mat-label>Pretraga po svim atributima</mat-label>
-      <input matInput [(ngModel)]="pretraga" name="pretraga" placeholder="Unesi tekst za pretragu">
+      <mat-label>Pretraga</mat-label>
+      <input matInput [(ngModel)]="pretraga" name="pretraga">
     </mat-form-field>
 
-    <!-- Lista materijala -->
     <mat-card class="mat-elevation-z4" style="padding: 20px;">
-      <mat-card-title style="margin: 10px; text-align: center;">Lista materijala</mat-card-title>
+      <mat-card-title style="text-align: center;">Lista materijala</mat-card-title>
+
       <mat-card-content>
-        <div *ngFor="let m of filtriraniMaterijali()" style="margin-bottom: 20px; border-bottom: 1px solid #ccc; padding-bottom: 10px;">
+        <div *ngFor="let m of filtriraniMaterijali()"
+             style="margin-bottom: 20px; border-bottom: 1px solid #ccc; padding-bottom: 10px;">
+
           <h3>{{ m.naziv }}</h3>
-          <p>Količina: {{ m.kolicina }} | Opis: {{ m.opis }} | Radnik: {{ m.radnik }} | Status: {{ m.status }} | Datum: {{ m.datumNarudzbine }}</p>
-          <button mat-button color="primary" (click)="podesiZaIzmenu(m)">Izmeni</button>
-          <button mat-button color="warn" (click)="obrisiMaterijal(m.id)">Obriši</button>
+          <p>
+            Količina: {{ m.kolicina }} |
+            Opis: {{ m.opis }} |
+            Radnik: {{ m.radnik }} |
+            Status: {{ m.status }} |
+            Datum: {{ m.datumNarudzbine }}
+          </p>
+
+          <button mat-button color="primary" (click)="podesiZaIzmenu(m)">
+            Izmeni
+          </button>
+
+          <button mat-button color="warn" (click)="obrisiMaterijal(m._key)">
+            Obriši
+          </button>
         </div>
       </mat-card-content>
     </mat-card>

@@ -1,9 +1,9 @@
 export interface KancelarijskiMaterijal {
-  id?: string;             // UUID koji generiše backend
+  _key?: string;
   naziv: string;
   kolicina: number;
   opis: string;
   datumNarudzbine?: string;
   radnik?: string;
-  status?: string;         // npr. "uToku", "odobreno", "isporučeno"
+  status?: string;
 }
