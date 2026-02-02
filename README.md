@@ -1,5 +1,7 @@
 # LmsFrontend
 
+Backend application developed alongside this project can be found here : https://gitlab.com/OgnjenMaric/lms-backend
+
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.10.
 
 ## Development server
